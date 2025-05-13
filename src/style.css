@@ -1,7 +1,168 @@
 @import 'tailwindcss';
 
+/* default style */
 @theme {
+  --font-wanted-sans: 'Wanted Sans Variable', sans-serif; /* default font */
+  --font-dunggeunmo: 'DungGeunMo', monospace; /* pixel font */
+
+  /* colors */
+
+  /* original color */
+  /* Gray Shades */
+  --gray-01: #fbfbfb;
+  --gray-02: #f7f7f7;
+  --gray-03: #f5f4f3;
+  --gray-04: #efefef;
+  --gray-05: #ececec;
+  --gray-06: #dfdfdf;
+  --gray-07: #c1c1c1;
+  --gray-08: #a5a5a5;
+  --gray-09: #8b8b8b;
+  --gray-10: #6f6f6f;
+  --gray-11: #555555;
+  --gray-12: #3d3d3d;
+  --gray-13: #333333;
+  --gray-14: #242424;
+  --gray-15: #171717;
+
+  /* Green Shades */
+  --green-01: #e6fff4; /* 아주 연한 네온그린 틴트 */
+  --green-02: #b3ffd8;
+  --green-03: #80ffbc;
+  --green-04: #4dffa0;
+  --green-05: #1aff84;
+  --green-06: #00ff84; /* 기준색: 딥네온그린 (twodari-green)*/
+  --green-07: #00e673;
+  --green-08: #00cc64;
+  --green-09: #00b35a;
+  --green-10: #00994d;
+  --green-11: #007f40;
+  --green-12: #006633; /* 딥한 어두운 포커스용 */
+
+  /* Red Shades */
+  --red-01: #ffeaea; /* 아주 연한 신호등 레드 틴트 */
+  --red-02: #ffc6c6;
+  --red-03: #ffa3a3;
+  --red-04: #ff8080;
+  --red-05: #ff5c5c;
+  --red-06: #ff3b3b; /* 기준색: 강렬한 경고용 빨강 (twodari-red) */
+  --red-07: #e63535;
+  --red-08: #cc2f2f;
+  --red-09: #b32929;
+  --red-10: #991f1f;
+  --red-11: #7f1919;
+  --red-12: #661414; /* 딥하고 어두운 붉은 포인트 */
+
+  /*  Light Theme Color*/
+  --light-ui-background: #f9f9f9;
+  --light-ui-01: #fbfbfb; /* gray-01 */
+  --light-ui-02: #f7f7f7; /* gray-02 */
+  --light-ui-03: #f5f4f3; /* gray-03 */
+  --light-ui-04: #efefef; /* gray-04 */
+  --light-ui-05: #ececec; /* gray-05 */
+  --light-ui-06: #dfdfdf; /* gray-06 */
+  --light-ui-07: #c1c1c1; /* gray-07 */
+  --light-ui-08: #8b8b8b; /* gray-09 */
+  --light-ui-09: #555555; /* gray-11 */
+  --light-ui-10: #242424; /* gray-14 */
+
+  --light-primary: #00ff84; /* ✅ 네온그린 */
+  --light-primary-press: #00e673; /* 네온그린보다 약간 어둡게 */
+
+  --light-secondary: #333333;
+  --light-secondary-press: #242424;
+
+  --light-tertiary: #ffffff;
+  --light-tertiary-press: #f7f7f7;
+
+  --light-danger: #ff3b3b; /* 🟥 신호등레드 */
+  --light-danger-press: #d83030; /* 누르면 조금 어두워짐 */
+
+  --light-cancel: #c1c1c1;
+  --light-cancel-press: #a5a5a5;
+
+  --light-success: #00c172; /* 네온그린의 톤다운 버전 */
+  --light-error: #ff5c5c; /* 붉은 경고 */
+
+  --light-text-strong: #000000;
+  --light-text-01: #242424;
+  --light-text-02: #555555;
+  --light-text-03: #6f6f6f;
+  --light-text-04: #8b8b8b;
+
+  /* Dark Theme */
+  --dark-ui-background: #171717;
+  --dark-ui-01: #242424;
+  --dark-ui-02: #333333;
+  --dark-ui-03: #3d3d3d;
+  --dark-ui-04: #555555;
+  --dark-ui-05: #6f6f6f;
+  --dark-ui-06: #8b8b8b;
+  --dark-ui-07: #a5a5a5;
+  --dark-ui-08: #c1c1c1;
+  --dark-ui-09: #ececec;
+  --dark-ui-10: #f5f4f3;
+
+  --dark-primary: #00ff84; /* ✅ 네온그린 */
+  --dark-primary-press: #00e673;
+
+  --dark-secondary: #fbfbfb;
+  --dark-secondary-press: #ffffff;
+
+  --dark-tertiary: #171717;
+  --dark-tertiary-press: #333333;
+
+  --dark-danger: #ff3b3b; /* 🟥 신호등레드 */
+  --dark-danger-press: #eb2f2f;
+
+  --dark-cancel: #6f6f6f;
+  --dark-cancel-press: #8b8b8b;
+
+  --dark-success: #00c172; /* 네온그린의 어두운 배경용 */
+  --dark-error: #ff5c5c;
+
+  --dark-text-strong: #ffffff;
+  --dark-text-01: #fbfbfb;
+  --dark-text-02: #dfdfdf;
+  --dark-text-03: #c1c1c1;
+  --dark-text-04: #a5a5a5;
+
+  /* text */
+  /* Font Weights */
+  --font-weight-bold: bold;
+  --font-weight-regular: normal;
+
+  /* Font Sizes */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 20px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 28px;
+  --font-size-3xl: 32px;
+  --font-size-4xl: 36px;
+  --font-size-5xl: 40px;
+
+  /* Line Heights */
+  --line-height-5xl: 52px;
+  --line-height-4xl: 46px;
+  --line-height-3xl: 42px;
+  --line-height-2xl: 38px;
+  --line-height-xl: 34px;
+  --line-height-lg: 28px;
+  --line-height-md: 24px;
+  --line-height-sm: 22px;
+  --line-height-xs: 20px;
+  --line-height-xxs: 18px;
+
+  /* Letter Spacing */
+  --letter-spacing-default: -0.6px;
+
+  /* Paragraph Spacing */
+  --paragraph-spacing-default: 0px;
 }
+
+/* custom style */
 
 .terminal-container {
   min-height: 30vh;
