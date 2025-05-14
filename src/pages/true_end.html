@@ -4,10 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>트루 엔딩</title>
-    <script type="module" src="../TS/"></script>
+    <script type="module" src="../TS/true_end.ts"></script>
     <link rel="stylesheet" href="../style.css" />
+    <style>
+      body {
+        transition: opacity 2s ease;
+      }
+
+      .ending-fade-out {
+        opacity: 0 !important;
+      }
+    </style>
   </head>
-  <body class="bg-black flex items-center justify-center min-h-screen flex-col font-wanted-sans" style="transition: opacity 2s ease">
+  <body class="bg-black flex items-center justify-center min-h-screen flex-col font-wanted-sans">
     <div class="true-container z-10 relative">
       <div id="ending-text-1" class="text-white text-xl mb-8 whitespace-pre-line"></div>
       <div id="ending-text-2" class="text-white text-xl mb-8 whitespace-pre-line hidden"></div>
@@ -53,7 +62,5 @@
       class="w-full h-screen bg-black fixed top-0 left-0 opacity-0 transition-opacity duration-1000 z-0"
       style="display: none"
     ></div>
-
-    <script type="module" src="../TS/true_end.ts"></script>
   </body>
 </html>
