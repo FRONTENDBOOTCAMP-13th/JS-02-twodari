@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-
+@import '../public/font/fonts.css';
 /* default style */
 @theme {
   --font-wanted-sans: 'Wanted Sans Variable', sans-serif; /* default font */
@@ -163,3 +163,46 @@
 }
 
 /* custom style */
+
+.terminal-container {
+  min-height: 30vh;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+  overflow-y: auto;
+}
+
+.text-green-500 {
+  color: #0f0;
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+.text-white {
+  color: #fff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.cursor {
+  display: inline-block;
+  width: 8px;
+  height: 18px;
+  animation: blink 1s infinite;
+  margin-left: 2px;
+  vertical-align: middle;
+}
+
+.cursor-green {
+  background-color: #0f0;
+}
+
+.cursor-white {
+  background-color: #fff;
+}
