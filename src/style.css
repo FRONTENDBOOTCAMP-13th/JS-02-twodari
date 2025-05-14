@@ -163,6 +163,19 @@
 }
 
 /* custom style */
+body {
+  overflow-x: hidden; /* 가로 스크롤 방지 */
+  margin: 0;
+  padding: 0;
+}
+
+.true-container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 800px; /* 콘텐츠 너비 제한 */
+  margin: 0 auto;
+}
 
 .terminal-container {
   min-height: 30vh;
@@ -205,4 +218,8 @@
 
 .cursor-white {
   background-color: #fff;
+}
+
+.ending-fade-out {
+  opacity: 0 !important;
 }
