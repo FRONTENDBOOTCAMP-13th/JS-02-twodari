@@ -163,23 +163,69 @@
 }
 
 /* custom style */
+@layer components {
+  .ending-body {
+    @apply overflow-x-hidden m-0 p-0;
+  }
 
-.terminal-container {
-  min-height: 30vh;
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-  overflow-y: auto;
+  .ending-container {
+    @apply relative z-10 w-full max-w-[800px] mx-auto;
+  }
+
+  .terminal-container {
+    @apply min-h-[30vh] overflow-y-auto;
+    @apply shadow-[0_0_10px_rgba(0,255,0,0.3)];
+  }
+
+  .shadow-text-green-500 {
+    @apply text-[#0f0];
+    @apply shadow-[0_0_5px_rgba(0,255,0,0.5)];
+  }
+
+  .shadow-text-white {
+    @apply text-white;
+    @apply shadow-[0_0_5px_rgba(255,255,255,0.5)];
+  }
+
+  .ending-cursor {
+    @apply inline-block w-[8px] h-[18px] ml-[2px] align-middle;
+    animation: blink 1s infinite;
+  }
+
+  .cursor-green {
+    @apply bg-[#0f0];
+  }
+
+  .cursor-white {
+    @apply bg-white;
+  }
+  /* TS 파일에서 사용되는 추가 클래스들 */
+  .ending-fade-out {
+    @apply transition-opacity duration-[2000ms] opacity-0;
+  }
+
+  .scene-transition {
+    @apply transition-opacity duration-[1000ms];
+  }
+
+  .fade-in-nonactive {
+    @apply opacity-0 transition-opacity duration-[2000ms];
+  }
+
+  .fade-in-active {
+    @apply opacity-100;
+  }
+
+  .hidden-element {
+    @apply hidden invisible absolute -z-10;
+  }
+
+  .visible-element {
+    @apply block z-10;
+  }
 }
 
-.text-green-500 {
-  color: #0f0;
-  text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
-}
-
-.text-white {
-  color: #fff;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-}
-
+/* 애니메이션은 별도로 정의 */
 @keyframes blink {
   0%,
   100% {
@@ -188,21 +234,4 @@
   50% {
     opacity: 0;
   }
-}
-
-.cursor {
-  display: inline-block;
-  width: 8px;
-  height: 18px;
-  animation: blink 1s infinite;
-  margin-left: 2px;
-  vertical-align: middle;
-}
-
-.cursor-green {
-  background-color: #0f0;
-}
-
-.cursor-white {
-  background-color: #fff;
 }

@@ -17,12 +17,12 @@ class Terminal {
 
   // 게임 인트로 스토리 텍스트 배열 - 흰색으로 표시될 부분
   private introContent: IStoryText[] = [
-    { text: " 어느 날, 스타트업 '넥스트 코드'의 천재 개발자 김진우가 회사 사무실에서 살해당한 채 발견되었습니다.", delay: 500 },
+    { text: "스타트업 '넥스트 코드'의 천재 개발자 김진우가 회사 사무실에서 살해당한 채 발견되었습니다.", delay: 500 },
     { text: '그는 혁신적인 AI 알고리즘을 개발 중이었고, 다음 날 중요한 투자자 미팅을 앞두고 있었습니다.', delay: 500 },
     { text: '경찰은 내부자의 소행으로 보고 있지만, 증거가 부족한 상태입니다.', delay: 700 },
     { text: '', delay: 300 },
-    { text: ' 당신은 김진우의 친구이자 같은 개발자로, 그가 남긴 암호화된 메시지를 받게 됩니다:', delay: 500 },
-    { text: '"누군가 내 코드를 노리고 있어. 내가 무슨 일이 있어도, 내 사무실에 숨겨둔 단서들을 찾아. 부디 진실을 밝혀줘."', delay: 1000 },
+    { text: ' 당신은 김진우의 친구이자 같은 개발자로, 그가 남긴 메시지를 받게 됩니다.', delay: 500 },
+    { text: '"누군가 내 코드를 노리고 있어. 만약 내게 무슨 일이 있어나면, 내 사무실에 숨긴 단서들을 찾아줘. 부디 진실을 밝혀줘."', delay: 1000 },
     { text: '', delay: 300 },
     { text: '이제부터 당신은 경찰이 현장 보존을 풀기 전 1시간 동안 사무실에 들어가 진실을 밝혀야 합니다.', delay: 800 },
   ];
@@ -67,12 +67,12 @@ class Terminal {
   private createCursors = (): void => {
     // 흰색 텍스트 영역용 커서 생성
     this.introCursor = document.createElement('span');
-    this.introCursor.className = 'cursor cursor-white';
+    this.introCursor.className = 'ending-cursor cursor-white';
     this.introText.appendChild(this.introCursor);
 
     // 녹색 텍스트 영역용 커서 생성
     this.terminalCursor = document.createElement('span');
-    this.terminalCursor.className = 'cursor cursor-green';
+    this.terminalCursor.className = 'ending-cursor cursor-green';
     this.terminal.appendChild(this.terminalCursor);
   };
 
