@@ -6,31 +6,22 @@
     <title>노멀 엔딩</title>
     <script type="module" src="../TS/normal_end.ts"></script>
     <link rel="stylesheet" href="../style.css" />
-    <style>
-      body {
-        transition: opacity 2s ease;
-      }
-
-      .ending-fade-out {
-        opacity: 0 !important;
-      }
-    </style>
   </head>
-  <body class="bg-black flex items-center justify-center min-h-screen flex-col font-wanted-sans">
+  <body class="ending-body bg-black flex items-center justify-center min-h-screen flex-col font-wanted-sans">
     <!-- 컨테이너 -->
-    <div class="true-container z-10 relative">
+    <div class="ending-container">
       <div id="ending-text-1" class="text-white text-xl mb-8 whitespace-pre-line"></div>
-      <div id="ending-text-2" class="text-white text-xl mb-8 whitespace-pre-line hidden"></div>
+      <div id="ending-text-2" class="text-white text-xl mb-8 whitespace-pre-line hidden-element"></div>
 
       <!-- 노말 엔딩 메시지 -->
-      <div id="credits" class="mt-8 text-gray-400 text-center hidden">
+      <div id="credits" class="mt-8 text-gray-400 text-center hidden-element">
         <p class="text-3xl mb-4 text-emerald-100 font-bold">NORMAL END</p>
         <p class="text-2xl mb-8 text-emerald-300">"미완성된 퍼즐"</p>
       </div>
 
       <!-- 최종 크레딧 섹션 -->
-      <div id="final-credits" class="w-full text-center hidden font-dunggeunmo">
-        <h1 class="text-5xl font-bold text-emerald-300 mb-10">코드의 그림자</h1>
+      <div id="final-credits" class="w-full text-center hidden-element font-dunggeunmo">
+        <h1 class="text-5xl text-emerald-300 mb-10">코드의 그림자</h1>
         <div class="mb-10">
           <p class="text-2xl text-white mb-2">제작 팀</p>
           <p class="text-3xl text-emerald-100">투다리</p>
@@ -56,15 +47,11 @@
     <!-- 두 번째 배경 (1개월 후) -->
     <div
       id="ending-scene-2"
-      class="w-full h-screen bg-cover bg-center fixed top-0 left-0 opacity-0 transition-opacity duration-1000 z-0"
-      style="background-image: url('../assets/img/normal_end_2.jpg'); display: none"
+      class="w-full h-screen bg-cover bg-center fixed top-0 left-0 scene-transition z-0 hidden-element"
+      style="background-image: url('../assets/img/normal_end_2.jpg')"
     ></div>
 
     <!-- 세 번째 배경 (검은 화면 크레딧) -->
-    <div
-      id="ending-scene-3"
-      class="w-full h-screen bg-black fixed top-0 left-0 opacity-0 transition-opacity duration-1000 z-0"
-      style="display: none"
-    ></div>
+    <div id="ending-scene-3" class="w-full h-screen bg-black fixed top-0 left-0 scene-transition z-0 hidden-element"></div>
   </body>
 </html>

@@ -84,18 +84,16 @@ class NormalEndingSequence {
 
   /**
    * 타이핑 효과를 위한 커서 요소 생성 메서드
-   * 각 텍스트 영역에 커서를 추가함
    */
   private createCursors = (): void => {
     // 첫 번째 장면용 커서 생성 및 추가
     this.cursor1 = document.createElement('span');
-    this.cursor1.className = 'cursor cursor-white';
+    this.cursor1.className = 'ending-cursor cursor-white';
     this.endingText1.appendChild(this.cursor1);
 
-    // 두 번째 장면용 커서 생성 및 추가 (초기에는 숨김 상태)
+    // 두 번째 장면용 커서 생성 및 추가
     this.cursor2 = document.createElement('span');
-    this.cursor2.className = 'cursor cursor-white';
-    this.cursor2.style.display = 'none'; // 두 번째 장면 전까지 숨김
+    this.cursor2.className = 'ending-cursor cursor-white hidden-element';
     this.endingText2.appendChild(this.cursor2);
   };
 
@@ -185,56 +183,58 @@ class NormalEndingSequence {
 
   /**
    * 첫 번째 장면에서 두 번째 장면으로 전환하는 메서드
-   * 배경 이미지와 텍스트 영역을 전환함
    */
   private transitionToScene2 = (): void => {
     // 첫 번째 텍스트와 커서 숨기기
-    if (this.cursor1) this.cursor1.style.display = 'none';
-    this.endingText1.style.display = 'none';
-    this.endingText1.style.visibility = 'hidden';
-    this.endingText1.style.position = 'absolute';
-    this.endingText1.style.zIndex = '-1';
+    if (this.cursor1) this.cursor1.classList.add('hidden-element');
+    this.endingText1.classList.add('ending-fade-out');
 
-    // 두 번째 배경을 먼저 표시로 설정 (투명 상태로)
-    this.endingScene2.style.display = 'block';
+    // 우선 첫 번째 배경을 완전히 페이드아웃하여 검정 화면 효과 생성
+    this.endingScene1.classList.add('ending-fade-out');
 
-    // 강제 리플로우를 통해 CSS 트랜지션이 제대로 적용되게 함
-    void this.endingScene2.offsetWidth;
-
-    // 첫 번째 배경을 서서히 사라지게 함
-    this.endingScene1.style.opacity = '0';
+    // 첫 번째 단계: 완전한 검정 화면으로 전환 (1초 대기)
     setTimeout(() => {
-      this.endingScene1.style.display = 'none'; // 완전히 투명해진 후 제거
-    }, 1000);
+      this.endingText1.classList.add('hidden-element');
+      this.endingScene1.classList.add('hidden-element');
 
-    // 두 번째 배경을 서서히 나타나게 하면서 텍스트 영역도 표시
-    setTimeout(() => {
-      // 배경 투명도 설정
-      this.endingScene2.style.opacity = '0.4';
+      // 두 번째 배경을 준비하되 아직 투명하게 유지
+      this.endingScene2.classList.remove('hidden-element');
+      this.endingScene2.classList.add('visible-element');
+      this.endingScene2.style.opacity = '0'; // 완전히 투명 상태에서 시작
 
-      // 두 번째 텍스트 영역과 커서 표시
-      this.endingText2.style.display = 'block';
-      this.endingText2.style.zIndex = '10';
-      if (this.cursor2) this.cursor2.style.display = 'inline-block';
-    }, 100);
+      // 두 번째 단계: 잠시 검정 화면 유지 (1초 대기)
+      setTimeout(() => {
+        // 두 번째 장면을 서서히 나타나게 함
+        this.endingScene2.style.opacity = '0.4'; // 원하는 투명도로 설정
+
+        // 두 번째 텍스트 영역과 커서 표시 준비
+        this.endingText2.classList.remove('hidden-element');
+        this.endingText2.classList.add('visible-element');
+        this.endingText2.style.opacity = '0'; // 우선 투명하게 시작
+
+        // 세 번째 단계: 두 번째 장면 텍스트 페이드인 (0.5초 대기)
+        setTimeout(() => {
+          this.endingText2.style.opacity = '1'; // 텍스트 표시
+          if (this.cursor2) this.cursor2.classList.remove('hidden-element');
+        }, 500);
+      }, 1000); // 검정 화면 지속 시간
+    }, 1000); // 첫 번째 장면 페이드아웃 시간
   };
 
   /**
    * 모든 텍스트 표시가 끝난 후 크레딧을 표시하는 메서드
-   * 페이드 인 효과로 크레딧을 서서히 나타나게 함
    */
   private showCredits = (): void => {
     // 두 번째 커서 숨기기
-    if (this.cursor2) this.cursor2.style.display = 'none';
+    if (this.cursor2) this.cursor2.classList.add('hidden-element');
 
-    // 크레딧 요소를 표시 상태로 설정 (초기에는 투명하게)
-    this.credits.style.display = 'block';
-    this.credits.style.opacity = '0';
+    // 크레딧 요소를 페이드인 준비
+    this.credits.classList.remove('hidden-element');
+    this.credits.classList.add('visible-element', 'fade-in-nonactive');
 
     // 트랜지션 효과로 크레딧 서서히 나타나게 함
     setTimeout(() => {
-      this.credits.style.transition = 'opacity 2s'; // 2초간 페이드 인
-      this.credits.style.opacity = '1';
+      this.credits.classList.add('fade-in-active');
 
       // 5초 후에 세 번째 장면으로 전환
       setTimeout(() => {
@@ -247,53 +247,47 @@ class NormalEndingSequence {
    * 두 번째 장면에서 최종 크레딧으로 전환하는 메서드
    */
   private transitionToScene3 = (): void => {
-    // 기존 크레딧 숨기기
-    this.credits.style.opacity = '0';
+    // 두 번째 텍스트를 먼저 fade out 시킴
+    this.endingText2.classList.add('ending-fade-out');
+
+    // 크레딧도 fade out
+    this.credits.classList.add('ending-fade-out');
+    this.credits.classList.remove('fade-in-active');
+
     setTimeout(() => {
-      this.credits.style.display = 'none';
-    }, 1000);
+      this.endingText2.classList.add('hidden-element');
+      this.credits.classList.add('hidden-element');
 
-    // 두 번째 텍스트 숨기기
-    this.endingText2.style.opacity = '0';
-    this.endingText2.style.transition = 'opacity 1s';
-    setTimeout(() => {
-      this.endingText2.style.display = 'none';
-      this.endingText2.style.visibility = 'hidden';
-    }, 1000);
-
-    // 두 번째 배경 숨기기
-    this.endingScene2.style.opacity = '0';
-    setTimeout(() => {
-      this.endingScene2.style.display = 'none';
-    }, 1000);
-
-    // 세 번째 배경(검정)으로 전환
-    this.endingScene3.style.display = 'block';
-    void this.endingScene3.offsetWidth;
-    this.endingScene3.style.opacity = '1';
-
-    // 최종 크레딧 표시
-    setTimeout(() => {
-      this.finalCredits.style.display = 'block';
-      this.finalCredits.style.opacity = '0';
-
-      // 페이드 인 효과로 최종 크레딧 서서히 나타나게
+      // 두 번째 배경 fade out
+      this.endingScene2.classList.add('ending-fade-out');
       setTimeout(() => {
-        this.finalCredits.style.transition = 'opacity 2s';
-        this.finalCredits.style.opacity = '1';
+        this.endingScene2.classList.add('hidden-element');
+      }, 1000);
 
-        // 크레딧이 표시된 후 5초 뒤에 페이드아웃 시작
+      // 검정 배경으로 전환
+      this.endingScene3.classList.remove('hidden-element');
+      this.endingScene3.classList.add('visible-element');
+      void this.endingScene3.offsetWidth;
+      this.endingScene3.style.opacity = '1';
+
+      // 최종 크레딧 표시
+      setTimeout(() => {
+        this.finalCredits.classList.remove('hidden-element');
+        this.finalCredits.classList.add('visible-element', 'fade-in-nonactive');
+
         setTimeout(() => {
-          // 페이드아웃 효과
-          document.body.classList.add('ending-fade-out');
+          this.finalCredits.classList.add('fade-in-active');
 
-          // 페이드아웃이 완료된 후 페이지 이동
           setTimeout(() => {
-            window.location.href = '../pages/start_page.html';
-          }, 2000); // 페이드아웃 지속 시간과 동일하게 설정
-        }, 5000);
-      }, 100);
-    }, 1200);
+            document.body.classList.add('ending-fade-out');
+
+            setTimeout(() => {
+              window.location.href = '../pages/start_page.html';
+            }, 2000);
+          }, 5000);
+        }, 100);
+      }, 1200);
+    }, 1000); // fade out 애니메이션 시간
   };
 }
 
