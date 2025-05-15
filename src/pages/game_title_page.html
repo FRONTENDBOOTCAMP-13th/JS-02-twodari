@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>코드의 그림자</title>
+    <link rel="stylesheet" href="../style.css" />
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const btn = document.getElementById('startBtn');
+        btn.addEventListener('click', function (event) {
+          console.log('버튼이 클릭되었습니다!', event);
+          // TODO: 여기에 게임 시작 로직 호출 등 추가 기능을 넣으세요
+        });
+      });
+    </script>
+  </head>
+  <body class="min-h-screen">
+    <!-- 배경 이미지와 오버레이를 담는 컨테이너 -->
+    <div
+      class="relative min-h-screen bg-cover bg-center flex items-center justify-center"
+      style="background-image: url('../assets/img/title_background.jpg')"
+    >
+      <!-- 🔲 어둡게 만드는 블랙 오버레이 -->
+       <div class="absolute inset-0 bg-black opacity-60 z-0"></div>
+
+      <div class="text-center px-8 z-10">
+        <h1 class="text-6xl lg:text-8xl text-white font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,0.5)] mb-4">코드의 그림자</h1>
+        <p class="text-lg lg:text-3xl text-green-600 mb-24">판교 스타트업 개발자 살인사건</p>
+        <button id="startBtn" class="text-green-600 font-semibold py-2 px-6 border-4 rounded-xl text-lg hover:text-white transition-all duration-200">
+          게 임 시 작
+        </button>
+      </div>
+    </div>
+  </body>
+</html>

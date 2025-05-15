@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="ko-KR">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Loading Screen</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../style.css" />
     <style>
       @keyframes pop {
         0%,
@@ -13,7 +14,7 @@
           opacity: 0.8;
         }
         50% {
-          transform: scale(1.5);
+          transform: scale(1.2);
           opacity: 1;
         }
       }
@@ -25,7 +26,7 @@
     </style>
   </head>
   <body class="bg-black flex items-center justify-center h-screen">
-    <div class="text-green-500 font-mono text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+    <div class="text-green-500 text-xl sm:text-2xl md:text-3xl lg:text-4xl">
       <span class="pop" style="animation-delay: 0s">L</span>
       <span class="pop" style="animation-delay: 0.1s">O</span>
       <span class="pop" style="animation-delay: 0.2s">A</span>
