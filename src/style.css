@@ -181,6 +181,23 @@
   .search-icon-img {
     @apply w-1/2 h-1/2 object-contain;
   }
+  .clue-layer {
+    @apply fixed inset-0 bg-black/60 backdrop-blur-sm z-40 flex justify-center items-center;
+  }
+
+  .clue-popup {
+    @apply bg-black/40  w-[800px] h-[120px] p-4 rounded-2xl z-50 border-[#464646] border-4;
+    @apply absolute bottom-20 left-20  flex items-center justify-between;
+  }
+  .clue-img {
+    @apply w-full max-h-[500px] object-contain;
+  }
+  .clue-message {
+    @apply text-xl text-white font-bold ml-4;
+  }
+  .close-btn {
+    @apply px-4 py-1  bg-black border-[#464646] border-4 w-[100px] h-[50px] rounded-xl text-xl text-white font-bold;
+  }
 }
 
 @layer components {
