@@ -198,6 +198,31 @@
   .close-btn {
     @apply px-4 py-1  bg-black border-[#464646] border-4 w-[100px] h-[50px] rounded-xl text-xl text-white font-bold;
   }
+
+  .move-btn-style {
+    @apply absolute w-[100px] h-[100px] flex items-center justify-center;
+    @apply fixed transition shadow-md;
+  }
+
+  .move-icon-img {
+    @apply w-1/2 h-1/2 object-contain transition-transform;
+  }
+
+  .rotate-up {
+    @apply -rotate-90;
+  }
+  .rotate-down {
+    @apply rotate-90;
+  }
+  .rotate-left {
+    @apply -rotate-180;
+  }
+  .rotate-right {
+    @apply rotate-0;
+  }
+  .move-text-style {
+    @apply fixed text-white font-bold text-lg transition-colors;
+  }
 }
 
 @layer components {
