@@ -1,9 +1,9 @@
 interface ClueOptions {
-  clueImgSrc: string; // 단서 이미지
-  message: string; // 메시지 텍스트
+  clueImgSrc?: string; // 단서 이미지
+  message?: string; // 메시지 텍스트
 }
 
-//찾기 버튼 생성자 함수
+//단서 팝업 생성자 함수
 export function showCluePopup({ clueImgSrc, message }: ClueOptions): void {
   // 밑에 깔리는 레이어
   const clueLayer = document.createElement('div');
@@ -14,14 +14,17 @@ export function showCluePopup({ clueImgSrc, message }: ClueOptions): void {
   cluePopup.className = 'clue-popup';
 
   //단서 이미지
-  const clueImg = document.createElement('img');
-  clueImg.src = clueImgSrc;
-  clueImg.alt = message;
-  clueImg.className = 'clue-img';
+  if (clueImgSrc) {
+    const clueImg = document.createElement('img');
+    clueImg.src = clueImgSrc;
+    clueImg.alt = message ?? '단서 이미지';
+    clueImg.className = 'clue-img';
+    clueLayer.appendChild(clueImg);
+  }
 
   //단서 메시지
   const clueMsg = document.createElement('p');
-  clueMsg.textContent = message;
+  clueMsg.textContent = message ?? '여긴 아무것도 없는 듯 하다.';
   clueMsg.className = 'clue-message';
 
   //닫기 버튼
@@ -34,6 +37,5 @@ export function showCluePopup({ clueImgSrc, message }: ClueOptions): void {
 
   cluePopup.append(clueMsg, closeBtn);
   document.body.appendChild(clueLayer);
-  clueLayer.appendChild(clueImg);
   clueLayer.appendChild(cluePopup);
 }
