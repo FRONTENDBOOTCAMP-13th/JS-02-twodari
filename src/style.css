@@ -232,9 +232,132 @@
   .visible-element {
     @apply block z-10;
   }
+
+  /* 로딩 페이지 스타일 */
+  .pop {
+    @apply inline-block;
+    animation: pop 1s infinite;
+  }
+
+  /* 타이틀 페이지 스타일 */
+  .bg-flicker {
+    animation: backgroundFlicker 3s infinite;
+  }
+
+  .text-static {
+    animation: textFlicker 8s infinite;
+    animation-timing-function: ease-in-out;
+    @apply shadow-[0_0_8px_rgba(0,255,0,0.4)];
+  }
+
+  .severe-flicker {
+    animation: textFlicker 7.5s infinite;
+    animation-delay: 0.5s;
+  }
+
+  .start-height {
+    @apply h-full m-0 p-0;
+  }
+
+  .page-section {
+    @apply min-h-screen w-full;
+  }
+
+  .flex-container {
+    @apply flex items-center justify-center flex-col min-h-screen w-full;
+  }
 }
 
-/* 애니메이션은 별도로 정의 */
+/* 애니메이션 키프레임 정의 */
+@keyframes pop {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+@keyframes backgroundFlicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes textFlicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  3% {
+    opacity: 0.8;
+  }
+  6% {
+    opacity: 0.9;
+  }
+  7% {
+    opacity: 0.2;
+  }
+  8% {
+    opacity: 0.1;
+  }
+  9% {
+    opacity: 0.9;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  20% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.95;
+  }
+  52% {
+    opacity: 0.1;
+  }
+  54% {
+    opacity: 0.9;
+  }
+  56% {
+    opacity: 0.2;
+  }
+  57% {
+    opacity: 0.95;
+  }
+  73% {
+    opacity: 0.9;
+  }
+  75% {
+    opacity: 0.4;
+  }
+  76% {
+    opacity: 0.8;
+  }
+  77% {
+    opacity: 0.3;
+  }
+  78% {
+    opacity: 0.9;
+  }
+  86% {
+    opacity: 0.8;
+  }
+  88% {
+    opacity: 0.2;
+  }
+  90% {
+    opacity: 0.8;
+  }
+}
+
 @keyframes blink {
   0%,
   100% {
