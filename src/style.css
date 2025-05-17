@@ -162,17 +162,20 @@
   --paragraph-spacing-default: 0px;
 }
 
+/* custom style */
 @layer components {
   .btn-style {
     @apply w-[100px] h-[100px] p-5 border-4 rounded-2xl border-[#464646] flex flex-col justify-center items-center;
   }
+
   .icon-img {
     @apply w-[84px] h-[84px];
   }
-}
 
-/* custom style */
-@layer components {
+  .active {
+    @apply border-[#14AB00];
+  }
+
   .ending-body {
     @apply overflow-x-hidden m-0 p-0;
   }

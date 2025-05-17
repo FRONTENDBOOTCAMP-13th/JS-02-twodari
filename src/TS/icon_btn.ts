@@ -19,7 +19,7 @@ const musicButton = new CreateIconBtn({
   iconSrc: '/src/assets/icon/on_music.svg',
   altText: 'BGM 재생 버튼',
   text: 'MUSIC',
-  isActive: true,
+  isActive: false,
   onClick: (() => {
     const bgm = new Audio('/effectSound/backGround.mp3');
     bgm.loop = true;
