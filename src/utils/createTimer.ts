@@ -1,10 +1,17 @@
+interface ItimeOptions {
+  setMinTime: number;
+  endPoint: string;
+}
+
 class Timer {
   private element: HTMLElement;
-  private initMinTime: number;
+  private setMinTime: number;
+  private endPoint: string;
 
-  constructor(initMinTime: number) {
-    this.initMinTime = initMinTime * 60 * 1000;
+  constructor(options: ItimeOptions) {
+    this.setMinTime = options.setMinTime * 60 * 1000;
     this.element = this.createTimer();
+    this.endPoint = options.endPoint;
   }
 
   private createTimer(): HTMLElement {
@@ -16,7 +23,7 @@ class Timer {
     const timeText = document.createElement('span');
     timeText.className = 'timeText-style';
 
-    let currentTime = this.initMinTime;
+    let currentTime = this.setMinTime;
 
     const formatTime = (ms: number) => {
       const seconds = Math.floor(ms / 1000);
@@ -29,13 +36,13 @@ class Timer {
 
     const timeInterval = setInterval(() => {
       currentTime = currentTime - 1000;
-      this.initMinTime = currentTime;
+      this.setMinTime = currentTime;
 
       timeText.textContent = formatTime(currentTime);
 
       if (currentTime === 0) {
         clearInterval(timeInterval);
-        console.log('타임아웃이지롱 ');
+        window.location.href = this.endPoint;
       }
     }, 1000);
 
