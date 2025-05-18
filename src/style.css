@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import '../public/font/fonts.css';
+
 /* default style */
 @theme {
   --font-wanted-sans: 'Wanted Sans Variable', sans-serif; /* default font */
@@ -170,6 +171,18 @@
 
   .icon-img {
     @apply w-[84px] h-[84px];
+  }
+
+  .timeBox-style {
+    @apply w-[200px] h-[50px] p-5 border-4 rounded-2xl border-[#464646] flex justify-around items-center;
+  }
+
+  .timeDesc-style {
+    @apply text-white text-xl;
+  }
+
+  .timeText-style {
+    @apply text-[var(--light-danger)] text-2xl;
   }
 
   .active {
