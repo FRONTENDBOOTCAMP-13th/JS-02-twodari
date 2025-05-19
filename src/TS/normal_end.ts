@@ -3,43 +3,50 @@
  * 노멀 엔딩 시퀀스를 관리하는 파일
  * 두 개의 배경 이미지와 연속된 텍스트 표시, 장면 전환 효과를 구현
  */
+
 import type { IStoryText } from '../types/type';
 
 /**
  * 첫 번째 장면에 표시될 텍스트 내용 배열
+ * 범인을 찾았지만 증거가 부족한 상황
  */
 const normalEndingPart1: IStoryText[] = [
-  { text: '겨우 시간 내에 사무실을 빠져나왔지만, 정확하게 누가 범인인지를 알아내진 못했다.', delay: 800 },
+  { text: '김진우의 회사 동료들에 대한 단서를 발견했지만, 결정적인 증거는 찾지 못했다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '경찰 주임이 당신에게 다가온다. 분명 사건에 대해 조사를 하려하겠지.', delay: 800 },
+  { text: '당신은 경찰이 들어오기 직전에 사무실을 빠져나왔다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '"사무실에 무단 침입한 이유를 설명해주시겠어요?"', delay: 600 },
+  { text: "'테크노바 CTO 박민석과 진우의 최근 다툼에 대한 내용, 그리고 몇몇 의심스러운 메일 내역...'", delay: 800 },
   { text: '', delay: 100 },
-  { text: '당신은 김진우가 남긴 메시지와 찾은 몇 가지 단서들을 보여주었다.', delay: 800 },
+  { text: '하지만 이 정도로는 경찰을 설득하기에 부족했다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '"흥미롭군요. 하지만 이것만으로는 누가 범인인지 특정하기 어렵습니다."', delay: 800 },
+  { text: '"증거가 충분하지 않습니다. 추측만으로는 수사를 진행할 수 없어요."', delay: 800 },
   { text: '', delay: 100 },
-  { text: '김진우의 AI 알고리즘 파일도 사라져버렸고, 경찰 조사는 몇 주간 계속되었다.', delay: 1000 },
-  { text: '', delay: 100 },
-  { text: '무력하게도, 나는 기다리는 것 밖에 할 수 있는 게 없었다.', delay: 1000 },
+  { text: '경찰은 당신의 이야기를 듣고도 결국 사건을 미제로 남겨두기로 했다.', delay: 1000 },
 ];
 
 /**
  * 두 번째 장면에 표시될 텍스트 내용 배열
+ * 6개월 후 진우의 추모식과 그 이후 상황
  */
 const normalEndingPart2: IStoryText[] = [
-  { text: '------ 1개월 후 ------', delay: 1500 },
+  { text: '------ 6개월 후 ------', delay: 1500 },
   { text: '', delay: 100 },
-  { text: "'넥스트 코드' 사무실은 다소 침체된 분위기가 이어지고 있고, 김진우의 빈자리는 크게 느껴졌다.", delay: 800 },
+  { text: '김진우의 추모식에서, 당신은 그의 사진을 바라보며 진실을 찾지 못한 것에 대한 미안함을 느꼈다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: "그의 죽음은 공식적으로 '미제 사건'으로 분류되었고, 회사는 그가 개발하던 프로젝트를 중단할 수 밖에 없었다.", delay: 800 },
+  { text: '"우리는 그의 혁신적 업적을 기리며, 그의 미완성 프로젝트를 계속해서 발전시켜 나갈 것입니다."', delay: 800 },
   { text: '', delay: 100 },
+  { text: '회사 대표의 말이 공허하게 들렸다.', delay: 600 },
   { text: '', delay: 100 },
-  { text: '가끔 당신은 누군가가 당신을 지켜보는 듯한 느낌을 받곤 한다.', delay: 800 },
+  { text: '며칠 후, 경쟁사 테크노바가 놀랍게도 김진우의 기술과 유사한 AI 알고리즘을 발표했다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '회의실 유리창에 비친 그림자가 익숙한 듯 보였지만, 돌아보면 아무도 없다.', delay: 800 },
+  { text: '증거는 없지만, 당신은 진실을 알고 있다.', delay: 800 },
+  { text: '', delay: 50 },
+  { text: '', delay: 50 },
+  { text: '김진우의 마지막 메시지가 다시 떠올랐다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '진실은 아직 어딘가에 숨겨져 있지 않을까. 언젠가는 반드시 밝혀내리라 다짐한다.', delay: 1200 },
+  { text: '"코드에는 항상 그림자가 있어. 그리고 그 그림자 속에 진실이 숨어있지."', delay: 1000 },
+  { text: '', delay: 100 },
+  { text: '어느 날, 당신은 그가 남겨둔 또 다른 단서를 발견하게 될지도 모른다.', delay: 1200 },
 ];
 
 /**
@@ -64,6 +71,9 @@ class NormalEndingSequence {
   // 타이핑 속도 설정 (밀리초 단위)
   private typingSpeed: number = 40;
 
+  // 배경음악 관련 변수
+  private bgmAudio: HTMLAudioElement | null = null;
+
   /**
    * 생성자: 필요한 DOM 요소를 가져오고 시퀀스를 시작함
    */
@@ -77,10 +87,46 @@ class NormalEndingSequence {
     this.endingScene3 = document.getElementById('ending-scene-3') as HTMLElement;
     this.finalCredits = document.getElementById('final-credits') as HTMLElement;
 
+    // 배경음악 재생
+    this.playBackgroundMusic();
+
     // 커서 생성 및 시퀀스 시작
     this.createCursors();
     this.startSequence();
   }
+
+  /**
+   * 배경음악 재생 메서드
+   */
+  private playBackgroundMusic = (): void => {
+    try {
+      this.bgmAudio = new Audio('../../public/effectSound/normal_end.mp3');
+      if (this.bgmAudio) {
+        this.bgmAudio.loop = true;
+        this.bgmAudio.volume = 0.3;
+
+        // 사용자 상호작용 없이도 재생 가능하도록 설정
+        const playPromise = this.bgmAudio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            // 자동 재생 정책으로 인한 오류 처리
+            console.error('배경음악 자동 재생 실패:', error);
+
+            // 페이지 클릭 시 음악 재생
+            document.addEventListener(
+              'click',
+              () => {
+                this.bgmAudio?.play();
+              },
+              { once: true },
+            );
+          });
+        }
+      }
+    } catch (error) {
+      console.error('배경음악 재생 실패:', error);
+    }
+  };
 
   /**
    * 타이핑 효과를 위한 커서 요소 생성 메서드
@@ -278,7 +324,10 @@ class NormalEndingSequence {
         setTimeout(() => {
           this.finalCredits.classList.add('fade-in-active');
 
+          // 배경음악 페이드아웃
           setTimeout(() => {
+            this.fadeOutMusic();
+
             document.body.classList.add('ending-fade-out');
 
             setTimeout(() => {
@@ -288,6 +337,35 @@ class NormalEndingSequence {
         }, 100);
       }, 1200);
     }, 1000); // fade out 애니메이션 시간
+  };
+
+  /**
+   * 배경음악 페이드아웃 메서드
+   */
+  private fadeOutMusic = (): void => {
+    if (!this.bgmAudio) return;
+
+    // 현재 볼륨 저장
+    const originalVolume = this.bgmAudio.volume;
+    const fadeInterval = 50; // 50ms마다 볼륨 감소
+    const fadeStep = originalVolume / 20; // 1초(1000ms) 동안 완전히 페이드아웃
+
+    // 볼륨 점진적으로 감소
+    const fadeout = setInterval(() => {
+      if (!this.bgmAudio) {
+        clearInterval(fadeout);
+        return;
+      }
+
+      let newVolume = this.bgmAudio.volume - fadeStep;
+      if (newVolume <= 0) {
+        newVolume = 0;
+        clearInterval(fadeout);
+        this.bgmAudio.pause();
+      }
+
+      this.bgmAudio.volume = newVolume;
+    }, fadeInterval);
   };
 }
 
