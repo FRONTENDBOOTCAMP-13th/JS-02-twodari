@@ -173,6 +173,63 @@
     @apply w-[84px] h-[84px];
   }
 
+  .search-btn-style {
+    @apply absolute flex items-center justify-center w-[100px] h-[100px] p-1.5 rounded-full;
+    @apply bg-white/20 shadow-md backdrop-blur-sm;
+    @apply transition hover:bg-white/30 active:bg-white/40;
+  }
+  .search-icon-img {
+    @apply w-1/2 h-1/2 object-contain;
+  }
+  .clue-layer {
+    @apply fixed inset-0 bg-black/60 backdrop-blur-sm z-40 flex justify-center items-center;
+  }
+
+  .clue-popup {
+    @apply bg-black/40  w-[800px] h-[120px] p-4 rounded-2xl z-50 border-[#464646] border-4;
+    @apply absolute bottom-20 left-20  flex items-center justify-between;
+  }
+  .clue-img {
+    @apply w-full max-h-[500px] object-contain;
+  }
+  .clue-message {
+    @apply text-xl text-white font-bold ml-4;
+  }
+  .close-btn {
+    @apply px-4 py-1  bg-black border-[#464646] border-4 w-[100px] h-[50px] rounded-xl text-xl text-white font-bold;
+  }
+
+  .move-btn-style {
+    @apply absolute w-[100px] h-[100px] flex items-center justify-center;
+    @apply fixed transition shadow-md;
+  }
+
+  .move-icon-img {
+    @apply w-1/2 h-1/2 object-contain transition-transform;
+  }
+
+  .rotate-up {
+    @apply -rotate-90;
+  }
+  .rotate-down {
+    @apply rotate-90;
+  }
+  .rotate-left {
+    @apply -rotate-180;
+  }
+  .rotate-right {
+    @apply rotate-0;
+  }
+  .move-text-style {
+    @apply fixed text-white font-bold text-lg transition-colors;
+  }
+
+  .circle-style {
+    @apply fixed w-[100px] h-[100px] rounded-full bg-white/30 backdrop-blur-sm;
+    bottom: 100px;
+    right: 100px;
+  }
+  
   .timeBox-style {
     @apply w-[200px] h-[50px] p-5 border-4 rounded-2xl border-[#464646] flex justify-around items-center;
   }
@@ -188,7 +245,7 @@
   .active {
     @apply border-[#14AB00];
   }
-
+  
   .ending-body {
     @apply overflow-x-hidden m-0 p-0;
   }
