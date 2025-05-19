@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import '../public/font/fonts.css';
+
 /* default style */
 @theme {
   --font-wanted-sans: 'Wanted Sans Variable', sans-serif; /* default font */
@@ -162,17 +163,32 @@
   --paragraph-spacing-default: 0px;
 }
 
+/* custom style */
 @layer components {
   .btn-style {
     @apply w-[100px] h-[100px] p-5 border-4 rounded-2xl border-[#464646] flex flex-col justify-center items-center;
   }
+
   .icon-img {
     @apply w-[84px] h-[84px];
   }
-}
 
-/* custom style */
-@layer components {
+  .timeBox-style {
+    @apply w-[200px] h-[50px] p-5 border-4 rounded-2xl border-[#464646] flex justify-around items-center;
+  }
+
+  .timeDesc-style {
+    @apply text-white text-xl;
+  }
+
+  .timeText-style {
+    @apply text-[var(--light-danger)] text-2xl;
+  }
+
+  .active {
+    @apply border-[#14AB00];
+  }
+
   .ending-body {
     @apply overflow-x-hidden m-0 p-0;
   }
