@@ -1,8 +1,8 @@
 import { showCluePopup } from './showCluePopup';
 
-type ClueTtype = 'clue' | 'game';
+type TClueTtype = 'clue' | 'game';
 
-interface SearchButtonOptions {
+interface ISearchButtonOptions {
   iconSrc: string; // 이미지 경로
   altText: string; // 대체 텍스트
   position: {
@@ -13,7 +13,7 @@ interface SearchButtonOptions {
     bottom?: string;
   };
   id: string; // ID
-  type: ClueTtype; // 단서 타입
+  type: TClueTtype; // 단서 타입
   clueImgSrc?: string; // 단서 이미지
   clueMessage?: string; // 단서 메시지
   emptyMessage?: string; //단서 없을 때 메시지
@@ -24,10 +24,10 @@ interface SearchButtonOptions {
 export class CreateSearchBtn {
   //찾기 버튼 만들기
   private element: HTMLButtonElement;
-  private options: SearchButtonOptions;
+  private options: ISearchButtonOptions;
   private isFound: boolean = false; // 단서 찾았는지 확인
 
-  constructor(options: SearchButtonOptions) {
+  constructor(options: ISearchButtonOptions) {
     this.options = options;
     this.element = this.createButton();
     this.element.addEventListener('click', () => this.onClick());

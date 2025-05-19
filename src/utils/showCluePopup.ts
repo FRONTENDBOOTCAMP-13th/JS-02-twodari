@@ -1,10 +1,10 @@
-interface ClueOptions {
+interface IClueOptions {
   clueImgSrc?: string; // 단서 이미지
   message?: string; // 메시지 텍스트
 }
 
 //단서 팝업 생성자 함수
-export function showCluePopup({ clueImgSrc, message }: ClueOptions): void {
+export function showCluePopup({ clueImgSrc, message }: IClueOptions): void {
   // 밑에 깔리는 레이어
   const clueLayer = document.createElement('div');
   clueLayer.className = 'clue-layer';

@@ -1,6 +1,6 @@
-type MoveType = 'up' | 'down' | 'left' | 'right';
+type TMoveType = 'up' | 'down' | 'left' | 'right';
 
-interface MoveButtonOptions {
+interface IMoveButtonOptions {
   altText: string; // 대체 텍스트
   position: {
     bottom: string;
@@ -8,7 +8,7 @@ interface MoveButtonOptions {
     position: 'fixed' | 'absolute';
   };
   id: string; // 방향키 버튼 ID
-  type: MoveType; // 이동 타입
+  type: TMoveType; // 이동 타입
   isActive?: boolean; // 활성화 여부
   onClick: () => void; // 클릭 시 동작
   moveText: string; //방향 텍스트
@@ -24,10 +24,10 @@ export class CreateMoveBtn {
   //이동 버튼 만들기
   private element: HTMLButtonElement;
   private textElement: HTMLSpanElement;
-  private options: MoveButtonOptions;
+  private options: IMoveButtonOptions;
   private isActive: boolean = false; // 버튼 활성화 상태
 
-  constructor(options: MoveButtonOptions) {
+  constructor(options: IMoveButtonOptions) {
     this.options = options;
     this.element = this.createButton();
     this.textElement = this.createMoveText();
