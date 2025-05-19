@@ -86,28 +86,28 @@ export class NorthRoom implements IRoom {
     this.inventoryManager.addItem({
       id: 'towel',
       name: '천 조각',
-      description: '깨끗한 천 조각입니다. 무언가를 닦는데 사용할 수 있을 것 같습니다.',
-      image: '../assets/img/towel.png',
+      description: '쓰다 버린 수건같다. 무언가를 닦는데 사용할 수 있을까?.',
+      image: '../../../src/assets/img/towel.png',
     });
 
-    this.interactionManager.showDialog('깨끗한 천 조각을 획득했습니다.');
+    this.interactionManager.showDialog('쓰다 버린 수건을 발견했다.');
     this.removeInteractionPoint('trash-can');
   };
 
   private onMirrorInteraction = () => {
     if (!this.inventoryManager.hasItem('towel')) {
-      this.interactionManager.showDialog('거울에 피가 묻어있다. 닦을 수 있는 도구가 필요하다.');
+      this.interactionManager.showDialog('거울에 피가 부자연스럽게 묻어있다. 하지만 맨 손으로 닦을 수는 없는데...');
       return;
     }
 
     if (this.hasCleanedMirror) {
-      this.interactionManager.showDialog('피를 모두 닦았더니, 314라는 숫자가 있었다.');
+      this.interactionManager.showDialog('피를 모두 닦았더니, 314라는 숫자가 나타났다.');
       return;
     }
 
     this.minigameManager.startGame('mirror', () => {
       this.hasCleanedMirror = true;
-      this.interactionManager.showDialog('피를 모두 닦았더니, 314라는 숫자가 있었다.');
+      this.interactionManager.showDialog('피를 모두 닦았더니, 314라는 숫자가 나타났다.');
     });
   };
 
@@ -122,7 +122,7 @@ export class NorthRoom implements IRoom {
         id: 'clue1',
         name: '범인 단서1',
         description: '범인의 신원과 관련된 중요한 단서입니다.',
-        image: '../assets/img/clue1.png',
+        image: '../../../src/assets/img/clue1.png',
       });
 
       this.interactionManager.showDialog('이건 범인의 단서다!');
