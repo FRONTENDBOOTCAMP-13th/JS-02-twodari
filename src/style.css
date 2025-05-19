@@ -223,6 +223,12 @@
   .move-text-style {
     @apply fixed text-white font-bold text-lg transition-colors;
   }
+
+  .circle-style {
+    @apply fixed w-[100px] h-[100px] rounded-full bg-white/30 backdrop-blur-sm;
+    bottom: 100px;
+    right: 100px;
+  }
 }
 
 @layer components {

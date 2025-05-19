@@ -71,15 +71,30 @@ export class CreateMoveBtn {
   }
 
   //중간에 동그란 원 UI 만들기
+  private createCircle(): HTMLDivElement {
+    const circle = document.createElement('div');
+    circle.className = 'circle-style';
+    return circle;
+  }
 
   // 이동 버튼 클릭 핸들러
   private onClick() {}
   // 버튼 활성화 상태 업데이트
   private updateButtonState() {}
 
+  //circle UI flag
+  private static circleFlag = false;
+
   // 버튼과 텍스트를 DOM에 추가
   public appendTo(target: HTMLElement) {
     target.appendChild(this.element);
     document.body.appendChild(this.textElement);
+
+    //circle UI 한번만 생성
+    if (!CreateMoveBtn.circleFlag) {
+      const circle = this.createCircle();
+      document.body.appendChild(circle);
+      CreateMoveBtn.circleFlag = true;
+    }
   }
 }
