@@ -440,3 +440,40 @@
     opacity: 0;
   }
 }
+
+
+
+/* 추가 스타일 */
+#game-container {
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+/* 기존 요소 스타일 명시적 설정 */
+#btn-box, #timer, #direction-nav {
+  pointer-events: auto;
+}
+
+/* 방향키 네비게이션 스타일 */
+#direction-nav button {
+  cursor: pointer;
+  position: relative;
+  z-index: 56;
+}
+
+/* 돋보기 아이콘 스타일 */
+.interaction-icon {
+  cursor: pointer !important;
+  z-index: 30 !important;
+}
+
+/* 미니게임 컨테이너가 적절하게 표시되도록 */
+#minigame-container.hidden {
+  display: none !important;
+}
+
+#minigame-container:not(.hidden) {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
