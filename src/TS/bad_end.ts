@@ -3,6 +3,7 @@
  * 배드 엔딩 시퀀스를 관리하는 파일
  * 두 개의 배경 이미지와 연속된 텍스트 표시, 장면 전환 효과를 구현
  */
+
 import type { IStoryText } from '../types/type';
 
 /**
@@ -67,6 +68,9 @@ class BadEndingSequence {
   // 타이핑 속도 설정 (밀리초 단위)
   private typingSpeed: number = 40;
 
+  // 배경음악 관련 변수
+  private bgmAudio: HTMLAudioElement | null = null;
+
   /**
    * 생성자: 필요한 DOM 요소를 가져오고 시퀀스를 시작함
    */
@@ -80,10 +84,46 @@ class BadEndingSequence {
     this.endingScene3 = document.getElementById('ending-scene-3') as HTMLElement;
     this.finalCredits = document.getElementById('final-credits') as HTMLElement;
 
+    // 배경음악 재생
+    this.playBackgroundMusic();
+
     // 커서 생성 및 시퀀스 시작
     this.createCursors();
     this.startSequence();
   }
+
+  /**
+   * 배경음악 재생 메서드
+   */
+  private playBackgroundMusic = (): void => {
+    try {
+      this.bgmAudio = new Audio('../../public/effectSound/bad_end.mp3');
+      if (this.bgmAudio) {
+        this.bgmAudio.loop = true;
+        this.bgmAudio.volume = 0.3;
+
+        // 사용자 상호작용 없이도 재생 가능하도록 설정
+        const playPromise = this.bgmAudio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            // 자동 재생 정책으로 인한 오류 처리
+            console.error('배경음악 자동 재생 실패:', error);
+
+            // 페이지 클릭 시 음악 재생
+            document.addEventListener(
+              'click',
+              () => {
+                this.bgmAudio?.play();
+              },
+              { once: true },
+            );
+          });
+        }
+      }
+    } catch (error) {
+      console.error('배경음악 재생 실패:', error);
+    }
+  };
 
   /**
    * 타이핑 효과를 위한 커서 요소 생성 메서드
@@ -154,6 +194,10 @@ class BadEndingSequence {
   /**
    * 텍스트 타이핑 효과를 구현하는 메서드
    * 글자 하나씩 순차적으로 화면에 표시
+   *
+   * @param element - 텍스트가 표시될 HTML 요소
+   * @param text - 표시할 텍스트 내용
+   * @param cursor - 타이핑 효과에 사용될 커서 요소
    */
   private typeText = async (element: HTMLElement, text: string, cursor: HTMLElement): Promise<void> => {
     // 텍스트를 한 글자씩 순회
@@ -173,6 +217,9 @@ class BadEndingSequence {
 
   /**
    * 지정된 시간(밀리초) 동안 대기하는 유틸리티 메서드
+   *
+   * @param ms - 대기 시간 (밀리초)
+   * @returns Promise - 지정된 시간이 지나면 resolve되는 Promise
    */
   private wait = (ms: number): Promise<void> => {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -275,7 +322,10 @@ class BadEndingSequence {
         setTimeout(() => {
           this.finalCredits.classList.add('fade-in-active');
 
+          // 배경음악 페이드아웃
           setTimeout(() => {
+            this.fadeOutMusic();
+
             document.body.classList.add('ending-fade-out');
 
             setTimeout(() => {
@@ -285,6 +335,35 @@ class BadEndingSequence {
         }, 100);
       }, 1200);
     }, 1000); // fade out 애니메이션 시간
+  };
+
+  /**
+   * 배경음악 페이드아웃 메서드
+   */
+  private fadeOutMusic = (): void => {
+    if (!this.bgmAudio) return;
+
+    // 현재 볼륨 저장
+    const originalVolume = this.bgmAudio.volume;
+    const fadeInterval = 50; // 50ms마다 볼륨 감소
+    const fadeStep = originalVolume / 20; // 1초(1000ms) 동안 완전히 페이드아웃
+
+    // 볼륨 점진적으로 감소
+    const fadeout = setInterval(() => {
+      if (!this.bgmAudio) {
+        clearInterval(fadeout);
+        return;
+      }
+
+      let newVolume = this.bgmAudio.volume - fadeStep;
+      if (newVolume <= 0) {
+        newVolume = 0;
+        clearInterval(fadeout);
+        this.bgmAudio.pause();
+      }
+
+      this.bgmAudio.volume = newVolume;
+    }, fadeInterval);
   };
 }
 
