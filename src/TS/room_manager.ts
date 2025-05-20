@@ -1,8 +1,8 @@
 import { TRoomDirection, IRoom } from '../types/type.ts';
-import { NorthRoom } from './north_room.ts';
-import { SouthRoom } from './south_room.ts';
-import { EastRoom } from './east_room.ts';
-import { WestRoom } from './west_room.ts';
+import { NorthRoom } from './room/north_room.ts';
+import { SouthRoom } from './room/south_room.ts';
+import { EastRoom } from './room/east_room.ts';
+import { WestRoom } from './room/west_room.ts';
 
 export class RoomManager {
   private static rooms: Record<TRoomDirection, IRoom> = {
