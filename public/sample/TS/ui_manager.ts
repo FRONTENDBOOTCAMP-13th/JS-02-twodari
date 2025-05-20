@@ -41,9 +41,9 @@ export class UIManager {
 
     // 버튼 생성 및 추가
     const buttons = [
-      { icon: '../../../src/assets/icon/hint.svg', text: 'HINT', onClick: this.onHintButtonClick },
-      { icon: '../../../src/assets/icon/on_music.svg', text: 'MUSIC', onClick: this.onMusicButtonClick },
-      { icon: '../../../src/assets/icon/item.svg', text: 'ITEM', onClick: this.onItemButtonClick },
+      { icon: '/src/assets/icon/hint.svg', text: 'HINT', onClick: this.onHintButtonClick },
+      { icon: '/src/assets/icon/on_music.svg', text: 'MUSIC', onClick: this.onMusicButtonClick },
+      { icon: '/src/assets/icon/item.svg', text: 'ITEM', onClick: this.onItemButtonClick },
     ];
 
     buttons.forEach(btn => {
@@ -179,7 +179,7 @@ export class UIManager {
 
   private playBackgroundMusic = () => {
     try {
-      this.bgmAudio = new Audio('../../../src/assets/audio/background.mp3');
+      this.bgmAudio = new Audio('/effectSound/background.mp3');
       if (this.bgmAudio) {
         this.bgmAudio.loop = true;
         this.bgmAudio.volume = 0.3;
