@@ -1,6 +1,10 @@
 import { CreateSearchBtn } from '../utils/createSearchBtn';
+import type { IInventoryItem } from '../types/type';
+import ItemManager from '../utils/itemManager.ts';
 
 const searchButtonBox = document.getElementById('search-btn-box');
+const itemManager = new ItemManager();
+itemManager.appendTo(document.body);
 
 if (searchButtonBox) {
   //첫번째 찾기 버튼 (1번째 단서)
@@ -12,6 +16,16 @@ if (searchButtonBox) {
     type: 'clue', //단서 타입('clue' or 'game')
     clueImgSrc: '/src/assets/img/clue_1.png', //단서 이미지 경로
     clueMessage: '단서1 을(를) 획득했다.', //단서 있을 때 메시지
+    itemInfo: {
+      //IInventoryItem
+      id: 'clue-1',
+      name: '단서 1',
+      description: '(장소) 에서 발견한 (단서). 어딘가에 쓰일 것 같다.',
+      image: '/src/assets/img/clue_1.png',
+    },
+    onFound: (item: IInventoryItem) => {
+      itemManager.addItem(item);
+    },
   });
 
   //두번째 찾기 버튼 (2번째 단서)
@@ -21,8 +35,18 @@ if (searchButtonBox) {
     position: { top: '20%', left: '20%' }, //단서 찾기 버튼 위치
     id: 'search-btn-2', //단서 찾기 버튼 ID
     type: 'clue', //단서 타입('clue' or 'game')
-    clueImgSrc: '/src/assets/img/clue_2.png', //단서 이미지 경로
+    clueImgSrc: '/src/assets/img/clue_3.png', //단서 이미지 경로
     clueMessage: '단서2 을(를) 획득했다.', //단서 있을 때 메시지
+    itemInfo: {
+      //IInventoryItem
+      id: 'clue-2',
+      name: '단서 2',
+      description: '(장소) 에서 발견한 (단서). 어딘가에 쓰일 것 같다.',
+      image: '/src/assets/img/clue_3.png',
+    },
+    onFound: (item: IInventoryItem) => {
+      itemManager.addItem(item);
+    },
   });
 
   //세번째 찾기 버튼 (단서 없을때, 단서 이미 찾은 경우)
