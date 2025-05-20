@@ -1,12 +1,7 @@
-interface IItemInfo {
-  id: number;
-  name: string;
-  desc: string;
-  imgSrc: string;
-}
+import type { IInventoryItem } from '../types/type';
 
 class ItemManager {
-  private itemList: IItemInfo[] = [];
+  private itemList: IInventoryItem[] = [];
   private inventoryElement: HTMLDialogElement;
 
   constructor() {
@@ -64,7 +59,7 @@ class ItemManager {
   }
 
   //인벤토리 아이템 추가
-  public addItem(item: IItemInfo) {
+  public addItem(item: IInventoryItem) {
     this.itemList.push(item);
   }
   //인벤토리 아이템 삭제
