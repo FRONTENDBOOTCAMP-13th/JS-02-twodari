@@ -200,8 +200,12 @@
   }
 
   .move-btn-style {
-    @apply absolute w-[100px] h-[100px] flex items-center justify-center;
+    @apply absolute w-[100px] h-[100px] flex items-center justify-center focus:outline-none;
     @apply fixed transition shadow-md;
+  }
+  .move-btn-style.active svg,
+  .move-btn-style.active span {
+    color: var(--light-primary) !important;
   }
 
   .move-icon-img {
@@ -221,15 +225,19 @@
     @apply rotate-0;
   }
   .move-text-style {
-    @apply fixed text-white font-bold text-lg transition-colors;
+    @apply absolute text-white text-[25px] transition-colors leading-none group-hover:text-(--light-primary);
   }
 
   .circle-style {
-    @apply fixed w-[100px] h-[100px] rounded-full bg-white/30 backdrop-blur-sm;
-    bottom: 100px;
-    right: 100px;
+    @apply absolute w-[50px] h-[50px] rounded-full bg-white/30 backdrop-blur-sm;
+    top: 125px;
+    left: 125px;
   }
-  
+
+  .room-background-style {
+    @apply fixed top-0 left-0 w-screen h-screen -z-10 bg-no-repeat bg-cover bg-center;
+  }
+
   .timeBox-style {
     @apply w-[200px] h-[50px] p-5 border-4 rounded-2xl border-[#464646] flex justify-around items-center;
   }
@@ -245,7 +253,7 @@
   .active {
     @apply border-[#14AB00];
   }
-  
+
   .ending-body {
     @apply overflow-x-hidden m-0 p-0;
   }
@@ -441,8 +449,6 @@
   }
 }
 
-
-
 /* 추가 스타일 */
 #game-container {
   will-change: transform;
@@ -450,7 +456,9 @@
 }
 
 /* 기존 요소 스타일 명시적 설정 */
-#btn-box, #timer, #direction-nav {
+#btn-box,
+#timer,
+#direction-nav {
   pointer-events: auto;
 }
 
