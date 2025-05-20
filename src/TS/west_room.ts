@@ -1,14 +1,14 @@
 import { IRoom } from '../types/type';
 
 export class WestRoom implements IRoom {
-  private visited = false;
+  // private visited = false;
 
   initialize(): void {
     console.log('서쪽 방 초기화');
   }
 
   render(): void {
-    this.visited = true;
+    // this.visited = true;
     const bg = document.getElementById('room-background');
     if (bg) {
       bg.style.backgroundImage = `url('/assets/img/west_background.jpg')`;
