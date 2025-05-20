@@ -58,7 +58,7 @@ class ItemManager {
     console.log(this.itemList);
   }
   //인벤토리 아이템 삭제
-  public removeItem(item: IInventoryItem) {}
+  // public removeItem(item: IInventoryItem) {}
 
   //인벤토리 아이템 렌더링
 
