@@ -165,12 +165,39 @@
 
 /* custom style */
 @layer components {
+  /* 최동환 담당 */
   .btn-style {
     @apply w-[100px] h-[100px] p-5 border-4 rounded-2xl border-[#464646] flex flex-col justify-center items-center;
   }
 
   .icon-img {
     @apply w-[84px] h-[84px];
+  }
+
+  .timeBox-style {
+    @apply w-[200px] h-[50px] p-5 border-4 rounded-2xl border-[#464646] flex justify-around items-center;
+  }
+
+  .timeDesc-style {
+    @apply text-white text-xl;
+  }
+
+  .timeText-style {
+    @apply text-[var(--light-danger)] text-2xl;
+  }
+
+  .active {
+    @apply border-[#14AB00];
+  }
+  /* 인벤토리  */
+  .inventory-style {
+    @apply w-[600px] h-[500px] border rounded-2xl bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  }
+  .slot-box-style {
+    @apply w-full h-8/10 grid grid-cols-3  justify-items-center items-center;
+  }
+  .item-slot-style {
+    @apply w-[150px] h-[150px] bg-black;
   }
 
   .search-btn-style {
@@ -229,23 +256,7 @@
     bottom: 100px;
     right: 100px;
   }
-  
-  .timeBox-style {
-    @apply w-[200px] h-[50px] p-5 border-4 rounded-2xl border-[#464646] flex justify-around items-center;
-  }
 
-  .timeDesc-style {
-    @apply text-white text-xl;
-  }
-
-  .timeText-style {
-    @apply text-[var(--light-danger)] text-2xl;
-  }
-
-  .active {
-    @apply border-[#14AB00];
-  }
-  
   .ending-body {
     @apply overflow-x-hidden m-0 p-0;
   }
@@ -441,8 +452,6 @@
   }
 }
 
-
-
 /* 추가 스타일 */
 #game-container {
   will-change: transform;
@@ -450,7 +459,9 @@
 }
 
 /* 기존 요소 스타일 명시적 설정 */
-#btn-box, #timer, #direction-nav {
+#btn-box,
+#timer,
+#direction-nav {
   pointer-events: auto;
 }
 
