@@ -4,7 +4,7 @@ import ItemManager from '../utils/itemManager.ts';
 
 const searchButtonBox = document.getElementById('search-btn-box');
 const itemManager = new ItemManager();
-itemManager.appendTo(document.body);
+// itemManager.appendTo(document.body);
 
 if (searchButtonBox) {
   //첫번째 찾기 버튼 (1번째 단서)

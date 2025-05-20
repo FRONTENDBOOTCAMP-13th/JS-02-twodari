@@ -197,7 +197,7 @@
     @apply w-full h-8/10 grid grid-cols-3  justify-items-center items-center;
   }
   .item-slot-style {
-    @apply w-[150px] h-[150px] bg-black;
+    @apply w-[150px] h-[150px] border;
   }
 
   .search-btn-style {

@@ -19,30 +19,24 @@ class ItemManager {
     for (let i = 0; i < 6; i++) {
       const itemSlot = document.createElement('div');
       itemSlot.className = 'item-slot-style';
-      itemSlot.setAttribute('data-id', i.toString());
+      itemSlot.setAttribute('data-slot-id', i.toString());
 
       slotBox.appendChild(itemSlot);
     }
-
-    // const itemImg = document.createElement('img');
-    // itemImg.src = '/src/assets/icon/item.svg'; //item 객체 imgSrc
-    // itemImg.alt = 'item 객체 name 들어와야함';
-
-    // itemContainer.appendChild(itemImg);
 
     const btnContainer = document.createElement('div');
     btnContainer.className = 'mx-auto flex justify-between items-center w-10/12 mt-4';
     inventory.appendChild(btnContainer);
 
     const closeButton = document.createElement('button');
-    closeButton.className = 'w-20 h-10 border-4 rounded-2xl border-[#464646] bg-[#ff3b3b] text-white';
+    closeButton.className = 'w-50 h-15 border-4 rounded-2xl border-[#464646] bg-[#ff3b3b] text-white';
     closeButton.textContent = '닫기';
     closeButton.addEventListener('click', () => {
       this.closeInventory();
     });
 
     const usedItemButton = document.createElement('button');
-    usedItemButton.className = 'w-20 h-10 border-4 rounded-2xl border-[#464646] bg-[#14AB00] text-white';
+    usedItemButton.className = 'w-50 h-15 border-4 rounded-2xl border-[#464646] bg-[#14AB00] text-white';
     usedItemButton.textContent = '사용하기';
 
     btnContainer.appendChild(usedItemButton);
@@ -61,9 +55,12 @@ class ItemManager {
   //인벤토리 아이템 추가
   public addItem(item: IInventoryItem) {
     this.itemList.push(item);
+    console.log(this.itemList);
   }
   //인벤토리 아이템 삭제
-  public removeItem() {}
+  public removeItem(item: IInventoryItem) {}
+
+  //인벤토리 아이템 렌더링
 
   public appendTo(parent: HTMLElement) {
     parent.appendChild(this.inventoryElement);
