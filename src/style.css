@@ -197,7 +197,7 @@
     @apply w-full h-8/10 grid grid-cols-3  justify-items-center items-center;
   }
   .item-slot-style {
-    @apply w-[150px] h-[150px] bg-black;
+    @apply w-[150px] h-[150px] border;
   }
 
   .search-btn-style {
@@ -227,8 +227,12 @@
   }
 
   .move-btn-style {
-    @apply absolute w-[100px] h-[100px] flex items-center justify-center;
+    @apply absolute w-[100px] h-[100px] flex items-center justify-center focus:outline-none;
     @apply fixed transition shadow-md;
+  }
+  .move-btn-style.active svg,
+  .move-btn-style.active span {
+    color: var(--light-primary) !important;
   }
 
   .move-icon-img {
@@ -248,13 +252,33 @@
     @apply rotate-0;
   }
   .move-text-style {
-    @apply fixed text-white font-bold text-lg transition-colors;
+    @apply absolute text-white text-[25px] transition-colors leading-none group-hover:text-(--light-primary);
   }
 
   .circle-style {
-    @apply fixed w-[100px] h-[100px] rounded-full bg-white/30 backdrop-blur-sm;
-    bottom: 100px;
-    right: 100px;
+    @apply absolute w-[50px] h-[50px] rounded-full bg-white/30 backdrop-blur-sm;
+    top: 125px;
+    left: 125px;
+  }
+
+  .room-background-style {
+    @apply fixed top-0 left-0 w-screen h-screen -z-10 bg-no-repeat bg-cover bg-center;
+  }
+
+  .timeBox-style {
+    @apply w-[200px] h-[50px] p-5 border-4 rounded-2xl border-[#464646] flex justify-around items-center;
+  }
+
+  .timeDesc-style {
+    @apply text-white text-xl;
+  }
+
+  .timeText-style {
+    @apply text-[var(--light-danger)] text-2xl;
+  }
+
+  .active {
+    @apply border-[#14AB00];
   }
 
   .ending-body {

@@ -1,4 +1,5 @@
 import { showCluePopup } from './showCluePopup';
+import type { IInventoryItem } from '../types/type.ts';
 
 type TClueTtype = 'clue' | 'game';
 
@@ -17,6 +18,8 @@ interface ISearchButtonOptions {
   clueImgSrc?: string; // 단서 이미지
   clueMessage?: string; // 단서 메시지
   emptyMessage?: string; //단서 없을 때 메시지
+  itemInfo?: IInventoryItem; // 인벤토리 아이템 정보
+  onFound?: (item: IInventoryItem) => void; // 단서 찾았을 때 콜백
   gameCallback?: () => void; // 게임 콜백
 }
 
@@ -53,19 +56,27 @@ export class CreateSearchBtn {
   }
   //찾기 버튼 클릭 핸들러
   private onClick() {
-    //타입이 게임일 때
+    //타입이 게임일 때 -> 게임 콜백 실행
     if (this.options.type === 'game') {
       this.options.gameCallback?.();
+      return;
     }
     //타입이 단서일 때
     else if (this.options.type === 'clue') {
       //단서를 안 찾았을때
       if (!this.isFound) {
         this.isFound = true;
+
         showCluePopup({
           clueImgSrc: this.options.clueImgSrc,
           message: this.options.clueMessage,
         });
+
+        // 아이템 콜백 실행
+        if (this.options.itemInfo && this.options.onFound) {
+          this.options.onFound(this.options.itemInfo);
+        }
+
         //단서를 이미 찾았을 때
       } else {
         showCluePopup({
