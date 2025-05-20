@@ -1,9 +1,8 @@
 import { CreateSearchBtn } from '../utils/createSearchBtn';
 import type { IInventoryItem } from '../types/type';
-import ItemManager from '../utils/itemManager.ts';
+import itemManagerInstance from '../utils/itemManagerInstance';
 
 const searchButtonBox = document.getElementById('search-btn-box');
-const itemManager = new ItemManager();
 // itemManager.appendTo(document.body);
 
 if (searchButtonBox) {
@@ -22,9 +21,10 @@ if (searchButtonBox) {
       name: '단서 1',
       description: '(장소) 에서 발견한 (단서). 어딘가에 쓰일 것 같다.',
       image: '/src/assets/img/clue_1.png',
+      isSelected: false,
     },
     onFound: (item: IInventoryItem) => {
-      itemManager.addItem(item);
+      itemManagerInstance.addItem(item);
     },
   });
 
@@ -43,9 +43,10 @@ if (searchButtonBox) {
       name: '단서 2',
       description: '(장소) 에서 발견한 (단서). 어딘가에 쓰일 것 같다.',
       image: '/src/assets/img/clue_3.png',
+      isSelected: false,
     },
     onFound: (item: IInventoryItem) => {
-      itemManager.addItem(item);
+      itemManagerInstance.addItem(item);
     },
   });
 

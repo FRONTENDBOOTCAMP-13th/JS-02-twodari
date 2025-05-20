@@ -52,6 +52,7 @@ export interface IInventoryItem {
   name: string; // 아이템 이름
   description: string; // 아이템 설명
   image: string; // 아이템 이미지 경로
+  isSelected: boolean; // 아이템 선택 여부
 }
 
 /**
