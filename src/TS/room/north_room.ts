@@ -165,7 +165,7 @@ export class NorthRoom implements IRoom {
     });
 
     // 4. test 버튼 (렌치 테스트용)
-    const test = new CreateSearchBtn({
+    /* const test = new CreateSearchBtn({
       iconSrc: '/assets/icon/search.svg',
       altText: '쓰레기통 조사하기',
       position: { top: '15%', left: '35%' },
@@ -183,13 +183,13 @@ export class NorthRoom implements IRoom {
       onFound: (item: IInventoryItem) => {
         itemManagerInstance.addItem(item);
       },
-    });
+    }); */
 
     // DOM에 버튼 추가
     mirrorButton.appendTo(btnBox);
     copierButton.appendTo(btnBox);
     trashButton.appendTo(btnBox);
-    test.appendTo(btnBox); // 복합기 테스트 용
+    // test.appendTo(btnBox); // 복합기 테스트 용
 
     console.log('버튼 추가 완료');
   }
