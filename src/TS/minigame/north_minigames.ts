@@ -136,8 +136,8 @@ export class MirrorGame implements IMiniGame {
     bloodImg.onerror = () => this.createFallbackImage('blood');
 
     // 이미지 로드 시작
-    mirrorImg.src = '/sample/assets/img/mirror.webp';
-    bloodImg.src = '/sample/assets/img/blood.webp';
+    mirrorImg.src = '/assets/img/mirror.webp';
+    bloodImg.src = '/assets/img/blood.webp';
   };
 
   /**
@@ -240,7 +240,7 @@ export class MirrorGame implements IMiniGame {
     // 2. 제목
     const title = document.createElement('h2');
     title.className = 'text-white text-xl mb-3';
-    title.textContent = '피 묻은 거울 닦기';
+    title.textContent = '피 묻은 거울';
 
     // 3. 설명 텍스트
     const desc = document.createElement('p');
@@ -621,13 +621,18 @@ export class CopierGame implements IMiniGame {
   private hearts: number = 3;
   private barPosition: number = 50;
   private barDirection: number = 1;
-  private barSpeed: number = 7; // 바 이동 속도
+  private barSpeed: number = 7;
   private isGameActive: boolean = false;
   private gameInterval: number | null = null;
   private completeVisible: boolean = false;
   private lastHitResult: 'PERFECT' | 'GOOD' | 'MISS' | '' = '';
   private copierImage: HTMLImageElement | null = null;
   private heartImage: HTMLImageElement | null = null;
+
+  // 연속 클릭 및 속도 제어
+  private lastClickTime: number = 0;
+  private clickCooldown: number = 300; // 300ms 쿨다운
+  private speedIncreased: boolean = false; // 속도 증가 방지 플래그
 
   // 사운드 관련 변수
   private audioContext: AudioContext | null = null;
@@ -679,6 +684,10 @@ export class CopierGame implements IMiniGame {
     this.lastHitResult = '';
     this.audioActivated = false;
 
+    // 클릭 관련 변수 초기화
+    this.lastClickTime = 0;
+    this.speedIncreased = false;
+
     // 이미지와 오디오 로드
     this.loadImages();
     this.initAudio();
@@ -690,7 +699,7 @@ export class CopierGame implements IMiniGame {
   private loadImages = (): void => {
     // 복합기 이미지 로드
     this.copierImage = new Image();
-    this.copierImage.src = '/src/assets/img/copier.webp';
+    this.copierImage.src = '/assets/img/copier.webp';
     this.copierImage.onload = () => console.log('복합기 이미지 로드 성공');
     this.copierImage.onerror = () => {
       console.error('복합기 이미지 로드 실패');
@@ -699,7 +708,7 @@ export class CopierGame implements IMiniGame {
 
     // 하트 이미지 로드
     this.heartImage = new Image();
-    this.heartImage.src = '/src/assets/img/health.webp';
+    this.heartImage.src = '/assets/img/health.webp';
     this.heartImage.onload = () => console.log('하트 이미지 로드 성공');
     this.heartImage.onerror = () => {
       console.error('하트 이미지 로드 실패');
@@ -846,7 +855,7 @@ export class CopierGame implements IMiniGame {
 
     // 사운드 타입에 따라 버퍼 선택
     let buffer: AudioBuffer | null = null;
-    let volume = 0.3; // 볼륨
+    let volume = 0.3; // 기본 볼륨
 
     switch (type) {
       case 'goodHit':
@@ -864,7 +873,7 @@ export class CopierGame implements IMiniGame {
         break;
       case 'failure':
         buffer = this.failureSound;
-        volume = 0.7; // 실패 사운드도 더 크게
+        volume = 0.5; // 실패 사운드도 더 크게
         break;
     }
 
@@ -888,7 +897,7 @@ export class CopierGame implements IMiniGame {
   };
 
   /**
-   * 배경음만 멈추는 메서드 (새로 추가)
+   * 배경음만 멈추는 메서드
    */
   private stopBackgroundSound = (): void => {
     if (this.repairSoundSource) {
@@ -946,12 +955,12 @@ export class CopierGame implements IMiniGame {
     // 제목
     const title = document.createElement('h2');
     title.className = 'text-white text-xl mb-3';
-    title.textContent = '복합기 수리';
+    title.textContent = '망가진 복합기';
 
     // 설명
     const instruction = document.createElement('p');
     instruction.className = 'text-gray-300 mb-4';
-    instruction.textContent = '스페이스바나 클릭으로 바가 색상 영역에 있을 때 맞추세요!';
+    instruction.textContent = '스페이스바나 클릭으로 상호작용하여 복합기 고치기';
 
     // 캔버스 컨테이너
     const canvasContainer = document.createElement('div');
@@ -996,14 +1005,12 @@ export class CopierGame implements IMiniGame {
     this.barDirection = 1;
     this.isGameActive = true;
 
-    // 키보드 이벤트 리스너 설정 - 오디오 활성화 추가
-    document.addEventListener('keydown', e => {
-      if (e.code === 'Space' && this.isGameActive) {
-        e.preventDefault();
-        this.ensureAudioActivation();
-        this.checkHit();
-      }
-    });
+    // 클릭 관련 변수 초기화
+    this.lastClickTime = 0;
+    this.speedIncreased = false;
+
+    // 키보드 이벤트 리스너 설정
+    document.addEventListener('keydown', this.handleKeyDown);
 
     // 게임 루프 시작
     this.gameInterval = window.setInterval(this.gameLoop, 30);
@@ -1022,34 +1029,53 @@ export class CopierGame implements IMiniGame {
   };
 
   /**
-   * 바 위치 이동
+   * 바 위치 이동 - 속도 증가 방지 적용
    */
   private moveBar = (): void => {
     if (!this.isGameActive) return;
 
     this.barPosition += this.barDirection * this.barSpeed;
 
-    // 방향 전환
+    // 방향 전환 시 속도 증가 플래그 초기화
     if (this.barPosition <= 5 || this.barPosition >= 95) {
       this.barDirection *= -1;
+      this.speedIncreased = false; // 방향 전환 시 플래그 리셋
     }
   };
 
   /**
-   * 히트 체크 (스페이스바 누를 때)
+   * 히트 체크 (스페이스바 누를 때) - 정확도 개선 및 쿨다운 추가
    */
   public checkHit = (): void => {
     if (!this.isGameActive) return;
 
+    // 연속 클릭 방지를 위한 쿨다운 체크
+    const currentTime = Date.now();
+    if (currentTime - this.lastClickTime < this.clickCooldown) {
+      console.log('쿨다운 중, 입력 무시');
+      return; // 쿨다운 중이면 입력 무시
+    }
+
+    // 클릭 시간 저장
+    this.lastClickTime = currentTime;
+
+    // 이미 속도가 증가했다면 추가 판정 없이 리턴
+    if (this.speedIncreased) {
+      console.log('이미 속도 증가됨, 추가 판정 무시');
+      return;
+    }
+
     const pos = this.barPosition;
 
-    // 정확도에 따른 점수 및 결과 표시
-    if (45 <= pos && pos <= 55) {
+    // 정확도에 따른 점수 및 결과 표시 (판정 구간 조정)
+    if (47 <= pos && pos <= 53) {
+      // 더 좁은 PERFECT 구간
       // PERFECT 구간
       this.increaseDurability(10);
       this.lastHitResult = 'PERFECT';
       this.playSound('perfectHit');
-    } else if ((30 <= pos && pos < 45) || (55 < pos && pos <= 70)) {
+    } else if ((42 <= pos && pos < 47) || (53 < pos && pos <= 58)) {
+      // 더 명확한 GOOD 구간
       // GOOD 구간
       this.increaseDurability(5);
       this.lastHitResult = 'GOOD';
@@ -1058,6 +1084,11 @@ export class CopierGame implements IMiniGame {
       // MISS 구간
       this.miss();
       this.lastHitResult = 'MISS';
+    }
+
+    // 성공한 판정 후 속도 증가 플래그 설정
+    if (this.lastHitResult === 'PERFECT' || this.lastHitResult === 'GOOD') {
+      this.speedIncreased = true;
     }
   };
 
@@ -1108,7 +1139,7 @@ export class CopierGame implements IMiniGame {
   };
 
   /**
-   * 게임 실패 처리 - 수정됨
+   * 게임 실패 처리
    */
   private loseGame = (): void => {
     this.isGameActive = false;
@@ -1126,11 +1157,15 @@ export class CopierGame implements IMiniGame {
   };
 
   /**
-   * 게임 재시작
+   * 게임 재시작 - 변수 초기화 추가
    */
   private restart = (): void => {
     this.hearts = 3;
     this.isGameActive = true;
+
+    // 클릭 관련 변수 초기화
+    this.lastClickTime = 0;
+    this.speedIncreased = false;
 
     // 배경음 다시 재생
     this.playRepairSound();
@@ -1171,7 +1206,185 @@ export class CopierGame implements IMiniGame {
   };
 
   /**
-   * 게임 종료 및 정리 - 모든 사운드 정지
+   * 복합기 이미지 그리기
+   */
+  private drawCopierImage = (): void => {
+    if (!this.ctx || !this.canvas) return;
+
+    const imageSize = 150;
+    const x = this.canvas.width / 2 - imageSize / 2;
+    const y = 120;
+
+    if (this.copierImage && this.copierImage.complete && this.copierImage.naturalWidth !== 0) {
+      try {
+        this.ctx.drawImage(this.copierImage, x, y, imageSize, imageSize);
+      } catch (error) {
+        this.drawFallbackCopier(x, y, imageSize);
+      }
+    } else {
+      this.drawFallbackCopier(x, y, imageSize);
+    }
+  };
+
+  /**
+   * 대체 복합기 이미지 그리기
+   */
+  private drawFallbackCopier = (x: number, y: number, size: number): void => {
+    if (!this.ctx) return;
+
+    this.ctx.fillStyle = '#444';
+    this.ctx.fillRect(x, y, size, size);
+    this.ctx.strokeStyle = '#888';
+    this.ctx.lineWidth = 2;
+    this.ctx.strokeRect(x, y, size, size);
+  };
+
+  /**
+   * 진행 바 그리기 (내구도)
+   */
+  private drawProgressBar = (): void => {
+    if (!this.ctx || !this.canvas) return;
+
+    const barWidth = 500;
+    const barHeight = 30;
+    const barX = (this.canvas.width - barWidth) / 2;
+    const barY = 50;
+
+    this.ctx.strokeStyle = '#444';
+    this.ctx.lineWidth = 2;
+    this.ctx.strokeRect(barX, barY, barWidth, barHeight);
+
+    this.ctx.fillStyle = this.PROGRESS_COLOR;
+    this.ctx.fillRect(barX, barY, barWidth * (this.durability / 100), barHeight);
+
+    this.ctx.strokeStyle = '#4caf50';
+    this.ctx.lineWidth = 3;
+    this.ctx.strokeRect(barX - 5, barY - 5, barWidth + 10, barHeight + 10);
+  };
+
+  /**
+   * 타이밍 바 그리기 - 판정 구간 표시 조정
+   */
+  private drawTimingBar = (): void => {
+    if (!this.ctx || !this.canvas) return;
+
+    const barY = this.canvas.height - 120;
+    const barHeight = 40;
+    const barWidth = 500;
+    const barLeft = (this.canvas.width - barWidth) / 2;
+
+    // 바 배경
+    this.ctx.fillStyle = this.NORMAL_COLOR;
+    this.ctx.fillRect(barLeft, barY, barWidth, barHeight);
+
+    // 점수 영역 표시 - 판정 구간과 일치하도록 조정
+    const perfectZoneWidth = barWidth * 0.06; // 6% (47-53 구간에 해당)
+    const goodZoneWidth = barWidth * 0.05; // 5% (42-47, 53-58 구간에 해당)
+
+    // PERFECT 구간 (중앙)
+    this.ctx.fillStyle = this.PERFECT_COLOR;
+    const perfectZoneLeft = barLeft + barWidth / 2 - perfectZoneWidth / 2;
+    this.ctx.fillRect(perfectZoneLeft, barY, perfectZoneWidth, barHeight);
+
+    // GOOD 구간 (양쪽)
+    this.ctx.fillStyle = this.GOOD_COLOR;
+    this.ctx.fillRect(perfectZoneLeft - goodZoneWidth, barY, goodZoneWidth, barHeight);
+    this.ctx.fillRect(perfectZoneLeft + perfectZoneWidth, barY, goodZoneWidth, barHeight);
+
+    // 현재 위치 마커 (화살표)
+    const markerPos = barLeft + (barWidth * this.barPosition) / 100;
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.beginPath();
+    this.ctx.moveTo(markerPos, barY - 10);
+    this.ctx.lineTo(markerPos - 10, barY - 20);
+    this.ctx.lineTo(markerPos + 10, barY - 20);
+    this.ctx.closePath();
+    this.ctx.fill();
+  };
+
+  /**
+   * 하트 (목숨) 그리기
+   */
+  private drawHearts = (): void => {
+    if (!this.ctx || !this.canvas || this.hearts <= 0) return;
+
+    const heartSize = 30;
+    const spacing = 40;
+
+    const totalWidth = this.hearts * heartSize + (this.hearts - 1) * (spacing - heartSize);
+    const startX = (this.canvas.width - totalWidth) / 2;
+    const startY = this.canvas.height - 50;
+
+    for (let i = 0; i < this.hearts; i++) {
+      if (this.heartImage && this.heartImage.complete && this.heartImage.naturalWidth !== 0) {
+        try {
+          this.ctx.drawImage(this.heartImage, startX + i * spacing, startY, heartSize, heartSize);
+        } catch (error) {
+          this.drawFallbackHeart(startX + i * spacing, startY, heartSize);
+        }
+      } else {
+        this.drawFallbackHeart(startX + i * spacing, startY, heartSize);
+      }
+    }
+  };
+
+  /**
+   * 대체 하트 그래픽 그리기
+   */
+  private drawFallbackHeart = (x: number, y: number, size: number): void => {
+    if (!this.ctx) return;
+
+    this.ctx.fillStyle = '#ff0000';
+    this.ctx.beginPath();
+    this.ctx.arc(x + size / 4, y + size / 4, size / 4, 0, Math.PI * 2);
+    this.ctx.arc(x + (3 * size) / 4, y + size / 4, size / 4, 0, Math.PI * 2);
+    this.ctx.moveTo(x, y + size / 4);
+    this.ctx.lineTo(x + size / 2, y + size);
+    this.ctx.lineTo(x + size, y + size / 4);
+    this.ctx.fill();
+  };
+
+  /**
+   * 마지막 히트 결과 표시
+   */
+  private drawLastHitResult = (): void => {
+    if (!this.ctx || !this.canvas || !this.lastHitResult) return;
+
+    const imageSize = 150;
+    const copierX = this.canvas.width / 2 - imageSize / 2;
+    const copierY = 120;
+    const textX = copierX + imageSize + 30;
+    const startY = copierY + 30;
+
+    this.ctx.font = '18px Arial';
+    this.ctx.textAlign = 'left';
+
+    const resultTexts = [
+      { text: 'PERFECT', color: this.lastHitResult === 'PERFECT' ? this.PERFECT_ACTIVE_COLOR : '#666666' },
+      { text: 'GOOD', color: this.lastHitResult === 'GOOD' ? this.GOOD_ACTIVE_COLOR : '#666666' },
+      { text: 'MISS', color: this.lastHitResult === 'MISS' ? this.MISS_ACTIVE_COLOR : '#666666' },
+    ];
+
+    resultTexts.forEach((item, index) => {
+      this.ctx!.fillStyle = item.color;
+      this.ctx!.fillText(item.text, textX, startY + index * 30);
+    });
+  };
+
+  /**
+   * 완료 메시지 그리기
+   */
+  private drawCompleteMessage = (): void => {
+    if (!this.ctx || !this.canvas) return;
+
+    this.ctx.font = 'bold 36px Arial';
+    this.ctx.fillStyle = '#4caf50';
+    this.ctx.textAlign = 'center';
+    this.ctx.fillText('COMPLETE!', this.canvas.width / 2, this.canvas.height / 2);
+  };
+
+  /**
+   * 게임 종료 및 정리
    */
   public close = (): void => {
     this.isGameActive = false;
@@ -1199,163 +1412,14 @@ export class CopierGame implements IMiniGame {
     }
   };
 
-  // 키보드 이벤트 핸들러
+  /**
+   * 키보드 이벤트 핸들러
+   */
   private handleKeyDown = (e: KeyboardEvent): void => {
     if (e.code === 'Space' && this.isGameActive) {
       e.preventDefault();
       this.ensureAudioActivation();
       this.checkHit();
     }
-  };
-
-  // 나머지 그래픽 관련 메서드들
-  private drawCopierImage = (): void => {
-    // 복합기 이미지 그리는 로직
-    if (!this.ctx || !this.canvas) return;
-
-    const imageSize = 150;
-    const x = this.canvas.width / 2 - imageSize / 2;
-    const y = 120;
-
-    if (this.copierImage && this.copierImage.complete && this.copierImage.naturalWidth !== 0) {
-      try {
-        this.ctx.drawImage(this.copierImage, x, y, imageSize, imageSize);
-      } catch (error) {
-        this.drawFallbackCopier(x, y, imageSize);
-      }
-    } else {
-      this.drawFallbackCopier(x, y, imageSize);
-    }
-  };
-
-  private drawFallbackCopier = (x: number, y: number, size: number): void => {
-    if (!this.ctx) return;
-
-    this.ctx.fillStyle = '#444';
-    this.ctx.fillRect(x, y, size, size);
-    this.ctx.strokeStyle = '#888';
-    this.ctx.lineWidth = 2;
-    this.ctx.strokeRect(x, y, size, size);
-  };
-
-  private drawProgressBar = (): void => {
-    if (!this.ctx || !this.canvas) return;
-
-    const barWidth = 500;
-    const barHeight = 30;
-    const barX = (this.canvas.width - barWidth) / 2;
-    const barY = 50;
-
-    this.ctx.strokeStyle = '#444';
-    this.ctx.lineWidth = 2;
-    this.ctx.strokeRect(barX, barY, barWidth, barHeight);
-
-    this.ctx.fillStyle = this.PROGRESS_COLOR;
-    this.ctx.fillRect(barX, barY, barWidth * (this.durability / 100), barHeight);
-
-    this.ctx.strokeStyle = '#4caf50';
-    this.ctx.lineWidth = 3;
-    this.ctx.strokeRect(barX - 5, barY - 5, barWidth + 10, barHeight + 10);
-  };
-
-  private drawTimingBar = (): void => {
-    if (!this.ctx || !this.canvas) return;
-
-    const barY = this.canvas.height - 120;
-    const barHeight = 40;
-    const barWidth = 500;
-    const barLeft = (this.canvas.width - barWidth) / 2;
-
-    this.ctx.fillStyle = this.NORMAL_COLOR;
-    this.ctx.fillRect(barLeft, barY, barWidth, barHeight);
-
-    const perfectZoneWidth = barWidth * 0.03;
-    const goodZoneWidth = barWidth * 0.05;
-
-    this.ctx.fillStyle = this.PERFECT_COLOR;
-    const perfectZoneLeft = barLeft + barWidth / 2 - perfectZoneWidth / 2;
-    this.ctx.fillRect(perfectZoneLeft, barY, perfectZoneWidth, barHeight);
-
-    this.ctx.fillStyle = this.GOOD_COLOR;
-    this.ctx.fillRect(perfectZoneLeft - goodZoneWidth, barY, goodZoneWidth, barHeight);
-    this.ctx.fillRect(perfectZoneLeft + perfectZoneWidth, barY, goodZoneWidth, barHeight);
-
-    const markerPos = barLeft + (barWidth * this.barPosition) / 100;
-    this.ctx.fillStyle = '#ffffff';
-    this.ctx.beginPath();
-    this.ctx.moveTo(markerPos, barY - 10);
-    this.ctx.lineTo(markerPos - 10, barY - 20);
-    this.ctx.lineTo(markerPos + 10, barY - 20);
-    this.ctx.closePath();
-    this.ctx.fill();
-  };
-
-  private drawHearts = (): void => {
-    if (!this.ctx || !this.canvas || this.hearts <= 0) return;
-
-    const heartSize = 30;
-    const spacing = 40;
-
-    const totalWidth = this.hearts * heartSize + (this.hearts - 1) * (spacing - heartSize);
-    const startX = (this.canvas.width - totalWidth) / 2;
-    const startY = this.canvas.height - 50;
-
-    for (let i = 0; i < this.hearts; i++) {
-      if (this.heartImage && this.heartImage.complete && this.heartImage.naturalWidth !== 0) {
-        try {
-          this.ctx.drawImage(this.heartImage, startX + i * spacing, startY, heartSize, heartSize);
-        } catch (error) {
-          this.drawFallbackHeart(startX + i * spacing, startY, heartSize);
-        }
-      } else {
-        this.drawFallbackHeart(startX + i * spacing, startY, heartSize);
-      }
-    }
-  };
-
-  private drawFallbackHeart = (x: number, y: number, size: number): void => {
-    if (!this.ctx) return;
-
-    this.ctx.fillStyle = '#ff0000';
-    this.ctx.beginPath();
-    this.ctx.arc(x + size / 4, y + size / 4, size / 4, 0, Math.PI * 2);
-    this.ctx.arc(x + (3 * size) / 4, y + size / 4, size / 4, 0, Math.PI * 2);
-    this.ctx.moveTo(x, y + size / 4);
-    this.ctx.lineTo(x + size / 2, y + size);
-    this.ctx.lineTo(x + size, y + size / 4);
-    this.ctx.fill();
-  };
-
-  private drawLastHitResult = (): void => {
-    if (!this.ctx || !this.canvas || !this.lastHitResult) return;
-
-    const imageSize = 150;
-    const copierX = this.canvas.width / 2 - imageSize / 2;
-    const copierY = 120;
-    const textX = copierX + imageSize + 30;
-    const startY = copierY + 30;
-
-    this.ctx.font = '18px Arial';
-    this.ctx.textAlign = 'left';
-
-    const resultTexts = [
-      { text: 'PERFECT', color: this.lastHitResult === 'PERFECT' ? this.PERFECT_ACTIVE_COLOR : '#666666' },
-      { text: 'GOOD', color: this.lastHitResult === 'GOOD' ? this.GOOD_ACTIVE_COLOR : '#666666' },
-      { text: 'MISS', color: this.lastHitResult === 'MISS' ? this.MISS_ACTIVE_COLOR : '#666666' },
-    ];
-
-    resultTexts.forEach((item, index) => {
-      this.ctx!.fillStyle = item.color;
-      this.ctx!.fillText(item.text, textX, startY + index * 30);
-    });
-  };
-
-  private drawCompleteMessage = (): void => {
-    if (!this.ctx || !this.canvas) return;
-
-    this.ctx.font = 'bold 36px Arial';
-    this.ctx.fillStyle = '#4caf50';
-    this.ctx.textAlign = 'center';
-    this.ctx.fillText('COMPLETE!', this.canvas.width / 2, this.canvas.height / 2);
   };
 }

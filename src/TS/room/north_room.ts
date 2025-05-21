@@ -5,7 +5,6 @@ import { showCluePopup } from '../../utils/showCluePopup.ts';
 import itemManagerInstance from '../../utils/itemManagerInstance.ts';
 
 export class NorthRoom implements IRoom {
-  private visited = false;
   private mirrorGame: MirrorGame;
   private copierGame: CopierGame;
 
@@ -24,20 +23,19 @@ export class NorthRoom implements IRoom {
 
       // 미니게임 성공 후 팝업 표시
       showCluePopup({
-        clueImgSrc: '/src/assets/img/mirror.webp',
-        message: '거울에 숫자 "314"가 흐릿하게 써있다. 어디에 쓰는 번호지?.',
+        clueImgSrc: '/assets/img/mirror.webp',
+        message: '거울에 숫자 "314"가 쓰여있다. 어디에 쓰이는 숫자일까?',
       });
     });
 
-    // 복합기 미니게임 초기화 - 수정된 부분
+    // 복합기 미니게임 초기화
     this.copierGame = new CopierGame(() => {
       console.log('복합기 미니게임 해결');
       NorthRoom.copierCompleted = true;
 
-      // 아이템 추가 대신 단순히 단서 이미지와 메시지만 표시
       showCluePopup({
-        clueImgSrc: '/src/assets/img/clue_copier.webp',
-        message: '복합기를 수리했더니, 종이 한 장이 출력되었다.',
+        clueImgSrc: '/assets/img/clue_copier.webp',
+        message: '복합기를 수리했다. 중요한 단서를 발견했다.',
       });
     });
   }
@@ -57,12 +55,11 @@ export class NorthRoom implements IRoom {
   // 방 렌더링
   render(): void {
     console.log('NorthRoom render 실행');
-    this.visited = true;
 
     // 배경 이미지 설정
     const bg = document.getElementById('room-background');
     if (bg) {
-      bg.style.backgroundImage = `url('/src/assets/img/background_north.webp')`;
+      bg.style.backgroundImage = `url('/assets/img/background_north.webp')`;
       bg.style.backgroundSize = 'cover';
       bg.style.backgroundPosition = 'center';
     }
@@ -85,9 +82,9 @@ export class NorthRoom implements IRoom {
 
     // 1. 거울 검색 버튼
     const mirrorButton = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg',
+      iconSrc: '/assets/icon/search.svg',
       altText: '거울 조사하기',
-      position: { top: '40%', left: '80%' },
+      position: { top: '45%', left: '80%' },
       id: 'search-mirror',
       type: 'game',
       gameCallback: () => {
@@ -99,66 +96,64 @@ export class NorthRoom implements IRoom {
 
         if (NorthRoom.mirrorCompleted) {
           showCluePopup({
-            clueImgSrc: '/src/assets/img/mirror.webp',
-            message: '거울에 숫자 "314"가 흐릿하게 써있다. 이미 확인했다.',
+            clueImgSrc: '/assets/img/mirror.webp',
+            message: '거울에 숫자 "314"가 쓰여있다.',
           });
         } else if (hasTowel) {
           console.log('타월로 거울 닦기 시작');
           this.mirrorGame.start();
         } else {
           showCluePopup({
-            message: '거울이 더럽다. 타월로 닦아야 뭔가 보일 것 같다.',
+            message: '거울에 피가 부자연스럽게 묻어있다. 하지만 맨 손으로 닦을 수는 없는데...',
           });
         }
       },
     });
 
-    // 2. 복합기 검색 버튼 - 수정된 부분
+    // 2. 복합기 검색 버튼
     const copierButton = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg',
+      iconSrc: '/assets/icon/search.svg',
       altText: '복합기 조사하기',
-      position: { top: '50%', left: '45%' },
+      position: { top: '50%', left: '47%' },
       id: 'search-copier',
       type: 'game',
       gameCallback: () => {
         console.log('복합기 영역 클릭됨');
 
-        // 렌치 확인
         const hasWrench = hasItemInInventory('wrench');
         console.log('렌치 소유 여부:', hasWrench);
 
         if (NorthRoom.copierCompleted) {
-          // 이미 완료했을 때 거울과 동일하게 단서 이미지와 메시지 표시
           showCluePopup({
-            clueImgSrc: '/src/assets/img/clue_copier.webp',
-            message: '복합기를 수리했다. 중요한 단서를 발견했다.',
+            clueImgSrc: '/assets/img/clue_copier.webp',
+            message: '[경영지원팀 : 사내 10월 이달의 생일자] 안내문이 출력되었다.',
           });
         } else if (hasWrench) {
           this.copierGame.start();
         } else {
           showCluePopup({
-            message: '복합기가 고장나 있다. 렌치가 필요할 것 같다.',
+            message: '무언가 출력되다 멈춘 복합기다. 고치면 전부 출력될까?',
           });
         }
       },
     });
 
-    // 3. 쓰레기통 검색 버튼 - 정적 변수로 상태 확인
+    // 3. 쓰레기통 검색 버튼
     const trashButton = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg',
+      iconSrc: '/assets/icon/search.svg',
       altText: '쓰레기통 조사하기',
-      position: { top: '75%', left: '15%' },
+      position: { top: '72%', left: '11%' },
       id: 'search-trash',
       type: 'clue',
-      clueImgSrc: NorthRoom.towelCollected ? '' : '/src/assets/img/towel.webp',
-      clueMessage: NorthRoom.towelCollected ? '이미 쓰레기통을 살펴봤다. 더 이상 볼 것이 없다.' : '쓰레기통에서 타월을 발견했다.',
+      clueImgSrc: NorthRoom.towelCollected ? '' : '/assets/img/towel.webp',
+      clueMessage: NorthRoom.towelCollected ? '더 이상 볼 것이 없다.' : '쓰다 버린 수건같다. 무언가를 닦는데 사용할 수 있을까?',
       itemInfo: NorthRoom.towelCollected
         ? undefined
         : {
             id: 'towel',
-            name: '타월',
-            description: '쓰레기통에서 발견한 타월. 거울을 닦는데 사용할 수 있을 것 같다.',
-            image: '/src/assets/img/towel.webp',
+            name: '수건',
+            description: '쓰레기통에서 발견한 수건이다.',
+            image: '/assets/img/towel.webp',
             isSelected: false,
           },
       onFound: (item: IInventoryItem) => {
@@ -170,31 +165,31 @@ export class NorthRoom implements IRoom {
     });
 
     // 4. test 버튼 (렌치 테스트용)
-    const test = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg',
+    /* const test = new CreateSearchBtn({
+      iconSrc: '/assets/icon/search.svg',
       altText: '쓰레기통 조사하기',
       position: { top: '15%', left: '35%' },
       id: 'search-trash',
       type: 'clue',
-      clueImgSrc: '/src/assets/img/wrench.webp',
+      clueImgSrc: '/assets/img/wrench.webp',
       clueMessage: '렌치다.',
       itemInfo: {
         id: 'wrench',
         name: '렌치',
         description: '렌치다.',
-        image: '/src/assets/img/wrench.webp',
+        image: '/assets/img/wrench.webp',
         isSelected: false,
       },
       onFound: (item: IInventoryItem) => {
         itemManagerInstance.addItem(item);
       },
-    });
+    }); */
 
     // DOM에 버튼 추가
     mirrorButton.appendTo(btnBox);
     copierButton.appendTo(btnBox);
     trashButton.appendTo(btnBox);
-    test.appendTo(btnBox);
+    // test.appendTo(btnBox); // 복합기 테스트 용
 
     console.log('버튼 추가 완료');
   }
