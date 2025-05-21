@@ -29,7 +29,7 @@ export class WhiteBoardGame implements IMiniGame {
 
     const boardImg = document.createElement('img');
     boardImg.className = 'w-full h-full';
-    boardImg.src = '/assets/img/white_board.jpg';
+    boardImg.src = '/src/assets/img/white_board.webp';
     boardImg.alt = '화이트 보드 이미지';
 
     boardContainer.appendChild(boardImg);

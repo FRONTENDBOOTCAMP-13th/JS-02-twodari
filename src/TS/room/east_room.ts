@@ -35,16 +35,16 @@ export class EastRoom implements IRoom {
       iconSrc: '/src/assets/icon/search.svg', //단서 찾기 아이콘
       altText: '고양이 퍼즐 획득', //게임 실행 대체 텍스트
       position: { top: '75%', left: '12%' }, //단서 찾기 버튼 위치
-      id: 'east-game-btn', //단서 찾기 버튼 ID
+      id: 'search-puzzle', //단서 찾기 버튼 ID
       type: 'clue', //단서 타입('clue' or 'game')
-      clueImgSrc: '/assets/img/cat_puzzle.jpg', //단서 이미지 경로
+      clueImgSrc: 'src/assets/img/cat_puzzle.webp', //단서 이미지 경로
       clueMessage: '고양이 퍼즐을(를) 획득했다.', //단서 있을 때 메시지
       itemInfo: {
         //IInventoryItem
-        id: 'clue-1',
-        name: '단서 1',
+        id: 'puzzle',
+        name: '퍼즐',
         description: '(장소) 에서 발견한 (단서). 어딘가에 쓰일 것 같다.',
-        image: '/src/assets/img/clue_1.png',
+        image: 'src/assets/img/cat_puzzle.webp',
         isSelected: false,
       },
       onFound: (item: IInventoryItem) => {
@@ -57,12 +57,14 @@ export class EastRoom implements IRoom {
       iconSrc: '/src/assets/icon/search.svg', //단서 찾기 아이콘
       altText: '화이틑보드 게임 실행', //게임 실행 대체 텍스트
       position: { top: '35%', left: '35%' }, //단서 찾기 버튼 위치
-      id: 'east-game-btn', //단서 찾기 버튼 ID
+      id: 'board-game-btn', //단서 찾기 버튼 ID
       type: 'game', //단서 타입('clue' or 'game')
       gameCallback: () => {
         this.miniGame.start();
       },
     });
+
+    //탈출 번호 입력
     const searchButton3 = new CreateSearchBtn({
       iconSrc: '/src/assets/icon/search.svg', //단서 찾기 아이콘
       altText: '탈출 비밀번호 실행', //게임 실행 대체 텍스트
