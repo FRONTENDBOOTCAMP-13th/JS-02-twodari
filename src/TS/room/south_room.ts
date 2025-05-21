@@ -1,13 +1,13 @@
 import { IRoom } from '../../types/type.ts';
 export class SouthRoom implements IRoom {
-  private visited = false;
+  // private visited = false;
 
   initialize(): void {
     console.log('남쪽 방 초기화');
   }
 
   render(): void {
-    this.visited = true;
+    // this.visited = true;
     const bg = document.getElementById('room-background');
     if (bg) {
       bg.style.backgroundImage = `url('/assets/img/south_background.jpg')`;

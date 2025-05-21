@@ -2,7 +2,7 @@
  * minigame_manager.ts - 미니게임 관리
  */
 import { InventoryManager } from './inventory_manager';
-import { MirrorGame, CopierGame } from '../../../src/TS/north_minigames';
+import { CopierGame, MirrorGame } from '../../../src/TS/north_minigames';
 
 export class MinigameManager {
   private container: HTMLElement | null = null;
@@ -14,6 +14,20 @@ export class MinigameManager {
    */
   constructor(private inventoryManager: InventoryManager) {
     this.container = document.getElementById('minigame-container');
+
+    // 컨테이너가 없으면 생성
+    if (!this.container) {
+      this.container = document.createElement('div');
+      this.container.id = 'minigame-container';
+      this.container.classList.add('hidden');
+      this.container.style.position = 'fixed';
+      this.container.style.top = '0';
+      this.container.style.left = '0';
+      this.container.style.width = '100%';
+      this.container.style.height = '100%';
+      this.container.style.zIndex = '1000';
+      document.body.appendChild(this.container);
+    }
   }
 
   /**
@@ -34,11 +48,11 @@ export class MinigameManager {
     try {
       // 게임 ID에 따라 다른 게임 생성
       switch (gameId) {
-        case 'mirror':
-          this.currentGame = new MirrorGame(completeCallback);
-          break;
         case 'copier':
           this.currentGame = new CopierGame(completeCallback);
+          break;
+        case 'mirror':
+          this.currentGame = new MirrorGame(completeCallback);
           break;
         default:
           console.error(`지원하지 않는 미니게임 ID: ${gameId}`);
@@ -51,7 +65,7 @@ export class MinigameManager {
       this.currentGame.start();
     } catch (error) {
       console.error('미니게임 시작 오류:', error);
-      this.showErrorMessage('오류 발생: ' + gameId);
+      this.showErrorMessage(`오류 발생: ${gameId}`);
     }
   };
 
@@ -73,13 +87,6 @@ export class MinigameManager {
     if (closeButton) {
       closeButton.addEventListener('click', this.closeGame);
     }
-  };
-
-  /**
-   * 게임 종료 이벤트 핸들러
-   */
-  private onGameClose = (): void => {
-    this.closeGame();
   };
 
   /**

@@ -1,3 +1,6 @@
+import itemManagerInstance from '../utils/itemManagerInstance';
+import { ITEM_SELECTED_EVENT } from './itemManager';
+
 interface IButtonOptions {
   type: 'hint' | 'music' | 'item';
   iconSrc: string;
@@ -10,7 +13,8 @@ interface IButtonOptions {
 class CreateIconBtn {
   private element: HTMLButtonElement;
   private options: IButtonOptions;
-  public itemBox?: HTMLElement;
+  public itemBox?: HTMLDivElement;
+  private itemSelectionListener: EventListener;
 
   constructor(options: IButtonOptions) {
     this.options = {
@@ -21,6 +25,28 @@ class CreateIconBtn {
 
     this.element = this.createButtonElement();
     this.setupEventListeners();
+
+    // 아이템 선택 이벤트 리스너 생성
+    this.itemSelectionListener = this.handleItemSelection.bind(this);
+
+    // 아이템 버튼인 경우 이벤트 리스너 등록
+    if (this.options.type === 'item') {
+      itemManagerInstance.addEventListener(ITEM_SELECTED_EVENT, this.itemSelectionListener);
+    }
+  }
+
+  // Clean up method (중요: 클래스 인스턴스 제거 전 호출)
+  public destroy() {
+    if (this.options.type === 'item') {
+      itemManagerInstance.removeEventListener(ITEM_SELECTED_EVENT, this.itemSelectionListener);
+    }
+  }
+
+  // 아이템 선택 이벤트 핸들러
+  private handleItemSelection() {
+    if (this.options.type === 'item') {
+      this.updateItemBox();
+    }
   }
 
   private createButtonElement(): HTMLButtonElement {
@@ -54,6 +80,10 @@ class CreateIconBtn {
         this.toggle();
 
         this.options.onClick?.();
+
+        if (this.options.type === 'item') {
+          this.updateItemBox();
+        }
       });
     }
   }
@@ -78,12 +108,22 @@ class CreateIconBtn {
     if (this.options.isActive !== active) {
       this.options.isActive = active;
       this.element.classList.toggle('active', active);
+    }
+  }
 
-      // 텍스트 변경 (ON/OFF 토글 버튼인 경우)
-      // const textSpan = this.element.querySelector('span');
-      // if (textSpan && 'music'.includes(this.options.type)) {
-      //   textSpan.textContent = active ? 'ON' : 'OFF';
-      // }
+  public updateItemBox(): void {
+    if (!this.itemBox || this.options.type !== 'item') return;
+
+    const selectedItem = itemManagerInstance.getSelectedItem();
+
+    if (selectedItem) {
+      this.itemBox.innerHTML = ''; // 기존 내용 지우기
+
+      const itemImg = document.createElement('img');
+      itemImg.src = selectedItem.image;
+      itemImg.alt = selectedItem.name;
+      itemImg.className = 'w-full h-full object-contain';
+      this.itemBox.appendChild(itemImg);
     }
   }
 
@@ -92,14 +132,13 @@ class CreateIconBtn {
 
     if (this.options.type === 'item') {
       const itemBox = document.createElement('div');
-      itemBox.className = 'w-[80px] h-[80px] mt-3 p-5 bg-[url(/src/assets/icon/no_use.svg)] bg-size-[auto_50px] bg-no-repeat bg-center bg-cover';
-      // 아이템 박스 참조 저장
+      itemBox.className = 'w-[80px] h-[80px] mt-3 rounded-2xl bg-black/20';
       this.itemBox = itemBox;
-
-      // 버튼 바로 다음에 추가
       parent.insertBefore(itemBox, this.element.nextSibling);
+      this.updateItemBox();
     }
   }
+
   public getElement(): HTMLButtonElement {
     return this.element;
   }

@@ -39,7 +39,7 @@ export class RoomManager {
         const bg = document.getElementById('room-background');
         if (bg) {
           bg.style.backgroundColor = '#222';
-          bg.style.backgroundImage = `url("../../../src/assets/img/${direction}_background.jpg")`;
+          bg.style.backgroundImage = `url("/src/assets/img/${direction}_background.webp")`;
           bg.style.backgroundSize = 'cover';
           bg.style.backgroundPosition = 'center';
         }

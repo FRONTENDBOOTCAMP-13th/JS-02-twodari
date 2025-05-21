@@ -68,7 +68,7 @@ export class NorthRoom implements IRoom {
   public render = () => {
     // 배경 이미지 설정
     if (this.backgroundElement) {
-      this.backgroundElement.style.backgroundImage = 'url("../../../src/assets/img/background_north.jpg")';
+      this.backgroundElement.style.backgroundImage = 'url("/src/assets/img/background_north.webp")';
       this.backgroundElement.style.backgroundSize = 'cover';
       this.backgroundElement.style.backgroundPosition = 'center';
     }
@@ -87,7 +87,7 @@ export class NorthRoom implements IRoom {
       id: 'towel',
       name: '천 조각',
       description: '쓰다 버린 수건같다. 무언가를 닦는데 사용할 수 있을까?.',
-      image: '../../../src/assets/img/towel.png',
+      image: '/sample/assets/img/towel.webp',
     });
 
     this.interactionManager.showDialog('쓰다 버린 수건을 발견했다.');
@@ -111,26 +111,34 @@ export class NorthRoom implements IRoom {
     });
   };
 
-  private onCopierInteraction = () => {
-    if (!this.inventoryManager.hasItem('wrench')) {
-      this.interactionManager.showDialog('복합기가 망가져 있는 것 같은데, 고칠 도구가 있으면 시도해볼 수 있을 것 같다.');
-      return;
-    }
+  /**
+   * 복합기 상호작용 처리
+   * 테스트용으로 렌치 아이템이 없어도 미니게임 접근 가능
+   */
+  private onCopierInteraction = (): void => {
+    console.log('복합기 상호작용');
 
+    // 이미 수리 완료했는지 확인
     if (this.hasCopierFixed) {
+      // 단서 아이템 획득
       this.inventoryManager.addItem({
         id: 'clue1',
         name: '범인 단서1',
         description: '범인의 신원과 관련된 중요한 단서입니다.',
-        image: '../../../src/assets/img/clue1.png',
+        image: '/sample/assets/img/clue1.webp',
       });
 
       this.interactionManager.showDialog('이건 범인의 단서다!');
+
+      // 상호작용 포인트 제거 (아이템 획득 후에는 사용 불가)
       this.removeInteractionPoint('copier');
       return;
     }
 
+    // 미니게임 시작
+    // 테스트를 위해 렌치 검사 제거 (없어도 게임 접근 가능)
     this.minigameManager.startGame('copier', () => {
+      // 미니게임 완료 후 호출될 콜백
       this.hasCopierFixed = true;
       this.interactionManager.showDialog('복합기가 고쳐졌습니다!');
     });

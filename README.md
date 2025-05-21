@@ -7,7 +7,7 @@
 <br>
 <img alt="Static Badge" src="https://img.shields.io/badge/2025.05.09~2025.05.23-%23719CF7?style=flat&label=%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EA%B8%B0%EA%B0%84">
 
-[![Static Badge](https://img.shields.io/badge/NOTION-black?style=flat&logo=notion&logoColor=white&link=https%3A%2F%2Fwww.notion.so%2F11-1b673873401a807e9ac9fc1a35199cbc)](https://www.notion.so/2-1ed73873401a808395c8e9c89732cb9f) [![Static Badge](https://img.shields.io/badge/Project%20Site-%23E11900?style=flat&logo=netlify&logoColor=white)](https://)
+[![Static Badge](https://img.shields.io/badge/NOTION-black?style=flat&logo=notion&logoColor=white&link=https%3A%2F%2Fwww.notion.so%2F11-1b673873401a807e9ac9fc1a35199cbc)](https://www.notion.so/2-1ed73873401a808395c8e9c89732cb9f) [![Static Badge](https://img.shields.io/badge/Project%20Site-%23E11900?style=flat&logo=netlify&logoColor=white)](https://codeofshadow.netlify.app/)
 [![Static Badge](https://img.shields.io/badge/Twodari-%23fe6198?style=flat&logo=github&label=WiKi)](https://github.com/FRONTENDBOOTCAMP-13th/JS-02-twodari/wiki)
 
 </div>
@@ -23,7 +23,7 @@
 > 가장 중요하게 여긴 점은 **UI는 최대한 간결하게, TS로 기능을 만드는 것에 집중**하는 것이었습니다.  
 <br>
 
-> 이번 프로젝트에서 서로가 지닌 강점을 최대한 활용하고, 적극적인 피드백을 통하여 모두가 성장할 수 있던 것 같습니다.
+> 이번 프로젝트에서 서로가 지닌 강점을 최대한 활용하고, 적극적인 피드백을 통하여 모두가 성장할 수 있었습니다.
 
 <br>
 <br>

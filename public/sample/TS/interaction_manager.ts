@@ -86,7 +86,7 @@ export class InteractionManager {
 
       // 돋보기 아이콘 이미지
       const img = document.createElement('img');
-      img.src = '../../../src/assets/icon/search.svg';
+      img.src = '/src/assets/icon/search.svg';
       img.alt = 'Search';
       img.style.width = '60%';
       img.style.height = '60%';

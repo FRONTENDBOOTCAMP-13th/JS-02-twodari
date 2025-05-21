@@ -6,6 +6,7 @@ class PasswordKeypad {
   private readonly maxLength: number = 8; // 입력 최대 길이
   private onSuccess: () => void; // 성공 시 호출할 콜백 함수
   private unlockSound: HTMLAudioElement; // 정답 시 재생할 사운드
+  private volumeValue: number = 0.5; // 볼륨 조절
 
   constructor(containerId: string, onSuccess: () => void) {
     const container = document.getElementById(containerId);
@@ -16,6 +17,7 @@ class PasswordKeypad {
     this.container = container;
     this.onSuccess = onSuccess;
     this.unlockSound = new Audio('/effectSound/unlock.mp3'); // 정적 폴더에서 효과음 불러오기
+    this.unlockSound.volume = this.volumeValue;
 
     this.initUI(); // UI 구성 생성
     this.addKeyboardSupport(); // 키보드 입력 처리
@@ -34,12 +36,7 @@ class PasswordKeypad {
     keypadGrid.className = 'grid grid-cols-3 gap-3';
 
     // 버튼 라벨 목록
-    const buttons = [
-      '1', '2', '3',
-      '4', '5', '6',
-      '7', '8', '9',
-      '←', '0', '입력'
-    ];
+    const buttons = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '←', '0', '입력'];
 
     // 각 버튼 생성 및 이벤트 등록
     buttons.forEach(label => {
@@ -56,8 +53,7 @@ class PasswordKeypad {
     });
 
     // 컨테이너 스타일 및 구성 요소 삽입
-    this.container.className =
-      'max-w-xs mx-auto p-6 rounded-lg shadow-lg bg-gray-900 border border-gray-700';
+    this.container.className = 'max-w-xs mx-auto p-6 rounded-lg shadow-lg bg-gray-900 border border-gray-700';
     this.container.appendChild(this.display);
     this.container.appendChild(keypadGrid);
   }

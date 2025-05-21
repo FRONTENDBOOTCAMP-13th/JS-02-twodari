@@ -1,5 +1,5 @@
 import CreateIconBtn from '../utils/createIconBtn';
-import ItemManager from '../utils/itemManager';
+import itemManagerInstance from '../utils/itemManagerInstance';
 
 const btnBox = document.getElementById('btn-box');
 const inventoryBox = document.getElementById('inventory-box');
@@ -40,7 +40,6 @@ const musicButton = new CreateIconBtn({
   })(),
 });
 
-const inventory = new ItemManager();
 const itemButton = new CreateIconBtn({
   type: 'item',
   iconSrc: '/src/assets/icon/item.svg',
@@ -49,13 +48,13 @@ const itemButton = new CreateIconBtn({
   isActive: false,
   onClick: () => {
     console.log('인벤토리 오픈');
-    inventory.openInventory();
+    itemManagerInstance.openInventory();
     // openItem()
   },
 });
 
 if (inventoryBox) {
-  inventory.appendTo(inventoryBox);
+  itemManagerInstance.appendTo(inventoryBox);
 }
 
 if (btnBox) {

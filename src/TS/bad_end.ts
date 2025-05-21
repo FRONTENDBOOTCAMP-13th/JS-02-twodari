@@ -97,7 +97,7 @@ class BadEndingSequence {
    */
   private playBackgroundMusic = (): void => {
     try {
-      this.bgmAudio = new Audio('../../public/effectSound/bad_end.mp3');
+      this.bgmAudio = new Audio('/effectSound/bad_end.mp3');
       if (this.bgmAudio) {
         this.bgmAudio.loop = true;
         this.bgmAudio.volume = 0.3;
@@ -329,7 +329,7 @@ class BadEndingSequence {
             document.body.classList.add('ending-fade-out');
 
             setTimeout(() => {
-              window.location.href = '../pages/start_page.html';
+              window.location.href = 'start_page.html';
             }, 2000);
           }, 5000);
         }, 100);
