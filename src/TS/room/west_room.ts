@@ -1,13 +1,12 @@
 import { IRoom, IInventoryItem } from '../../types/type.ts';
 import { CodeGame } from './../minigame/west_minigame.ts';
 import { CreateSearchBtn } from '../../utils/createSearchBtn.ts';
-import ItemManager from '../../utils/itemManager.ts';
 import { WestPassword } from '../minigame/west_password.ts';
+import itemManagerInstance from '../../utils/itemManagerInstance.ts'; // 공통 인스턴스 사용 <<< 중요!
 
 export class WestRoom implements IRoom {
   private minigame: CodeGame;
   private passwordGame: WestPassword;
-  private itemManager = new ItemManager();
 
   constructor() {
     this.minigame = new CodeGame(() => {
@@ -18,20 +17,22 @@ export class WestRoom implements IRoom {
       console.log('서랍 미니게임 해결');
     });
 
-    this.itemManager.appendTo(document.body);
+    // 인벤토리가 이미 DOM에 있는지 확인 후 추가
+    if (!document.querySelector('.inventory-style')) {
+      itemManagerInstance.appendTo(document.body);
+    }
   }
 
-  //방 초기화
+  // 방 초기화
   initialize(): void {
     console.log('서쪽 방 초기화');
   }
 
   render(): void {
-    //방 그리기
-
+    // 방 그리기
     const bg = document.getElementById('room-background');
     if (bg) {
-      bg.style.backgroundImage = `url('/assets/img/west_background.jpg')`;
+      bg.style.backgroundImage = `url('/assets/img/west_background.webp')`;
       bg.style.backgroundSize = 'cover';
       bg.style.backgroundPosition = 'center';
     }
@@ -40,17 +41,16 @@ export class WestRoom implements IRoom {
     if (!btnBox) return;
     btnBox.innerHTML = '';
 
-    //첫번째 찾기 버튼 (단서1)
+    // 첫번째 찾기 버튼 (단서1)
     const searchButton1 = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg', //단서 찾기 아이콘
-      altText: '쓰레기통 단서 찾기', //단서 찾기 대체 텍스트
-      position: { top: '30%', left: '10%' }, //단서 찾기 버튼 위치
-      id: 'search-btn-1', //단서 찾기 버튼 ID
-      type: 'clue', //단서 타입('clue' or 'game')
-      clueImgSrc: '/src/assets/img/clue_1.png', //단서 이미지 경로
-      clueMessage: '단서1 을(를) 획득했다.', //단서 있을 때 메시지
+      iconSrc: '/src/assets/icon/search.svg',
+      altText: '쓰레기통 단서 찾기',
+      position: { top: '30%', left: '10%' },
+      id: 'search-btn-1',
+      type: 'clue',
+      clueImgSrc: '/src/assets/img/clue_1.png',
+      clueMessage: '단서1 을(를) 획득했다.',
       itemInfo: {
-        //IInventoryItem
         id: 'clue-1',
         name: '단서 1',
         description: '(장소) 에서 발견한 (단서). 어딘가에 쓰일 것 같다.',
@@ -58,21 +58,20 @@ export class WestRoom implements IRoom {
         isSelected: false,
       },
       onFound: (item: IInventoryItem) => {
-        this.itemManager.addItem(item);
+        itemManagerInstance.addItem(item); // 공통 인스턴스 사용
       },
     });
 
-    //두번째 찾기 버튼 (2번째 단서)
+    // 두번째 찾기 버튼 (2번째 단서)
     const searchButton2 = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg', //단서 찾기 아이콘
-      altText: '쓰레기통 단서 찾기', //단서 찾기 대체 텍스트
-      position: { top: '20%', left: '20%' }, //단서 찾기 버튼 위치
-      id: 'search-btn-2', //단서 찾기 버튼 ID
-      type: 'clue', //단서 타입('clue' or 'game')
-      clueImgSrc: '/src/assets/img/clue_3.png', //단서 이미지 경로
-      clueMessage: '단서2 을(를) 획득했다.', //단서 있을 때 메시지
+      iconSrc: '/src/assets/icon/search.svg',
+      altText: '쓰레기통 단서 찾기',
+      position: { top: '20%', left: '20%' },
+      id: 'search-btn-2',
+      type: 'clue',
+      clueImgSrc: '/src/assets/img/clue_3.png',
+      clueMessage: '단서2 을(를) 획득했다.',
       itemInfo: {
-        //IInventoryItem
         id: 'clue-2',
         name: '단서 2',
         description: '(장소) 에서 발견한 (단서). 어딘가에 쓰일 것 같다.',
@@ -80,34 +79,32 @@ export class WestRoom implements IRoom {
         isSelected: false,
       },
       onFound: (item: IInventoryItem) => {
-        this.itemManager.addItem(item);
+        itemManagerInstance.addItem(item); // 공통 인스턴스 사용 <<< 중요!
       },
     });
 
-    //세번째 찾기 버튼 (단서 없을때, 단서 이미 찾은 경우)
+    // 나머지 버튼들...
     const searchButton3 = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg', //단서 찾기 아이콘
-      altText: '쓰레기통 단서 찾기', //단서 찾기 대체 텍스트
-      position: { top: '70%', left: '70%' }, //단서 찾기 버튼 위치
-      id: 'search-btn-3', //단서 찾기 버튼 ID
-      type: 'clue', //단서 타입('clue' or 'game')
-      clueImgSrc: '', //단서 이미지 경로
-      emptyMessage: '아무것도 없는 듯 하다.', //단서 없을 때 메시지
+      iconSrc: '/src/assets/icon/search.svg',
+      altText: '쓰레기통 단서 찾기',
+      position: { top: '70%', left: '70%' },
+      id: 'search-btn-3',
+      type: 'clue',
+      clueImgSrc: '',
+      emptyMessage: '아무것도 없는 듯 하다.',
     });
 
-    //네번째 찾기 버튼 (게임 버튼)
     const searchButton4 = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg', //단서 찾기 아이콘
-      altText: '코드 게임 실행', //게임 실행 대체 텍스트
-      position: { top: '90%', left: '90%' }, //단서 찾기 버튼 위치
-      id: 'west-game-btn', //단서 찾기 버튼 ID
-      type: 'game', //단서 타입('clue' or 'game')
+      iconSrc: '/src/assets/icon/search.svg',
+      altText: '코드 게임 실행',
+      position: { top: '90%', left: '90%' },
+      id: 'west-game-btn',
+      type: 'game',
       gameCallback: () => {
         this.minigame.start();
       },
     });
 
-    // 다섯 번째 버튼 (서랍 패스워드)
     const searchButton5 = new CreateSearchBtn({
       iconSrc: '/src/assets/icon/search.svg',
       altText: '서랍 비밀번호 입력',
@@ -127,7 +124,7 @@ export class WestRoom implements IRoom {
     searchButton5.appendTo(btnBox);
   }
 
-  //방 없애기
+  // 방 정리
   cleanup(): void {
     console.log('서쪽 방 정리됨');
     this.minigame.close();

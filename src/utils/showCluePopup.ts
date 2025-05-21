@@ -1,6 +1,7 @@
 interface IClueOptions {
   clueImgSrc?: string; // 단서 이미지
   message?: string; // 메시지 텍스트
+  callback?: () => void;
 }
 
 //단서 팝업 생성자 함수
