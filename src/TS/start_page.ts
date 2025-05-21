@@ -373,5 +373,4 @@ class Terminal {
 // DOM이 완전히 로드된 후 페이지 관리자 초기화
 document.addEventListener('DOMContentLoaded', () => {
   new PageManager();
-  window.location.href = 'play_game.html';
 });
