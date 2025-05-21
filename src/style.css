@@ -191,13 +191,13 @@
   }
   /* 인벤토리  */
   .inventory-style {
-    @apply w-[600px] h-[500px] border rounded-2xl bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+    @apply w-[600px] h-[500px] border rounded-2xl bg-black/80 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
   }
   .slot-box-style {
     @apply w-full h-8/10 grid grid-cols-3  justify-items-center items-center;
   }
   .item-slot-style {
-    @apply w-[150px] h-[150px] border;
+    @apply w-[150px] h-[150px] bg-[#464646] rounded-2xl;
   }
 
   .search-btn-style {
