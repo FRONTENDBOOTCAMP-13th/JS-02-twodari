@@ -173,6 +173,10 @@ class ItemManager {
   public appendTo(parent: HTMLElement) {
     parent.appendChild(this.inventoryElement);
   }
+
+  public checkItem(itemId: string): boolean {
+    return this.itemList.some(item => item.id === itemId);
+  }
 }
 
 export default ItemManager;

@@ -4,7 +4,7 @@
  * MirrorGame: 거울 닦기 미니게임
  * CopierGame: 복합기 수리 미니게임
  */
-import { IMiniGame } from '../types/type';
+import { IMiniGame } from '../../types/type';
 
 /**
  * MirrorGame 클래스 - 거울 닦기 미니게임
@@ -615,43 +615,40 @@ export class MirrorGame implements IMiniGame {
  * 타이밍 바에서 특정 구간에 맞춰 버튼을 눌러 복합기를 수리하는 게임
  */
 export class CopierGame implements IMiniGame {
-  // === 캔버스 및 게임 상태 변수 ===
   private canvas: HTMLCanvasElement | null = null;
   private ctx: CanvasRenderingContext2D | null = null;
-  private durability: number = 0; // 복합기 내구도 (0-100%)
-  private hearts: number = 3; // 남은 생명
-  private barPosition: number = 50; // 타이밍 바 위치 (0-100%)
-  private barDirection: number = 1; // 바 이동 방향 (1: 오른쪽, -1: 왼쪽)
+  private durability: number = 0;
+  private hearts: number = 3;
+  private barPosition: number = 50;
+  private barDirection: number = 1;
   private barSpeed: number = 7; // 바 이동 속도
-  private isGameActive: boolean = false; // 게임 진행 여부
+  private isGameActive: boolean = false;
   private gameInterval: number | null = null;
   private completeVisible: boolean = false;
   private lastHitResult: 'PERFECT' | 'GOOD' | 'MISS' | '' = '';
-
-  // === 이미지 객체 ===
   private copierImage: HTMLImageElement | null = null;
   private heartImage: HTMLImageElement | null = null;
 
-  // === 사운드 관련 변수 ===
+  // 사운드 관련 변수
   private audioContext: AudioContext | null = null;
-  private repairSound: AudioBuffer | null = null; // 배경 수리 소리
-  private goodHitSound: AudioBuffer | null = null; // GOOD 히트 효과음
-  private perfectHitSound: AudioBuffer | null = null; // PERFECT 히트 효과음
-  private missSound: AudioBuffer | null = null; // 실패 효과음
-  private failureSound: AudioBuffer | null = null; // 하트 모두 소진 효과음
-  private completeSound: AudioBuffer | null = null; // 완료 효과음
+  private repairSound: AudioBuffer | null = null;
+  private goodHitSound: AudioBuffer | null = null;
+  private perfectHitSound: AudioBuffer | null = null;
+  private missSound: AudioBuffer | null = null;
+  private failureSound: AudioBuffer | null = null;
+  private completeSound: AudioBuffer | null = null;
   private repairSoundSource: AudioBufferSourceNode | null = null;
-  private audioActivated: boolean = false; // 오디오 활성화 상태
+  private audioActivated: boolean = false;
 
-  // === 색상 상수 ===
-  private readonly PERFECT_COLOR = '#00BFFF'; // 타이밍 바 퍼펙트 구간 색상
-  private readonly GOOD_COLOR = '#ffff00'; // 타이밍 바 좋음 구간 색상
-  private readonly NORMAL_COLOR = '#FF6347'; // 타이밍 바 기본 색상
-  private readonly PROGRESS_COLOR = '#4caf50'; // 진행바 색상
-  private readonly PERFECT_ACTIVE_COLOR = '#00BFFF'; // 퍼펙트 상태 표시 색상
-  private readonly GOOD_ACTIVE_COLOR = '#FFFF00'; // 좋음 상태 표시 색상
-  private readonly MISS_ACTIVE_COLOR = '#FF6347'; // 실패 상태 표시 색상
-  private readonly HEART_LOSS_PENALTY = 50; // 하트 모두 소진 시 패널티 값
+  // 색상 상수
+  private readonly PERFECT_COLOR = '#00BFFF';
+  private readonly GOOD_COLOR = '#ffff00';
+  private readonly NORMAL_COLOR = '#FF6347';
+  private readonly PROGRESS_COLOR = '#4caf50';
+  private readonly PERFECT_ACTIVE_COLOR = '#00BFFF';
+  private readonly GOOD_ACTIVE_COLOR = '#FFFF00';
+  private readonly MISS_ACTIVE_COLOR = '#FF6347';
+  private readonly HEART_LOSS_PENALTY = 50;
 
   /**
    * 복합기 게임 생성자
@@ -687,15 +684,13 @@ export class CopierGame implements IMiniGame {
     this.initAudio();
   };
 
-  // ==================== 이미지 및 오디오 관리 ====================
-
   /**
-   * 이미지 로드 - 복합기와 하트 이미지
+   * 이미지 로드
    */
   private loadImages = (): void => {
     // 복합기 이미지 로드
     this.copierImage = new Image();
-    this.copierImage.src = '/sample/assets/img/copier.webp';
+    this.copierImage.src = '/src/assets/img/copier.webp';
     this.copierImage.onload = () => console.log('복합기 이미지 로드 성공');
     this.copierImage.onerror = () => {
       console.error('복합기 이미지 로드 실패');
@@ -704,7 +699,7 @@ export class CopierGame implements IMiniGame {
 
     // 하트 이미지 로드
     this.heartImage = new Image();
-    this.heartImage.src = '/sample/assets/img/health.webp';
+    this.heartImage.src = '/src/assets/img/health.webp';
     this.heartImage.onload = () => console.log('하트 이미지 로드 성공');
     this.heartImage.onerror = () => {
       console.error('하트 이미지 로드 실패');
@@ -713,12 +708,13 @@ export class CopierGame implements IMiniGame {
   };
 
   /**
-   * 오디오 초기화 및 사운드 파일 로드
+   * 오디오 초기화 - 로드만 하고 재생하지 않음
    */
   private initAudio = async (): Promise<void> => {
     try {
       this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       await this.loadSounds();
+      console.log('오디오 초기화됨 - 아직 재생 안 함');
     } catch (error) {
       console.error('오디오 초기화 실패:', error);
     }
@@ -730,17 +726,15 @@ export class CopierGame implements IMiniGame {
   private loadSounds = async (): Promise<void> => {
     if (!this.audioContext) return;
 
-    const soundFiles = [
-      { path: '/effectSound/repair_loop.mp3', type: 'repair' },
-      { path: '/effectSound/good_hit.mp3', type: 'goodHit' },
-      { path: '/effectSound/perfect_hit.mp3', type: 'perfectHit' },
-      { path: '/effectSound/miss.mp3', type: 'miss' },
-      { path: '/effectSound/complete.mp3', type: 'complete' },
-      { path: '/effectSound/failure.mp3', type: 'failure' },
-    ];
-
-    for (const sound of soundFiles) {
-      await this.loadSound(sound.path, sound.type);
+    try {
+      await this.loadSound('/effectSound/repair_loop.mp3', 'repair');
+      await this.loadSound('/effectSound/good_hit.mp3', 'goodHit');
+      await this.loadSound('/effectSound/perfect_hit.mp3', 'perfectHit');
+      await this.loadSound('/effectSound/miss.mp3', 'miss');
+      await this.loadSound('/effectSound/complete.mp3', 'complete');
+      await this.loadSound('/effectSound/failure.mp3', 'failure');
+    } catch (error) {
+      console.error('사운드 로드 실패:', error);
     }
   };
 
@@ -788,26 +782,28 @@ export class CopierGame implements IMiniGame {
 
   /**
    * 오디오 컨텍스트 활성화 및 배경음 재생
-   * (브라우저는 사용자 상호작용이 있어야 오디오 재생 허용)
    */
   private ensureAudioActivation = (): void => {
     if (!this.audioContext) return;
 
-    // suspended 상태면 활성화 시도
+    // 이미 활성화됨
+    if (this.audioActivated) return;
+
+    // suspended 상태면 활성화
     if (this.audioContext.state === 'suspended') {
       this.audioContext
         .resume()
         .then(() => {
+          console.log('오디오 컨텍스트 활성화 성공');
           this.audioActivated = true;
           this.playRepairSound();
         })
-        .catch(error => console.error('오디오 활성화 실패:', error));
+        .catch(error => {
+          console.error('오디오 컨텍스트 활성화 실패:', error);
+        });
     } else if (this.audioContext.state === 'running') {
       this.audioActivated = true;
-      // 이미 활성화된 상태에서 배경음 없으면 재생
-      if (!this.repairSoundSource) {
-        this.playRepairSound();
-      }
+      this.playRepairSound();
     }
   };
 
@@ -823,7 +819,7 @@ export class CopierGame implements IMiniGame {
       this.repairSoundSource.loop = true;
 
       const gainNode = this.audioContext.createGain();
-      gainNode.gain.value = 0.6; // 볼륨 조절
+      gainNode.gain.value = 0.3; // 볼륨 조절
 
       this.repairSoundSource.connect(gainNode);
       gainNode.connect(this.audioContext.destination);
@@ -834,8 +830,9 @@ export class CopierGame implements IMiniGame {
       };
 
       this.repairSoundSource.start(0);
+      console.log('배경음 재생 시작');
     } catch (error) {
-      console.error('수리 사운드 재생 실패:', error);
+      console.error('배경음 재생 실패:', error);
       this.repairSoundSource = null;
     }
   };
@@ -849,6 +846,8 @@ export class CopierGame implements IMiniGame {
 
     // 사운드 타입에 따라 버퍼 선택
     let buffer: AudioBuffer | null = null;
+    let volume = 0.3; // 볼륨
+
     switch (type) {
       case 'goodHit':
         buffer = this.goodHitSound;
@@ -861,9 +860,11 @@ export class CopierGame implements IMiniGame {
         break;
       case 'complete':
         buffer = this.completeSound;
+        volume = 0.3; // 완료 사운드는 더 크게
         break;
       case 'failure':
         buffer = this.failureSound;
+        volume = 0.7; // 실패 사운드도 더 크게
         break;
     }
 
@@ -874,39 +875,51 @@ export class CopierGame implements IMiniGame {
       source.buffer = buffer;
 
       const gainNode = this.audioContext.createGain();
-      gainNode.gain.value = 0.4; // 볼륨 조절
+      gainNode.gain.value = volume;
 
       source.connect(gainNode);
       gainNode.connect(this.audioContext.destination);
       source.start();
+
+      console.log(`${type} 효과음 재생 시작`);
     } catch (error) {
       console.error(`${type} 효과음 재생 실패:`, error);
     }
   };
 
   /**
-   * 모든 사운드 정지
+   * 배경음만 멈추는 메서드 (새로 추가)
    */
-  private stopAllSounds = (): void => {
-    // 배경음 정지
+  private stopBackgroundSound = (): void => {
     if (this.repairSoundSource) {
       try {
         this.repairSoundSource.stop();
+        this.repairSoundSource.disconnect();
         this.repairSoundSource = null;
+        console.log('배경음만 정지됨');
       } catch (error) {
-        console.error('사운드 정지 실패:', error);
+        console.error('배경음 정지 실패:', error);
       }
     }
+  };
 
-    // 오디오 컨텍스트 일시 중단 (suspend)
+  /**
+   * 모든 사운드 정지 (닫기 버튼 클릭 시만 사용)
+   */
+  private stopAllSounds = (): void => {
+    // 배경음 정지
+    this.stopBackgroundSound();
+
+    // 오디오 컨텍스트 일시 중단
     if (this.audioContext && this.audioContext.state === 'running') {
       this.audioContext.suspend().catch(err => {
         console.error('오디오 컨텍스트 일시 중단 실패:', err);
       });
     }
-  };
 
-  // ==================== 게임 동작 및 UI ====================
+    this.audioActivated = false;
+    console.log('모든 사운드 정지됨');
+  };
 
   /**
    * 게임 시작
@@ -918,54 +931,24 @@ export class CopierGame implements IMiniGame {
     const container = document.getElementById('minigame-container');
     if (!container) return;
 
-    // 컨테이너 설정 및 UI 생성
-    this.setupContainer(container);
-    container.appendChild(this.createGameUI());
-
-    // 게임 상태 초기화
-    this.durability = 0;
-    this.hearts = 3;
-    this.barPosition = 50;
-    this.barDirection = 1;
-    this.isGameActive = true;
-
-    // 키보드 이벤트 리스너 설정
-    document.addEventListener('keydown', this.handleKeyDown);
-
-    // 오디오 활성화 시도 및 게임 루프 시작
-    this.ensureAudioActivation();
-    this.gameInterval = window.setInterval(this.gameLoop, 30);
-    this.draw();
-
-    // 사용자 상호작용 이벤트 한 번 캡처
-    this.captureFirstInteraction();
-  };
-
-  /**
-   * 미니게임 컨테이너 설정
-   */
-  private setupContainer = (container: HTMLElement): void => {
+    // 컨테이너 설정
     container.classList.remove('hidden');
     container.innerHTML = '';
     container.style.display = 'flex';
     container.style.alignItems = 'center';
     container.style.justifyContent = 'center';
     container.style.backgroundColor = 'rgba(0, 0, 0, 0.85)';
-  };
 
-  /**
-   * 게임 UI 생성
-   */
-  private createGameUI = (): HTMLElement => {
-    // 게임 UI 컨테이너
+    // 게임 UI 생성
     const gameBox = document.createElement('div');
     gameBox.className = 'bg-black p-5 rounded-lg shadow-lg text-center';
 
-    // 제목 및 설명
+    // 제목
     const title = document.createElement('h2');
     title.className = 'text-white text-xl mb-3';
     title.textContent = '복합기 수리';
 
+    // 설명
     const instruction = document.createElement('p');
     instruction.className = 'text-gray-300 mb-4';
     instruction.textContent = '스페이스바나 클릭으로 바가 색상 영역에 있을 때 맞추세요!';
@@ -973,7 +956,7 @@ export class CopierGame implements IMiniGame {
     // 캔버스 컨테이너
     const canvasContainer = document.createElement('div');
     canvasContainer.className = 'bg-gray-900 p-2 mb-4 rounded-lg overflow-hidden';
-    canvasContainer.appendChild(this.canvas!);
+    canvasContainer.appendChild(this.canvas);
 
     // 버튼 영역
     const buttonContainer = document.createElement('div');
@@ -984,6 +967,7 @@ export class CopierGame implements IMiniGame {
     hitButton.className = 'bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded';
     hitButton.textContent = '수리하기';
     hitButton.addEventListener('click', () => {
+      // 오디오 컨텍스트 활성화
       this.ensureAudioActivation();
       this.checkHit();
     });
@@ -1003,38 +987,33 @@ export class CopierGame implements IMiniGame {
     gameBox.appendChild(canvasContainer);
     gameBox.appendChild(buttonContainer);
 
-    return gameBox;
+    container.appendChild(gameBox);
+
+    // 게임 상태 초기화
+    this.durability = 0;
+    this.hearts = 3;
+    this.barPosition = 50;
+    this.barDirection = 1;
+    this.isGameActive = true;
+
+    // 키보드 이벤트 리스너 설정 - 오디오 활성화 추가
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Space' && this.isGameActive) {
+        e.preventDefault();
+        this.ensureAudioActivation();
+        this.checkHit();
+      }
+    });
+
+    // 게임 루프 시작
+    this.gameInterval = window.setInterval(this.gameLoop, 30);
+
+    // 초기 렌더링
+    this.draw();
   };
 
   /**
-   * 최초 사용자 상호작용 캡처 (오디오 활성화용)
-   */
-  private captureFirstInteraction = (): void => {
-    const captureInteraction = (): void => {
-      this.ensureAudioActivation();
-      document.removeEventListener('click', captureInteraction);
-      document.removeEventListener('keydown', captureInteraction);
-      document.removeEventListener('touchstart', captureInteraction);
-    };
-
-    document.addEventListener('click', captureInteraction);
-    document.addEventListener('keydown', captureInteraction);
-    document.addEventListener('touchstart', captureInteraction);
-  };
-
-  /**
-   * 키보드 입력 처리
-   */
-  private handleKeyDown = (e: KeyboardEvent): void => {
-    if (e.code === 'Space' && this.isGameActive) {
-      e.preventDefault();
-      this.ensureAudioActivation();
-      this.checkHit();
-    }
-  };
-
-  /**
-   * 게임 루프 - 주기적으로 실행되는 함수
+   * 게임 루프 (주기적으로 호출됨)
    */
   private gameLoop = (): void => {
     if (!this.isGameActive) return;
@@ -1043,28 +1022,28 @@ export class CopierGame implements IMiniGame {
   };
 
   /**
-   * 타이밍 바 이동
+   * 바 위치 이동
    */
   private moveBar = (): void => {
     if (!this.isGameActive) return;
 
     this.barPosition += this.barDirection * this.barSpeed;
 
-    // 바가 끝에 닿으면 방향 전환
+    // 방향 전환
     if (this.barPosition <= 5 || this.barPosition >= 95) {
       this.barDirection *= -1;
     }
   };
 
   /**
-   * 버튼 클릭 또는 스페이스바 누를 때 실행되는 함수
+   * 히트 체크 (스페이스바 누를 때)
    */
   public checkHit = (): void => {
     if (!this.isGameActive) return;
 
     const pos = this.barPosition;
 
-    // 히트 정확도에 따른 결과 처리
+    // 정확도에 따른 점수 및 결과 표시
     if (45 <= pos && pos <= 55) {
       // PERFECT 구간
       this.increaseDurability(10);
@@ -1093,7 +1072,7 @@ export class CopierGame implements IMiniGame {
   };
 
   /**
-   * 실패(미스) 처리
+   * 미스 처리 - 하트 소진 시 패널티
    */
   private miss = (): void => {
     this.hearts -= 1;
@@ -1103,53 +1082,42 @@ export class CopierGame implements IMiniGame {
       // 하트를 모두 잃으면 내구도 크게 감소 (패널티)
       this.durability -= this.HEART_LOSS_PENALTY;
       if (this.durability < 0) this.durability = 0;
+
       this.loseGame();
     }
   };
 
   /**
-   * 게임 성공 처리
+   * 게임 성공
    */
   private winGame = (): void => {
     this.isGameActive = false;
     this.completeVisible = true;
 
-    // 배경음만 정지 (완료 사운드는 재생 유지)
+    // 배경음만 정지하고 완료 효과음 재생
     this.stopBackgroundSound();
-
-    // 완료 효과음 재생
     this.playSound('complete');
 
-    // 완료 사운드 길이 고려하여 3초로 연장
+    console.log('게임 성공 - 배경음 정지됨, 완료 효과음 재생');
+
+    // 2초 후에 완료 콜백 실행
     setTimeout(() => {
       this.onComplete();
       this.close();
-    }, 3000); // 2000 -> 3000으로 연장
+    }, 2000);
   };
 
   /**
-   * 배경음만 정지 (다른 효과음은 유지)
-   */
-  private stopBackgroundSound = (): void => {
-    if (this.repairSoundSource) {
-      try {
-        this.repairSoundSource.stop();
-        this.repairSoundSource = null;
-      } catch (error) {
-        console.error('배경음 정지 실패:', error);
-      }
-    }
-  };
-
-  /**
-   * 게임 실패 처리 (하트 모두 소진)
+   * 게임 실패 처리 - 수정됨
    */
   private loseGame = (): void => {
     this.isGameActive = false;
 
-    // 배경음 정지하고 실패 효과음 재생
-    this.stopAllSounds();
-    this.playSound('failure'); // 하트 모두 소진 전용 실패 사운드
+    // 배경음만 정지하고 실패 효과음 재생
+    this.stopBackgroundSound();
+    this.playSound('failure');
+
+    console.log('게임 실패 - 배경음 정지됨, 실패 효과음 재생');
 
     // 2초 후에 게임 재시작
     setTimeout(() => {
@@ -1163,60 +1131,37 @@ export class CopierGame implements IMiniGame {
   private restart = (): void => {
     this.hearts = 3;
     this.isGameActive = true;
+
+    // 배경음 다시 재생
     this.playRepairSound();
   };
 
   /**
-   * 게임 종료 및 정리
-   */
-  public close = (): void => {
-    this.isGameActive = false;
-
-    // 게임 루프 정지
-    if (this.gameInterval) {
-      clearInterval(this.gameInterval);
-      this.gameInterval = null;
-    }
-
-    document.removeEventListener('keydown', this.handleKeyDown);
-
-    // 일반 종료일 때만 모든 사운드 정지
-    if (!this.completeVisible) {
-      this.stopAllSounds();
-    } else {
-      // 완료 상태에서는 배경음만 정지 (효과음 유지)
-      this.stopBackgroundSound();
-    }
-
-    // 미니게임 컨테이너 숨기기
-    const container = document.getElementById('minigame-container');
-    if (container) {
-      setTimeout(() => {
-        container.classList.add('hidden');
-        container.style.display = 'none';
-        container.innerHTML = '';
-      }, 500);
-    }
-  };
-
-  // ==================== 그래픽 렌더링 ====================
-
-  /**
-   * 화면 그리기
+   * 캔버스 그리기
    */
   private draw = (): void => {
     if (!this.ctx || !this.canvas) return;
 
     // 캔버스 초기화
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // 배경색 설정
     this.ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-    // 요소들 그리기
+    // 상단 진행 바 (내구도) 그리기
     this.drawProgressBar();
+
+    // 복합기 이미지 그리기 (중앙에 위치)
     this.drawCopierImage();
+
+    // 상태 표시 텍스트 그리기 (복합기 오른쪽)
     this.drawLastHitResult();
+
+    // 타이밍 바 그리기
     this.drawTimingBar();
+
+    // 하트 (목숨) 그리기 (중앙)
     this.drawHearts();
 
     // 게임 완료 메시지
@@ -1226,16 +1171,52 @@ export class CopierGame implements IMiniGame {
   };
 
   /**
-   * 복합기 이미지 그리기
+   * 게임 종료 및 정리 - 모든 사운드 정지
    */
+  public close = (): void => {
+    this.isGameActive = false;
+
+    // 이벤트 리스너 제거
+    document.removeEventListener('keydown', this.handleKeyDown);
+
+    // 게임 루프 정지
+    if (this.gameInterval) {
+      clearInterval(this.gameInterval);
+      this.gameInterval = null;
+    }
+
+    // 모든 사운드 정지 (닫기 버튼 클릭 시에만)
+    this.stopAllSounds();
+
+    console.log('게임 종료 - 모든 사운드 정지됨');
+
+    // 미니게임 컨테이너 숨기기
+    const container = document.getElementById('minigame-container');
+    if (container) {
+      container.classList.add('hidden');
+      container.style.display = 'none';
+      container.innerHTML = '';
+    }
+  };
+
+  // 키보드 이벤트 핸들러
+  private handleKeyDown = (e: KeyboardEvent): void => {
+    if (e.code === 'Space' && this.isGameActive) {
+      e.preventDefault();
+      this.ensureAudioActivation();
+      this.checkHit();
+    }
+  };
+
+  // 나머지 그래픽 관련 메서드들
   private drawCopierImage = (): void => {
+    // 복합기 이미지 그리는 로직
     if (!this.ctx || !this.canvas) return;
 
     const imageSize = 150;
     const x = this.canvas.width / 2 - imageSize / 2;
     const y = 120;
 
-    // 이미지가 유효하면 그리고, 아니면 대체 이미지 사용
     if (this.copierImage && this.copierImage.complete && this.copierImage.naturalWidth !== 0) {
       try {
         this.ctx.drawImage(this.copierImage, x, y, imageSize, imageSize);
@@ -1247,13 +1228,9 @@ export class CopierGame implements IMiniGame {
     }
   };
 
-  /**
-   * 대체 복합기 이미지 그리기
-   */
   private drawFallbackCopier = (x: number, y: number, size: number): void => {
     if (!this.ctx) return;
 
-    // 간단한 사각형으로 복합기 표현
     this.ctx.fillStyle = '#444';
     this.ctx.fillRect(x, y, size, size);
     this.ctx.strokeStyle = '#888';
@@ -1261,9 +1238,6 @@ export class CopierGame implements IMiniGame {
     this.ctx.strokeRect(x, y, size, size);
   };
 
-  /**
-   * 진행 바 (내구도) 그리기
-   */
   private drawProgressBar = (): void => {
     if (!this.ctx || !this.canvas) return;
 
@@ -1272,24 +1246,18 @@ export class CopierGame implements IMiniGame {
     const barX = (this.canvas.width - barWidth) / 2;
     const barY = 50;
 
-    // 배경
     this.ctx.strokeStyle = '#444';
     this.ctx.lineWidth = 2;
     this.ctx.strokeRect(barX, barY, barWidth, barHeight);
 
-    // 진행 상태
     this.ctx.fillStyle = this.PROGRESS_COLOR;
     this.ctx.fillRect(barX, barY, barWidth * (this.durability / 100), barHeight);
 
-    // 테두리
     this.ctx.strokeStyle = '#4caf50';
     this.ctx.lineWidth = 3;
     this.ctx.strokeRect(barX - 5, barY - 5, barWidth + 10, barHeight + 10);
   };
 
-  /**
-   * 타이밍 바 그리기
-   */
   private drawTimingBar = (): void => {
     if (!this.ctx || !this.canvas) return;
 
@@ -1298,25 +1266,20 @@ export class CopierGame implements IMiniGame {
     const barWidth = 500;
     const barLeft = (this.canvas.width - barWidth) / 2;
 
-    // 바 배경
     this.ctx.fillStyle = this.NORMAL_COLOR;
     this.ctx.fillRect(barLeft, barY, barWidth, barHeight);
 
-    // 점수 영역 표시
-    const perfectZoneWidth = barWidth * 0.03; // 퍼펙트 구간 (3%)
-    const goodZoneWidth = barWidth * 0.05; // 좋음 구간 (5%)
+    const perfectZoneWidth = barWidth * 0.03;
+    const goodZoneWidth = barWidth * 0.05;
 
-    // PERFECT 구간 (중앙)
     this.ctx.fillStyle = this.PERFECT_COLOR;
     const perfectZoneLeft = barLeft + barWidth / 2 - perfectZoneWidth / 2;
     this.ctx.fillRect(perfectZoneLeft, barY, perfectZoneWidth, barHeight);
 
-    // GOOD 구간 (양쪽)
     this.ctx.fillStyle = this.GOOD_COLOR;
     this.ctx.fillRect(perfectZoneLeft - goodZoneWidth, barY, goodZoneWidth, barHeight);
     this.ctx.fillRect(perfectZoneLeft + perfectZoneWidth, barY, goodZoneWidth, barHeight);
 
-    // 현재 위치 마커 (삼각형)
     const markerPos = barLeft + (barWidth * this.barPosition) / 100;
     this.ctx.fillStyle = '#ffffff';
     this.ctx.beginPath();
@@ -1327,39 +1290,29 @@ export class CopierGame implements IMiniGame {
     this.ctx.fill();
   };
 
-  /**
-   * 하트 (목숨) 그리기
-   */
   private drawHearts = (): void => {
     if (!this.ctx || !this.canvas || this.hearts <= 0) return;
 
     const heartSize = 30;
     const spacing = 40;
 
-    // 하트를 중앙 정렬하기 위한 계산
     const totalWidth = this.hearts * heartSize + (this.hearts - 1) * (spacing - heartSize);
     const startX = (this.canvas.width - totalWidth) / 2;
     const startY = this.canvas.height - 50;
 
-    // 남은 하트 수만큼 그리기
     for (let i = 0; i < this.hearts; i++) {
-      const x = startX + i * spacing;
-
       if (this.heartImage && this.heartImage.complete && this.heartImage.naturalWidth !== 0) {
         try {
-          this.ctx.drawImage(this.heartImage, x, startY, heartSize, heartSize);
+          this.ctx.drawImage(this.heartImage, startX + i * spacing, startY, heartSize, heartSize);
         } catch (error) {
-          this.drawFallbackHeart(x, startY, heartSize);
+          this.drawFallbackHeart(startX + i * spacing, startY, heartSize);
         }
       } else {
-        this.drawFallbackHeart(x, startY, heartSize);
+        this.drawFallbackHeart(startX + i * spacing, startY, heartSize);
       }
     }
   };
 
-  /**
-   * 대체 하트 그래픽 그리기
-   */
   private drawFallbackHeart = (x: number, y: number, size: number): void => {
     if (!this.ctx) return;
 
@@ -1373,38 +1326,30 @@ export class CopierGame implements IMiniGame {
     this.ctx.fill();
   };
 
-  /**
-   * 마지막 히트 결과 표시 (PERFECT/GOOD/MISS)
-   */
   private drawLastHitResult = (): void => {
     if (!this.ctx || !this.canvas || !this.lastHitResult) return;
 
     const imageSize = 150;
     const copierX = this.canvas.width / 2 - imageSize / 2;
     const copierY = 120;
-    const textX = copierX + imageSize + 30; // 복합기 오른쪽에 표시
+    const textX = copierX + imageSize + 30;
     const startY = copierY + 30;
 
     this.ctx.font = '18px Arial';
     this.ctx.textAlign = 'left';
 
-    // 결과별 텍스트 정의
     const resultTexts = [
       { text: 'PERFECT', color: this.lastHitResult === 'PERFECT' ? this.PERFECT_ACTIVE_COLOR : '#666666' },
       { text: 'GOOD', color: this.lastHitResult === 'GOOD' ? this.GOOD_ACTIVE_COLOR : '#666666' },
       { text: 'MISS', color: this.lastHitResult === 'MISS' ? this.MISS_ACTIVE_COLOR : '#666666' },
     ];
 
-    // 각 결과 표시
     resultTexts.forEach((item, index) => {
       this.ctx!.fillStyle = item.color;
       this.ctx!.fillText(item.text, textX, startY + index * 30);
     });
   };
 
-  /**
-   * 완료 메시지 그리기
-   */
   private drawCompleteMessage = (): void => {
     if (!this.ctx || !this.canvas) return;
 
