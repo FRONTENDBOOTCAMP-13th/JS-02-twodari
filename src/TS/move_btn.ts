@@ -18,7 +18,7 @@ const moveButtonUp = new CreateMoveBtn({
     CreateMoveBtn.setActiveDirection('up');
     RoomManager.goTo(directionMap['up']);
   },
-  position: { top: '25px', left: '100px', position: 'absolute' },
+  position: { top: '45px', left: '100px', position: 'absolute' },
   moveText: 'N',
 });
 moveButtonUp.appendTo();
@@ -33,7 +33,7 @@ const moveButtonDown = new CreateMoveBtn({
     CreateMoveBtn.setActiveDirection('down');
     RoomManager.goTo(directionMap['down']);
   },
-  position: { top: '175px', left: '100px', position: 'absolute' },
+  position: { top: '160px', left: '100px', position: 'absolute' },
   moveText: 'S',
 });
 moveButtonDown.appendTo();
@@ -48,7 +48,7 @@ const moveButtonLeft = new CreateMoveBtn({
     CreateMoveBtn.setActiveDirection('left');
     RoomManager.goTo(directionMap['left']);
   },
-  position: { top: '100px', left: '25px', position: 'absolute' },
+  position: { top: '100px', left: '45px', position: 'absolute' },
   moveText: 'W',
 });
 moveButtonLeft.appendTo();
@@ -63,7 +63,7 @@ const moveButtonRight = new CreateMoveBtn({
     CreateMoveBtn.setActiveDirection('right');
     RoomManager.goTo(directionMap['right']);
   },
-  position: { top: '100px', left: '175px', position: 'absolute' },
+  position: { top: '100px', left: '155px', position: 'absolute' },
   moveText: 'E',
 });
 moveButtonRight.appendTo();

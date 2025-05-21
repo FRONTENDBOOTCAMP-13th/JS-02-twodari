@@ -132,6 +132,8 @@ export class WestPassword implements IMiniGame {
     this.destroy();
 
     this.showClueItem();
+
+    this.onComplete?.();
   }
 
   // 실패 시 처리

@@ -5,7 +5,6 @@ import ItemManager from '../../utils/itemManager.ts';
 import { WestPassword } from '../minigame/west_password.ts';
 
 export class WestRoom implements IRoom {
-  private visited = false;
   private minigame: CodeGame;
   private passwordGame: WestPassword;
   private itemManager = new ItemManager();
@@ -29,7 +28,6 @@ export class WestRoom implements IRoom {
 
   render(): void {
     //방 그리기
-    this.visited = true;
 
     const bg = document.getElementById('room-background');
     if (bg) {
