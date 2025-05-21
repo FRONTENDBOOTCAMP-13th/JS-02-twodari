@@ -154,15 +154,15 @@ export class WestPassword implements IMiniGame {
     const itemManager = new ItemManager();
 
     itemManager.addItem({
-      id: 'tool',
+      id: 'wrench',
       name: '공구',
-      description: '고장난 물건을 고칠 수 있을 것 같다.',
-      image: '/src/assets/img/clue_1.webp',
+      description: '공구. 고장난 물건을 고칠 수 있을 것 같다.',
+      image: '/src/assets/img/wrench.webp',
       isSelected: false,
     });
 
     showCluePopup({
-      clueImgSrc: '/src/assets/img/clue_1.webp',
+      clueImgSrc: '/src/assets/img/wrench.webp',
       message: '공구를 획득했다.',
     });
   }
