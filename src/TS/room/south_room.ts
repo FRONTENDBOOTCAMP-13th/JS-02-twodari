@@ -1,5 +1,4 @@
-import { IRoom } from '../types/type';
-
+import { IRoom } from '../../types/type.ts';
 export class SouthRoom implements IRoom {
   // private visited = false;
 
@@ -15,6 +14,9 @@ export class SouthRoom implements IRoom {
       bg.style.backgroundSize = 'cover';
       bg.style.backgroundPosition = 'center';
     }
+    const btnBox = document.getElementById('search-btn-box');
+    if (!btnBox) return;
+    btnBox.innerHTML = '';
   }
 
   cleanup(): void {

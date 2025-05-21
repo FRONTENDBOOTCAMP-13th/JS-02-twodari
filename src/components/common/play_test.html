@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/src/style.css" rel="stylesheet" />
+    <script type="module" src="/src/TS/move_btn.ts"></script>
+    <title>방탈출test</title>
+  </head>
+  <body class="relative bg-black text-white">
+    <h1>방탈출 test 페이지</h1>
+
+    <!-- 배경 영역-->
+    <div id="room-background" class="fixed inset-0 -z-10 bg-cover bg-center"></div>
+
+    <!-- 찾기버튼 영역 -->
+    <div id="search-btn-box" class="fixed inset-0 z-10"></div>
+
+    <!-- 미니게임 영역-->
+    <div id="minigame-container" class="hidden fixed inset-0 z-50 flex items-center justify-center"></div>
+
+    <!-- 이동 버튼 영역-->
+    <div id="move-btn-box" class="fixed bottom-10 right-10 z-20"></div>
+  </body>
+</html>

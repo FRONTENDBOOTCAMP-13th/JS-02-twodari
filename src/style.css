@@ -209,7 +209,11 @@
     @apply w-1/2 h-1/2 object-contain;
   }
   .clue-layer {
-    @apply fixed inset-0 bg-black/60 backdrop-blur-sm z-40 flex justify-center items-center;
+    @apply fixed inset-0 bg-black/60 backdrop-blur-sm z-99 flex justify-center items-center;
+  }
+
+  .game-layer {
+    @apply fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center;
   }
 
   .clue-popup {
@@ -223,7 +227,7 @@
     @apply text-xl text-white font-bold ml-4;
   }
   .close-btn {
-    @apply px-4 py-1  bg-black border-[#464646] border-4 w-[100px] h-[50px] rounded-xl text-xl text-white font-bold;
+    @apply px-4 py-1  bg-black border-[#464646] border-4 w-[100px] h-[50px] rounded-xl text-xl text-white font-bold hover:bg-gray-700;
   }
 
   .move-btn-style {
@@ -265,6 +269,33 @@
     @apply fixed top-0 left-0 w-screen h-screen -z-10 bg-no-repeat bg-cover bg-center;
   }
 
+  /* 미니게임 - 유진 */
+
+  .console-style {
+    @apply bg-black text-(--light-primary) font-mono p-4 rounded-lg w-[800px] h-[500px] relative overflow-y-auto border-5 border-(--light-primary) shadow-lg;
+  }
+
+  .tapbar-style {
+    @apply flex border-b border-(--light-primary) mb-2;
+  }
+
+  .close-btn-style {
+    @apply absolute bottom-4 right-4 px-4 py-2 bg-black border-[#464646] border-4 w-[100px] h-[50px] rounded-xl text-xl text-white hover:bg-gray-700;
+  }
+
+  .active-tab {
+    @apply px-4 py-2 bg-(--light-primary) text-black;
+  }
+
+  .unactive-tab {
+    @apply px-4 py-2 bg-gray-700 text-black;
+  }
+
+  .animate-blink {
+    animation: blink 1s step-start infinite;
+  }
+
+  /* 타이머 */
   .timeBox-style {
     @apply w-[200px] h-[50px] p-5 border-4 rounded-2xl border-[#464646] flex justify-around items-center;
   }
