@@ -218,10 +218,10 @@
 
   .clue-popup {
     @apply bg-black/40  w-[800px] h-[120px] p-4 rounded-2xl z-50 border-[#464646] border-4;
-    @apply absolute bottom-20 left-20  flex items-center justify-between;
+    @apply absolute bottom-10 left-10  flex items-center justify-between;
   }
   .clue-img {
-    @apply w-full max-h-[500px] object-contain;
+    @apply w-full max-h-[300px] object-contain;
   }
   .clue-message {
     @apply text-xl text-white font-bold ml-4;
@@ -231,7 +231,7 @@
   }
 
   .move-btn-style {
-    @apply absolute w-[100px] h-[100px] flex items-center justify-center focus:outline-none;
+    @apply absolute w-[90px] h-[90px] flex items-center justify-center focus:outline-none;
     @apply fixed transition shadow-md;
   }
   .move-btn-style.active svg,
@@ -240,7 +240,7 @@
   }
 
   .move-icon-img {
-    @apply w-1/2 h-1/2 object-contain transition-transform;
+    @apply w-[40%] h-[40%] object-contain transition-transform;
   }
 
   .rotate-up {
@@ -256,13 +256,13 @@
     @apply rotate-0;
   }
   .move-text-style {
-    @apply absolute text-white text-[25px] transition-colors leading-none group-hover:text-(--light-primary);
+    @apply absolute text-white text-[20px] transition-colors leading-none group-hover:text-(--light-primary);
   }
 
   .circle-style {
-    @apply absolute w-[50px] h-[50px] rounded-full bg-white/30 backdrop-blur-sm;
-    top: 125px;
-    left: 125px;
+    @apply absolute w-[35px] h-[35px] rounded-full bg-white/30 backdrop-blur-sm;
+    top: 130px;
+    left: 127px;
   }
 
   .room-background-style {

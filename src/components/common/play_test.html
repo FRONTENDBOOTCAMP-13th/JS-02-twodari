@@ -8,30 +8,40 @@
     <script type="module" src="/src/TS/icon_btn.ts"></script>
     <script type="module" src="/src/TS/timer.ts"></script>
     <script type="module" src="/src/TS/search_btn.ts"></script>
+    <script type="module" src="/src/TS/scale_game.ts"></script>
     <title>방탈출test</title>
+    <style>
+      html,
+      body {
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        background-color: black;
+      }
+    </style>
   </head>
-  <body class="relative bg-black text-white">
+  <body class="overflow-hidden">
     <h1>방탈출 test 페이지</h1>
+    <!-- 크기 고정 UI wrapper -->
+    <div id="game-root" class="fixed inset-0 flex items-center justify-center bg-black">
+      <div id="game-layout" class="relative w-[1280px] h-[720px] overflow-hidden">
+        <!-- 배경 영역 -->
+        <div id="room-background" class="absolute inset-0 bg-cover bg-center -z-10"></div>
 
-    <!-- 배경 영역-->
-    <div id="room-background" class="fixed inset-0 -z-10 bg-cover bg-center"></div>
+        <!-- 찾기버튼 영역 -->
+        <div id="search-btn-box" class="absolute inset-0 z-10"></div>
 
-    <!-- 찾기버튼 영역 -->
-    <div id="search-btn-box" class="fixed inset-0 z-10"></div>
+        <!-- 미니게임 영역 -->
+        <div id="minigame-container" class="absolute inset-0 z-50 hidden flex items-center justify-center"></div>
 
-    <!-- 미니게임 영역-->
-    <div id="minigame-container" class="hidden fixed inset-0 z-50 flex items-center justify-center"></div>
+        <!-- 이동버튼 영역 -->
+        <div id="move-btn-box" class="absolute bottom-10 right-10 z-20"></div>
 
-    <!-- 이동 버튼 영역-->
-    <div id="move-btn-box" class="fixed bottom-10 right-10 z-20"></div>
-
-    <!--  버튼 영역-->
-    <div id="btn-box" class="flex gap-4"></div>
-
-    <!--  인벤토리 영역-->
-    <div id="inventory-box"></div>
-
-    <!--  타이머 영역-->
-    <div id="timer-box"></div>
+        <!-- 메시지/아이템/타이머 -->
+        <div id="btn-box" class="absolute top-4 left-4 z-30 flex gap-4"></div>
+        <div id="inventory-box" class="absolute bottom-4 left-4 z-40"></div>
+        <div id="timer-box" class="absolute top-4 right-4 z-40"></div>
+      </div>
+    </div>
   </body>
 </html>

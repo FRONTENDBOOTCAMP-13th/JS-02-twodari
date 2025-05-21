@@ -60,7 +60,9 @@ export class CreateMoveBtn {
     btn.className = 'move-btn-style group';
 
     // 버튼 위치 설정
-    Object.assign(btn.style, this.options.position);
+    // Object.assign(btn.style, this.options.position);
+    const positionStyle = { ...this.options.position, position: 'absolute' };
+    Object.assign(btn.style, positionStyle);
 
     // 이미지 삽입(인라인 svg - 아이콘 색상 채우기 문제)
     btn.innerHTML = `
@@ -86,22 +88,22 @@ export class CreateMoveBtn {
     // 버튼 위치에 따라(type) 위치 설정
     switch (type) {
       case 'up':
-        style.top = '-20px';
+        style.top = '-2px';
         style.left = '50%';
         style.transform = 'translateX(-50%)';
         break;
       case 'down':
-        style.bottom = '-20px';
+        style.bottom = '-2px';
         style.left = '50%';
         style.transform = 'translateX(-50%)';
         break;
       case 'left':
-        style.left = '-20px';
+        style.left = '-2px';
         style.top = '50%';
         style.transform = 'translateY(-50%)';
         break;
       case 'right':
-        style.right = '-20px';
+        style.right = '-2px';
         style.top = '50%';
         style.transform = 'translateY(-50%)';
         break;
@@ -129,14 +131,19 @@ export class CreateMoveBtn {
     container.id = 'move-btn-container';
     container.className = 'wrapper-style';
     Object.assign(container.style, {
-      position: 'fixed',
-      bottom: '60px',
-      right: '60px',
-      width: '300px',
-      height: '300px',
+      position: 'absolute',
+      bottom: '170px',
+      right: '170px',
+      width: '100px',
+      height: '100px',
       zIndex: '50',
     });
-    document.body.appendChild(container);
+    const layout = document.getElementById('game-layout');
+    if (!layout) {
+      throw new Error('Game-layout not found');
+    }
+    layout.appendChild(container);
+
     CreateMoveBtn.container = container;
     return container;
   }
