@@ -199,7 +199,9 @@
   .item-slot-style {
     @apply w-[150px] h-[150px] bg-[#464646] rounded-2xl;
   }
-
+  .white-board-style {
+    @apply w-[700px] h-[500px]  rounded-2xl bg-black/80 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  }
   .search-btn-style {
     @apply absolute flex items-center justify-center w-[100px] h-[100px] p-1.5 rounded-full;
     @apply bg-white/20 shadow-md backdrop-blur-sm;
