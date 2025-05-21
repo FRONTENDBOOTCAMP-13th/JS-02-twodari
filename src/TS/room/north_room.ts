@@ -8,20 +8,26 @@ export class NorthRoom implements IRoom {
   private mirrorGame: MirrorGame;
   private copierGame: CopierGame;
 
-  // 정적 변수로 상태 유지 (클래스 레벨에서 공유)
-  private static towelCollected = false;
-  private static mirrorCompleted = false;
-  private static copierCompleted = false;
+  private towelCollected = false;
+  private mirrorCompleted = false;
+  private copierCompleted = false;
 
   constructor() {
     console.log('NorthRoom 생성자 실행');
 
+    // 인벤토리가 이미 DOM에 있는지 확인 후 추가
+    if (!document.querySelector('.inventory-style')) {
+      itemManagerInstance.appendTo(document.body);
+    }
+
+    this.checkTowelStatus();
+
     // 거울 미니게임 초기화
     this.mirrorGame = new MirrorGame(() => {
       console.log('거울 미니게임 해결');
-      NorthRoom.mirrorCompleted = true;
+      this.mirrorCompleted = true;
+      sessionStorage.setItem('north_mirror_completed', 'true');
 
-      // 미니게임 성공 후 팝업 표시
       showCluePopup({
         clueImgSrc: '/assets/img/mirror.webp',
         message: '거울에 숫자 "314"가 쓰여있다. 어디에 쓰이는 숫자일까?',
@@ -31,7 +37,8 @@ export class NorthRoom implements IRoom {
     // 복합기 미니게임 초기화
     this.copierGame = new CopierGame(() => {
       console.log('복합기 미니게임 해결');
-      NorthRoom.copierCompleted = true;
+      this.copierCompleted = true;
+      sessionStorage.setItem('north_copier_completed', 'true');
 
       showCluePopup({
         clueImgSrc: '/assets/img/clue_copier.webp',
@@ -40,26 +47,46 @@ export class NorthRoom implements IRoom {
     });
   }
 
-  // 방 초기화
-  initialize(): void {
-    console.log('북쪽 방 초기화');
-    this.mirrorGame.initialize();
-    this.copierGame.initialize();
+  // 타월 상태 체크
+  private checkTowelStatus(): void {
+    console.log('타월 상태 체크 중...');
 
-    // minigame-container 확인
-    if (!document.getElementById('minigame-container')) {
-      console.warn('minigame-container가 없습니다. 미니게임이 제대로 표시되지 않을 수 있습니다.');
+    // 인벤토리에서만 확인
+    let hasItemInInventory = false;
+    if (typeof itemManagerInstance.checkItem === 'function') {
+      hasItemInInventory = itemManagerInstance.checkItem('towel');
+      console.log('인벤토리 타월 상태:', hasItemInInventory);
     }
+
+    // 인벤토리 상태만 반영
+    this.towelCollected = hasItemInInventory;
+    console.log('최종 타월 소유 상태:', this.towelCollected);
   }
 
-  // 방 렌더링
+  initialize(): void {
+    console.log('북쪽 방 초기화');
+
+    // 상태 확인 - 인벤토리만 체크
+    this.checkTowelStatus();
+
+    this.mirrorCompleted = sessionStorage.getItem('north_mirror_completed') === 'true';
+    this.copierCompleted = sessionStorage.getItem('north_copier_completed') === 'true';
+
+    this.mirrorGame.initialize();
+    this.copierGame.initialize();
+  }
+
   render(): void {
     console.log('NorthRoom render 실행');
+
+    // 렌더링 시 타월 상태 확인
+    this.checkTowelStatus();
+    console.log('쓰레기통 상태:', this.towelCollected ? '이미 수집됨' : '아직 미수집');
 
     // 배경 이미지 설정
     const bg = document.getElementById('room-background');
     if (bg) {
-      bg.style.backgroundImage = `url('/assets/img/background_north.webp')`;
+      bg.style.backgroundImage = `url('/src/assets/img/background_north.webp')`;
       bg.style.backgroundSize = 'cover';
       bg.style.backgroundPosition = 'center';
     }
@@ -72,17 +99,9 @@ export class NorthRoom implements IRoom {
     }
     btnBox.innerHTML = '';
 
-    // === 인벤토리 아이템 체크 함수 ===
-    const hasItemInInventory = (itemId: string): boolean => {
-      if (typeof itemManagerInstance.checkItem === 'function') {
-        return itemManagerInstance.checkItem(itemId);
-      }
-      return false;
-    };
-
-    // 1. 거울 검색 버튼
+    // 거울 검색 버튼
     const mirrorButton = new CreateSearchBtn({
-      iconSrc: '/assets/icon/search.svg',
+      iconSrc: '/src/assets/icon/search.svg',
       altText: '거울 조사하기',
       position: { top: '45%', left: '80%' },
       id: 'search-mirror',
@@ -90,16 +109,16 @@ export class NorthRoom implements IRoom {
       gameCallback: () => {
         console.log('거울 영역 클릭됨');
 
-        // 타월 확인
-        const hasTowel = hasItemInInventory('towel');
-        console.log('타월 소유 여부:', hasTowel);
+        // 클릭 시점에 타월 상태 다시 확인
+        this.checkTowelStatus();
+        console.log('타월 소유 여부 (거울 클릭 시):', this.towelCollected);
 
-        if (NorthRoom.mirrorCompleted) {
+        if (this.mirrorCompleted) {
           showCluePopup({
-            clueImgSrc: '/assets/img/mirror.webp',
+            clueImgSrc: '/src/assets/img/mirror.webp',
             message: '거울에 숫자 "314"가 쓰여있다.',
           });
-        } else if (hasTowel) {
+        } else if (this.towelCollected) {
           console.log('타월로 거울 닦기 시작');
           this.mirrorGame.start();
         } else {
@@ -112,7 +131,7 @@ export class NorthRoom implements IRoom {
 
     // 2. 복합기 검색 버튼
     const copierButton = new CreateSearchBtn({
-      iconSrc: '/assets/icon/search.svg',
+      iconSrc: '/src/assets/icon/search.svg',
       altText: '복합기 조사하기',
       position: { top: '50%', left: '47%' },
       id: 'search-copier',
@@ -120,12 +139,13 @@ export class NorthRoom implements IRoom {
       gameCallback: () => {
         console.log('복합기 영역 클릭됨');
 
-        const hasWrench = hasItemInInventory('wrench');
+        // 렌치 확인
+        const hasWrench = itemManagerInstance.checkItem?.('wrench') || false;
         console.log('렌치 소유 여부:', hasWrench);
 
-        if (NorthRoom.copierCompleted) {
+        if (this.copierCompleted) {
           showCluePopup({
-            clueImgSrc: '/assets/img/clue_copier.webp',
+            clueImgSrc: '/src/assets/img/clue_copier.webp',
             message: '[경영지원팀 : 사내 10월 이달의 생일자] 안내문이 출력되었다.',
           });
         } else if (hasWrench) {
@@ -138,63 +158,54 @@ export class NorthRoom implements IRoom {
       },
     });
 
-    // 3. 쓰레기통 검색 버튼
-    const trashButton = new CreateSearchBtn({
-      iconSrc: '/assets/icon/search.svg',
-      altText: '쓰레기통 조사하기',
-      position: { top: '72%', left: '11%' },
-      id: 'search-trash',
-      type: 'clue',
-      clueImgSrc: NorthRoom.towelCollected ? '' : '/assets/img/towel.webp',
-      clueMessage: NorthRoom.towelCollected ? '더 이상 볼 것이 없다.' : '쓰다 버린 수건같다. 무언가를 닦는데 사용할 수 있을까?',
-      itemInfo: NorthRoom.towelCollected
-        ? undefined
-        : {
-            id: 'towel',
-            name: '수건',
-            description: '쓰레기통에서 발견한 수건이다.',
-            image: '/assets/img/towel.webp',
-            isSelected: false,
-          },
-      onFound: (item: IInventoryItem) => {
-        if (!NorthRoom.towelCollected) {
-          itemManagerInstance.addItem(item);
-          NorthRoom.towelCollected = true;
-        }
-      },
-    });
+    // 쓰레기통 검색 버튼 - 무조건 표시하되 획득 후에만 제거하도록
+    if (!this.towelCollected) {
+      console.log('쓰레기통 버튼 렌더링 중...');
+      const trashButton = new CreateSearchBtn({
+        iconSrc: '/src/assets/icon/search.svg',
+        altText: '쓰레기통 조사하기',
+        position: { top: '72%', left: '11%' },
+        id: 'search-trash',
+        type: 'clue',
+        clueImgSrc: '/src/assets/img/towel.webp',
+        clueMessage: '쓰다 버린 수건같다. 무언가를 닦는데 사용할 수 있을까?',
+        itemInfo: {
+          id: 'towel',
+          name: '수건',
+          description: '쓰레기통에서 발견한 수건이다.',
+          image: '/src/assets/img/towel.webp',
+          isSelected: false,
+        },
+        onFound: (item: IInventoryItem) => {
+          console.log('수건 발견됨, 인벤토리에 추가 중...');
 
-    // 4. test 버튼 (렌치 테스트용)
-    /* const test = new CreateSearchBtn({
-      iconSrc: '/assets/icon/search.svg',
-      altText: '쓰레기통 조사하기',
-      position: { top: '15%', left: '35%' },
-      id: 'search-trash',
-      type: 'clue',
-      clueImgSrc: '/assets/img/wrench.webp',
-      clueMessage: '렌치다.',
-      itemInfo: {
-        id: 'wrench',
-        name: '렌치',
-        description: '렌치다.',
-        image: '/assets/img/wrench.webp',
-        isSelected: false,
-      },
-      onFound: (item: IInventoryItem) => {
-        itemManagerInstance.addItem(item);
-      },
-    }); */
+          // 인벤토리에 아이템 추가
+          itemManagerInstance.addItem(item);
+
+          // 상태 업데이트 - 세션 스토리지는 사용하지 않음
+          this.towelCollected = true;
+
+          // 버튼 제거
+          const trashBtn = document.getElementById('search-trash');
+          if (trashBtn && btnBox) {
+            btnBox.removeChild(trashBtn);
+          }
+
+          // 상태 재확인
+          this.checkTowelStatus();
+        },
+      });
+
+      trashButton.appendTo(btnBox);
+    }
 
     // DOM에 버튼 추가
     mirrorButton.appendTo(btnBox);
     copierButton.appendTo(btnBox);
-    trashButton.appendTo(btnBox);
-    // test.appendTo(btnBox); // 복합기 테스트 용
 
     console.log('버튼 추가 완료');
   }
 
-  // 방 정리
   cleanup(): void {
     console.log('북쪽 방 정리됨');
     this.mirrorGame.close();
