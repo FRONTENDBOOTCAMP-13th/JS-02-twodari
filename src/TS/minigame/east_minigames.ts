@@ -1,6 +1,6 @@
 import { IMiniGame } from '../../types/type.ts';
 
-export class WhiteBoardGame {
+export class WhiteBoardGame implements IMiniGame {
   private boardElement: HTMLDialogElement;
 
   constructor() {
@@ -11,7 +11,9 @@ export class WhiteBoardGame {
     console.log('미니게임 초기화');
   }
 
-  public start() {}
+  public start() {
+    this.createBoard();
+  }
 
   public close() {}
 
