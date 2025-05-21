@@ -63,7 +63,7 @@ class PageManager {
     if (!this.audioContext) return;
 
     try {
-      const response = await fetch('../../public/effectSound/typing.mp3');
+      const response = await fetch('/effectSound/typing.mp3');
       if (!response.ok) {
         throw new Error('타이핑 효과음을 로드할 수 없습니다');
       }
@@ -88,7 +88,7 @@ class PageManager {
 
     // 페이지에 따른 배경음악 설정
     if (pageId === 'title-page') {
-      this.bgmAudio = new Audio('../../public/effectSound/start_page.mp3');
+      this.bgmAudio = new Audio('/effectSound/start_page.mp3');
       if (this.bgmAudio) {
         this.bgmAudio.loop = true;
         this.bgmAudio.volume = 0.3;
@@ -226,7 +226,7 @@ class Terminal {
     if (!this.audioContext) return;
 
     try {
-      const response = await fetch('../../public/effectSound/typing.mp3');
+      const response = await fetch('/effectSound/typing.mp3');
       if (!response.ok) {
         throw new Error('타이핑 효과음을 로드할 수 없습니다');
       }
@@ -373,4 +373,5 @@ class Terminal {
 // DOM이 완전히 로드된 후 페이지 관리자 초기화
 document.addEventListener('DOMContentLoaded', () => {
   new PageManager();
+  window.location.href = 'play_game.html';
 });
