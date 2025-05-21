@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/src/style.css" rel="stylesheet" />
     <script type="module" src="/src/TS/move_btn.ts"></script>
+    <script type="module" src="/src/TS/icon_btn.ts"></script>
+    <script type="module" src="/src/TS/timer.ts"></script>
+    <script type="module" src="/src/TS/search_btn.ts"></script>
     <title>방탈출test</title>
   </head>
   <body class="relative bg-black text-white">
@@ -21,5 +24,14 @@
 
     <!-- 이동 버튼 영역-->
     <div id="move-btn-box" class="fixed bottom-10 right-10 z-20"></div>
+
+    <!--  버튼 영역-->
+    <div id="btn-box" class="flex gap-4"></div>
+
+    <!--  인벤토리 영역-->
+    <div id="inventory-box"></div>
+
+    <!--  타이머 영역-->
+    <div id="timer-box"></div>
   </body>
 </html>

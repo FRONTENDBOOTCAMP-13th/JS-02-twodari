@@ -295,6 +295,25 @@
     animation: blink 1s step-start infinite;
   }
 
+  /* 서랍 패스워드 */
+  .back-btn-style {
+    @apply mt-4 px-6 py-3 
+  bg-black border-[#464646] border-4 rounded-xl 
+text-xl text-white hover:bg-gray-700;
+  }
+
+  .input-box-style {
+    @apply w-20 h-20 bg-white text-[#464646] text-4xl font-bold border-[#464646] border-4 rounded-lg flex items-center justify-center shadow-md;
+  }
+
+  .fail-text-style {
+    @apply text-white text-lg font-semibold mb-4;
+  }
+
+  .content-box-style {
+    @apply relative z-[101] flex flex-col items-center justify-center w-full h-full;
+  }
+
   /* 타이머 */
   .timeBox-style {
     @apply w-[200px] h-[50px] p-5 border-4 rounded-2xl border-[#464646] flex justify-around items-center;
