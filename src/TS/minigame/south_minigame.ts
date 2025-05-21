@@ -1,3 +1,5 @@
+import { IMiniGame } from '../../types/type.ts';
+
 export class PuzzleGame {
   private container: HTMLElement | null = null;
   private puzzleGrid: HTMLDivElement | null = null;
@@ -12,18 +14,19 @@ export class PuzzleGame {
     this.createUI();
 
     // 초기화 후 컨테이너 숨기기
-    const target = document.getElementById('minigame-container');
-    if (target) {
-      target.classList.add('hidden');
+    if (this.container) {
+      this.container.classList.add('hidden');
     }
   }
 
   // start 메서드에서만 컨테이너를 표시
   public start(): void {
-    const target = document.getElementById('minigame-container');
-    if (target) {
-      target.classList.remove('hidden');
+    if (!this.container) this.createUI();
+    if (this.container) {
+      this.container.classList.remove('hidden');
     }
+    this.resetPuzzle();
+    this.addCloseButton(); // 닫기 버튼 추가
   }
 
   public close(): void {
@@ -38,9 +41,7 @@ export class PuzzleGame {
 
     this.container = target;
     this.container.innerHTML = '';
-    this.container.classList.remove('hidden');
-    this.container.classList.add('flex', 'items-center', 'justify-center', 'p-4');
-
+    this.container.className = 'flex items-center justify-center p-4 bg-black/30 fixed inset-0 z-50'; // 배경 어둡게
     this.puzzleGrid = document.createElement('div');
     this.puzzleGrid.className = 'grid gap-1 bg-white border-4 border-yellow-800 rounded-md shadow-lg';
     this.puzzleGrid.style.gridTemplateColumns = `repeat(${this.size}, 100px)`;
@@ -50,13 +51,22 @@ export class PuzzleGame {
     this.createPieces();
   }
 
+  private resetPuzzle(): void {
+    // 기존 조각 제거 및 새로 생성
+    this.pieces = [];
+    if (this.puzzleGrid) {
+      this.puzzleGrid.innerHTML = '';
+      this.createPieces();
+    }
+  }
+
   private createPieces(): void {
     const total = this.size * this.size;
     const shuffled = [...Array(total).keys()].sort(() => Math.random() - 0.5);
 
     shuffled.forEach((originalIndex, i) => {
       const piece = document.createElement('div');
-      piece.className = 'w-[100px] h-[100px] border border-gray-300 bg-cover bg-center';
+      piece.className = 'w-[100px] h-[100px] border border-gray-300 bg-cover bg-center transition-all duration-150';
       piece.draggable = true;
 
       const row = Math.floor(originalIndex / this.size);
@@ -91,23 +101,16 @@ export class PuzzleGame {
       const toIndex = parseInt(piece.dataset.currentIndex || '');
 
       if (!isNaN(fromIndex) && fromIndex !== toIndex) {
-        const fromPiece = this.pieces[fromIndex];
-        const toPiece = this.pieces[toIndex];
+        // swap 배열
+        [this.pieces[fromIndex], this.pieces[toIndex]] = [this.pieces[toIndex], this.pieces[fromIndex]];
 
-        const fromClone = fromPiece.cloneNode(true) as HTMLDivElement;
-        const toClone = toPiece.cloneNode(true) as HTMLDivElement;
+        // currentIndex 갱신
+        this.pieces[fromIndex].dataset.currentIndex = fromIndex.toString();
+        this.pieces[toIndex].dataset.currentIndex = toIndex.toString();
 
-        this.puzzleGrid!.replaceChild(toClone, fromPiece);
-        this.puzzleGrid!.replaceChild(fromClone, toPiece);
-
-        this.pieces[fromIndex] = toClone;
-        this.pieces[toIndex] = fromClone;
-
-        toClone.dataset.currentIndex = fromIndex.toString();
-        fromClone.dataset.currentIndex = toIndex.toString();
-
-        this.addDragEvents(fromClone);
-        this.addDragEvents(toClone);
+        // DOM을 배열 순서대로 다시 렌더링
+        this.puzzleGrid!.innerHTML = '';
+        this.pieces.forEach(piece => this.puzzleGrid!.appendChild(piece));
 
         this.checkCompletion();
       }
@@ -120,8 +123,75 @@ export class PuzzleGame {
     });
 
     if (isSolved) {
-      alert('퍼즐 완성!');
-      this.onComplete?.();
+      this.puzzleGrid?.classList.add('border-green-500');
+
+      // 닫기 버튼 제거
+      const closeBtn = this.container?.querySelector('#puzzle-close-btn');
+      if (closeBtn) closeBtn.remove();
+
+      this.showCompletionMessage(); // 성공 문구 먼저 표시
+
+      setTimeout(() => {
+        this.onComplete?.();
+        this.close();
+      }, 1700); // 1.7초 후 닫기
     }
   }
+
+  private addCloseButton() {
+    if (this.container?.querySelector('#puzzle-close-btn')) return;
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.id = 'puzzle-close-btn'; // id 추가
+    closeBtn.textContent = '닫기';
+    closeBtn.className = 'absolute bottom-4 bg-red-500 text-white px-4 py-2 rounded';
+    closeBtn.addEventListener('click', () => {
+      console.log('퍼즐 닫기 버튼 클릭');
+      this.close();
+    });
+    if (this.container) {
+      this.container.appendChild(closeBtn);
+    }
+  }
+
+  private showCompletionMessage(): void {
+    if (!this.container) return;
+
+    // 이미 메시지가 있으면 중복 추가하지 않음
+    if (this.container.querySelector('.puzzle-complete-message')) return;
+
+    const message = document.createElement('div');
+    message.textContent = 'COMPLETE!';
+    message.className = 'puzzle-complete-message absolute text-green-500 text-5xl font-bold px-6 py-3 rounded-lg';
+    message.style.cssText += `
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 100;
+      -webkit-text-stroke: 1px white; /* 흰 테두리 */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 그림자 효과 */`;
+
+    this.container.appendChild(message);
+
+    // 메시지 자동 제거
+    setTimeout(() => {
+      message.remove();
+    }, 1500);
+  }
 }
+
+// // 퍼즐게임 테스트
+// // 퍼즐 완성 후 실행할 콜백 함수(선택)
+// function onPuzzleComplete() {
+//   // 예: 남쪽방 클리어 처리 등
+//   console.log('퍼즐 완성!');
+// }
+
+// // 퍼즐 인스턴스 생성
+// const puzzleGame = new PuzzleGame(onPuzzleComplete);
+
+// // 퍼즐 UI 초기화(최초 1회)
+// puzzleGame.initialize();
+
+// // 퍼즐 시작(보이게 함)
+// puzzleGame.start();
