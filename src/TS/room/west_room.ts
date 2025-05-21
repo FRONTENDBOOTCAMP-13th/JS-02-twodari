@@ -2,23 +2,29 @@ import { IRoom, IInventoryItem } from '../../types/type.ts';
 import { CodeGame } from './../minigame/west_minigame.ts';
 import { CreateSearchBtn } from '../../utils/createSearchBtn.ts';
 import ItemManager from '../../utils/itemManager.ts';
+import { WestPassword } from '../minigame/west_password.ts';
 
 export class WestRoom implements IRoom {
   private visited = false;
-  private game: CodeGame;
+  private minigame: CodeGame;
+  private passwordGame: WestPassword;
   private itemManager = new ItemManager();
 
   constructor() {
-    this.game = new CodeGame(() => {
+    this.minigame = new CodeGame(() => {
       console.log('코드 미니게임 해결');
     });
+
+    this.passwordGame = new WestPassword(() => {
+      console.log('서랍 미니게임 해결');
+    });
+
     this.itemManager.appendTo(document.body);
   }
 
   //방 초기화
   initialize(): void {
     console.log('서쪽 방 초기화');
-    this.game.initialize();
   }
 
   render(): void {
@@ -51,6 +57,7 @@ export class WestRoom implements IRoom {
         name: '단서 1',
         description: '(장소) 에서 발견한 (단서). 어딘가에 쓰일 것 같다.',
         image: '/src/assets/img/clue_1.png',
+        isSelected: false,
       },
       onFound: (item: IInventoryItem) => {
         this.itemManager.addItem(item);
@@ -72,6 +79,7 @@ export class WestRoom implements IRoom {
         name: '단서 2',
         description: '(장소) 에서 발견한 (단서). 어딘가에 쓰일 것 같다.',
         image: '/src/assets/img/clue_3.png',
+        isSelected: false,
       },
       onFound: (item: IInventoryItem) => {
         this.itemManager.addItem(item);
@@ -97,7 +105,19 @@ export class WestRoom implements IRoom {
       id: 'west-game-btn', //단서 찾기 버튼 ID
       type: 'game', //단서 타입('clue' or 'game')
       gameCallback: () => {
-        this.game.start();
+        this.minigame.start();
+      },
+    });
+
+    // 다섯 번째 버튼 (서랍 패스워드)
+    const searchButton5 = new CreateSearchBtn({
+      iconSrc: '/src/assets/icon/search.svg',
+      altText: '서랍 비밀번호 입력',
+      position: { top: '50%', left: '70%' },
+      id: 'drawer-password-btn',
+      type: 'game',
+      gameCallback: () => {
+        this.passwordGame.start();
       },
     });
 
@@ -106,11 +126,13 @@ export class WestRoom implements IRoom {
     searchButton2.appendTo(btnBox);
     searchButton3.appendTo(btnBox);
     searchButton4.appendTo(btnBox);
+    searchButton5.appendTo(btnBox);
   }
 
   //방 없애기
   cleanup(): void {
     console.log('서쪽 방 정리됨');
-    this.game.close();
+    this.minigame.close();
+    this.passwordGame.close();
   }
 }
