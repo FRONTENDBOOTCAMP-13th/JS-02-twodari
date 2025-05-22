@@ -150,32 +150,15 @@ export class CodeGame implements IMiniGame {
     this.container = target;
 
     // 오버레이 생성
+
     const overlay = document.createElement('div');
     overlay.className = 'game-layer';
-    overlay.style.position = 'absolute';
-    overlay.style.width = '100%';
-    overlay.style.height = '100%';
-    overlay.style.display = 'flex';
-    overlay.style.alignItems = 'center';
-    overlay.style.justifyContent = 'center';
 
     // 콘솔 박스 생성
     this.consoleBox = document.createElement('div');
     this.consoleBox.className = 'console-style';
-    this.consoleBox.style.width = '80%';
-    this.consoleBox.style.maxWidth = '800px';
-    this.consoleBox.style.height = '80%';
-    this.consoleBox.style.maxHeight = '600px';
-    this.consoleBox.style.backgroundColor = '#1a1a1a';
-    this.consoleBox.style.border = '1px solid #00ff84';
-    this.consoleBox.style.borderRadius = '5px';
-    this.consoleBox.style.color = '#00ff84';
-    this.consoleBox.style.fontFamily = 'monospace';
-    this.consoleBox.style.display = 'flex';
-    this.consoleBox.style.flexDirection = 'column';
-    this.consoleBox.style.padding = '10px';
-    this.consoleBox.style.position = 'relative';
-    this.consoleBox.style.boxShadow = '0 0 20px rgba(0, 255, 132, 0.5)';
+    overlay.appendChild(this.consoleBox);
+    this.container.appendChild(overlay);
 
     overlay.appendChild(this.consoleBox);
     this.container.appendChild(overlay);
@@ -183,39 +166,17 @@ export class CodeGame implements IMiniGame {
     // 탭 바 생성
     const tabBar = document.createElement('div');
     tabBar.className = 'tapbar-style';
-    tabBar.style.display = 'flex';
-    tabBar.style.borderBottom = '1px solid #00ff84';
-    tabBar.style.marginBottom = '10px';
 
     const terminalTab = document.createElement('button');
     terminalTab.textContent = 'Terminal';
     terminalTab.className = 'active-tab';
-    terminalTab.style.backgroundColor = '#00ff84';
-    terminalTab.style.color = 'black';
-    terminalTab.style.border = 'none';
-    terminalTab.style.padding = '5px 10px';
-    terminalTab.style.borderTopLeftRadius = '5px';
-    terminalTab.style.borderTopRightRadius = '5px';
-    terminalTab.style.cursor = 'pointer';
     terminalTab.setAttribute('data-tab', 'terminal');
-
-    // 이벤트 리스너 추가 (추적하여 나중에 제거)
     this.addEventListenerWithTracking(terminalTab, 'click', () => this.switchTab('terminal'));
 
     const hackTab = document.createElement('button');
     hackTab.textContent = 'hack.js';
     hackTab.className = 'unactive-tab';
-    hackTab.style.backgroundColor = '#374151';
-    hackTab.style.color = '#00ff84';
-    hackTab.style.border = 'none';
-    hackTab.style.padding = '5px 10px';
-    hackTab.style.borderTopLeftRadius = '5px';
-    hackTab.style.borderTopRightRadius = '5px';
-    hackTab.style.marginLeft = '5px';
-    hackTab.style.cursor = 'pointer';
     hackTab.setAttribute('data-tab', 'hack');
-
-    // 이벤트 리스너 추가 (추적하여 나중에 제거)
     this.addEventListenerWithTracking(hackTab, 'click', () => this.switchTab('hack'));
 
     tabBar.append(terminalTab, hackTab);
@@ -266,8 +227,6 @@ export class CodeGame implements IMiniGame {
     this.inputLine = document.createElement('div');
     this.inputLine.className = 'mt-2 flex';
     this.inputLine.id = 'input-line';
-    this.inputLine.style.display = 'flex';
-    this.inputLine.style.marginTop = '10px';
 
     const prompt = document.createElement('span');
     prompt.textContent = '[main-server ~/] >';
@@ -277,11 +236,6 @@ export class CodeGame implements IMiniGame {
     // 입력 필드 생성
     this.inputField = document.createElement('input');
     this.inputField.className = 'terminal-input outline-none';
-    this.inputField.style.backgroundColor = 'transparent';
-    this.inputField.style.color = '#00ff84';
-    this.inputField.style.border = 'none';
-    this.inputField.style.outline = 'none';
-    this.inputField.style.flex = '1';
     this.inputField.type = 'text';
     this.inputField.autocomplete = 'off';
     this.inputField.spellcheck = false;
@@ -317,13 +271,6 @@ export class CodeGame implements IMiniGame {
     const closeButton = document.createElement('button');
     closeButton.textContent = '닫기';
     closeButton.className = 'close-btn-style';
-    closeButton.style.backgroundColor = '#374151';
-    closeButton.style.color = '#00ff84';
-    closeButton.style.border = '1px solid #00ff84';
-    closeButton.style.borderRadius = '5px';
-    closeButton.style.padding = '5px 10px';
-    closeButton.style.marginTop = '10px';
-    closeButton.style.cursor = 'pointer';
 
     // 닫기 버튼 이벤트 리스너
     const handleClose = (e: Event) => {

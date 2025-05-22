@@ -103,158 +103,77 @@ export class WestPassword implements IMiniGame {
 
   //패스워드 그리기
   initialize(): void {
-    console.log('서랍 미니게임 초기화');
-
     this.container = document.createElement('div');
-    this.container.className = 'fixed inset-0 z-[10000]'; // z-index 더 높임
-    this.container.tabIndex = 0; // 포커스 가능하도록 설정
-    this.container.style.outline = 'none'; // 포커스 시 외곽선 제거
+    this.container.className = 'fixed inset-0 z-[100]';
+    this.container.tabIndex = -1;
 
-    // 게임 컨테이너 스타일 직접 설정
-    this.container.style.position = 'fixed';
-    this.container.style.top = '0';
-    this.container.style.left = '0';
-    this.container.style.width = '100%';
-    this.container.style.height = '100%';
-    this.container.style.display = 'flex';
-    this.container.style.alignItems = 'center';
-    this.container.style.justifyContent = 'center';
-    this.container.style.backgroundColor = 'black'; // 완전 불투명
+    const overlay = document.createElement('div');
+    overlay.className = 'game-layer';
+    overlay.addEventListener('mousedown', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.container?.focus();
+      return false;
+    });
 
-    // content wrapper
     const contentBox = document.createElement('div');
     contentBox.className = 'content-box-style';
-    contentBox.style.backgroundColor = 'rgba(20, 20, 20, 0.95)'; // 더 진한 배경
-    contentBox.style.padding = '30px';
-    contentBox.style.borderRadius = '10px';
-    contentBox.style.minWidth = '350px';
-    contentBox.style.textAlign = 'center';
-    contentBox.style.color = 'white';
-    contentBox.style.boxShadow = '0 0 30px rgba(0, 0, 0, 0.8)';
-    contentBox.style.position = 'relative';
-    contentBox.style.zIndex = '10001';
-    contentBox.style.border = '2px solid #555';
 
-    // 제목 추가
-    const title = document.createElement('h2');
-    title.textContent = '서랍이 잠겨 있다.';
-    title.style.fontSize = '24px';
-    title.style.marginBottom = '20px';
-    title.style.color = '#fff';
-    title.style.fontWeight = 'bold';
-
-    // 입력 상태 표시기 추가
     const focusIndicator = document.createElement('div');
     focusIndicator.id = 'focus-indicator';
     focusIndicator.className = 'text-green-500 text-center mb-2';
     focusIndicator.textContent = '숫자 키로 입력 후, Enter';
-    focusIndicator.style.fontSize = '16px';
-    focusIndicator.style.visibility = 'visible';
-    focusIndicator.style.color = '#4ade80';
-    focusIndicator.style.marginBottom = '15px';
 
-    // 숫자 입력칸
     const inputWrapper = document.createElement('div');
     inputWrapper.className = 'flex gap-4 mb-6';
-    inputWrapper.style.display = 'flex';
-    inputWrapper.style.justifyContent = 'center';
-    inputWrapper.style.marginBottom = '30px';
-    inputWrapper.style.gap = '20px';
 
-    this.inputBoxes = []; // 기존 배열 초기화
-
+    this.inputBoxes = [];
     for (let i = 0; i < 3; i++) {
       const box = document.createElement('span');
       box.textContent = '0';
       box.className = 'input-box-style';
-      box.style.width = '60px';
-      box.style.height = '60px';
-      box.style.backgroundColor = '#333';
-      box.style.color = 'white';
-      box.style.borderRadius = '8px';
-      box.style.display = 'flex';
-      box.style.alignItems = 'center';
-      box.style.justifyContent = 'center';
-      box.style.fontSize = '32px';
-      box.style.fontWeight = 'bold';
-      box.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
       this.inputBoxes.push(box);
       inputWrapper.appendChild(box);
     }
 
-    // 실패 텍스트
     this.failText = document.createElement('p');
-    this.failText.textContent = '비밀번호 입력';
-    this.failText.style.color = '#aaa';
-    this.failText.style.marginBottom = '25px';
-    this.failText.style.fontSize = '16px';
+    this.failText.textContent = '서랍은 굳게 닫혀 있다.';
+    this.failText.className = 'fail-text-style';
 
-    // 버튼 컨테이너
-    const buttonContainer = document.createElement('div');
-    buttonContainer.style.display = 'flex';
-    buttonContainer.style.justifyContent = 'center';
-    buttonContainer.style.gap = '15px';
-
-    // 뒤로가기 버튼
     const backBtn = document.createElement('button');
-    backBtn.textContent = '닫기';
-    backBtn.style.backgroundColor = '#0f0';
-    backBtn.style.color = 'black';
-    backBtn.style.padding = '8px 20px';
-    backBtn.style.borderRadius = '5px';
-    backBtn.style.border = 'none';
-    backBtn.style.cursor = 'pointer';
-    backBtn.style.fontSize = '16px';
+    backBtn.textContent = '뒤로가기';
+    backBtn.className = 'back-btn-style';
+    backBtn.addEventListener('click', () => this.destroy());
 
-    backBtn.addEventListener('click', () => {
-      console.log('서랍 미니게임 뒤로가기 클릭');
-      this.destroy();
-    });
-
-    buttonContainer.appendChild(backBtn);
-
-    // 도움말 텍스트 추가
-    const helpText = document.createElement('p');
-    helpText.style.fontSize = '14px';
-    helpText.style.color = '#aaa';
-    helpText.style.marginTop = '20px';
-
-    // 요소들 추가
-    contentBox.appendChild(title);
     contentBox.appendChild(focusIndicator);
     contentBox.appendChild(inputWrapper);
     contentBox.appendChild(this.failText);
-    contentBox.appendChild(buttonContainer);
-    contentBox.appendChild(helpText);
+    contentBox.appendChild(backBtn);
 
-    // 직접 컨테이너에 내용 추가
+    this.container.appendChild(overlay);
     this.container.appendChild(contentBox);
+    document.body.appendChild(this.container);
 
-    // 컨테이너가 이미 있는 경우 추가
-    const gameContainer = document.getElementById('minigame-container');
-    if (gameContainer) {
-      gameContainer.innerHTML = ''; // 기존 내용 제거
-      gameContainer.appendChild(this.container);
-    } else {
-      document.body.appendChild(this.container);
-    }
-
-    // 컨테이너 클릭 시 포커스 설정
-    this.container.addEventListener('click', () => {
-      this.container?.focus();
+    this.container.addEventListener('focus', () => {
+      const indicator = document.getElementById('focus-indicator');
+      if (indicator) indicator.style.visibility = 'visible';
+      this.inputBoxes.forEach(box => {
+        box.style.boxShadow = '0 0 0 2px rgba(34, 197, 94, 0.2)';
+      });
     });
 
-    // 입력 배열 초기화
-    this.input = [];
-    this.updateDisplay();
+    this.container.addEventListener('blur', () => {
+      setTimeout(() => this.container?.focus(), 10);
+    });
 
-    // 초기 포커스 설정 (강화)
-    setTimeout(() => {
-      if (this.container) {
-        this.container.focus();
-        console.log('초기 포커스 설정 완료');
-      }
-    }, 100);
+    contentBox.addEventListener('mousedown', e => {
+      if (document.activeElement === this.container) return;
+      this.container?.focus();
+      e.stopPropagation();
+    });
+
+    document.addEventListener('keydown', this.keyHandler);
+    setTimeout(() => this.container?.focus(), 100);
   }
 
   // 키보드 핸들러를 별도 메서드로 분리
