@@ -12,23 +12,15 @@ export function setKeyListener() {
 
     switch (event.key) {
       case 'ArrowUp':
-      case 'w':
-      case 'W':
         MoveController.move('up');
         break;
       case 'ArrowDown':
-      case 's':
-      case 'S':
         MoveController.move('down');
         break;
       case 'ArrowLeft':
-      case 'a':
-      case 'A':
         MoveController.move('left');
         break;
       case 'ArrowRight':
-      case 'd':
-      case 'D':
         MoveController.move('right');
         break;
     }
