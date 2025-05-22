@@ -87,7 +87,6 @@ export class EastRoom implements IRoom {
       type: 'game', //단서 타입('clue' or 'game')
       gameCallback: () => {
         this.EscapeCodeGame.start();
-        this.whiteBoardGame;
       },
     });
 
