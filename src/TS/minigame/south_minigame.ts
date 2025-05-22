@@ -179,19 +179,3 @@ export class PuzzleGame {
     }, 1500);
   }
 }
-
-// // 퍼즐게임 테스트
-// // 퍼즐 완성 후 실행할 콜백 함수(선택)
-// function onPuzzleComplete() {
-//   // 예: 남쪽방 클리어 처리 등
-//   console.log('퍼즐 완성!');
-// }
-
-// // 퍼즐 인스턴스 생성
-// const puzzleGame = new PuzzleGame(onPuzzleComplete);
-
-// // 퍼즐 UI 초기화(최초 1회)
-// puzzleGame.initialize();
-
-// // 퍼즐 시작(보이게 함)
-// puzzleGame.start();
