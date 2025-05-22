@@ -1,7 +1,7 @@
 // SouthRoom 클래스 - 남쪽 방 구성
 // 퍼즐 미니게임과 금고 키패드 미니게임 구현
 
-import { IRoom, IInventoryItem } from '../../../types/type.ts';
+import { IRoom } from '../../../types/type.ts';
 import { PuzzleGame } from '../../minigame/south_minigame.ts';
 import { PasswordKeypad } from '../../minigame/password_keypad.ts';
 import { CreateSearchBtn } from '../../components/createSearchBtn.ts';
@@ -55,17 +55,6 @@ export class SouthRoom implements IRoom {
     this.PasswordKeypad = new PasswordKeypad('keypad-container', () => {
       console.log('비밀번호 성공');
       SouthRoom.PasswordKeypadCompleted = true;
-
-      // 사원증 아이템 추가
-      const newItem: IInventoryItem = {
-        id: 'employee-card',
-        name: '피 묻은 사원증',
-        description: "금고에서 발견한 피 묻은 사원증.",
-        image: '/assets/img/idcard.webp',
-        isSelected: false,
-      };
-
-      itemManagerInstance.addItem(newItem);
 
       showCluePopup({
         clueImgSrc: '/assets/img/idcard.webp',
