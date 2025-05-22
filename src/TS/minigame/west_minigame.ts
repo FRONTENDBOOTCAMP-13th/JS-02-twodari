@@ -32,6 +32,9 @@ export class CodeGame implements IMiniGame {
   public close(): void {
     if (this.container) {
       this.container.classList.add('hidden');
+      this.container.style.display = 'none';
+    } else {
+      console.log('미니게임 UI가 없습니다.');
     }
   }
 
@@ -137,6 +140,15 @@ export class CodeGame implements IMiniGame {
     closeButton.className = 'close-btn-style';
     closeButton.addEventListener('click', () => this.close());
     this.consoleBox.appendChild(closeButton);
+
+    const handleClose = (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('닫기 버튼 클릭됨');
+      this.close();
+    };
+
+    closeButton.addEventListener('click', handleClose);
   }
 
   private updateContent(type: 'terminal' | 'hack') {
