@@ -23,7 +23,6 @@ export class EastRoom implements IRoom {
   }
 
   render(): void {
-    // this.visited = true;
     const bg = document.getElementById('room-background');
     if (bg) {
       bg.style.backgroundImage = `url('/assets/img/east_background.webp')`;
@@ -43,15 +42,15 @@ export class EastRoom implements IRoom {
 
     //화분에서 아이템 얻기
     const vessleClueBtn = new CreateSearchBtn({
-      iconSrc: '/assets/icon/search.svg', //단서 찾기 아이콘
-      altText: '고양이 퍼즐 획득', //게임 실행 대체 텍스트
-      position: { top: '75%', left: '12%' }, //단서 찾기 버튼 위치
-      id: 'search-puzzle', //단서 찾기 버튼 ID
-      type: 'clue', //단서 타입('clue' or 'game')
-      clueImgSrc: '/assets/img/cat_puzzle.webp', //단서 이미지 경로
-      clueMessage: '고양이 퍼즐을(를) 획득했다.', //단서 있을 때 메시지
+      iconSrc: '/assets/icon/search.svg',
+      altText: '고양이 퍼즐 획득',
+      position: { top: '75%', left: '12%' },
+      id: 'search-puzzle',
+      type: 'clue',
+      clueImgSrc: '/assets/img/cat_puzzle.webp',
+      clueMessage: '고양이 퍼즐을(를) 획득했다.',
+      emptyMessage: '여기는 이제 아무것도 없다.',
       itemInfo: {
-        //IInventoryItem
         id: 'Piece',
         name: '퍼즐',
         description: '(장소) 에서 발견한 (단서). 어딘가에 쓰일 것 같다.',

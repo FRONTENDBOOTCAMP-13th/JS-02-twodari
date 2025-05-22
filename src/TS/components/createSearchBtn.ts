@@ -1,5 +1,6 @@
 import { showCluePopup } from '../../utils/showCluePopup.ts';
 import type { IInventoryItem } from '../../types/type.ts';
+import itemManagerInstance from '../../utils/itemManagerInstance.ts';
 
 type TClueTtype = 'clue' | 'game' | 'view';
 
@@ -28,7 +29,6 @@ export class CreateSearchBtn {
   //찾기 버튼 만들기
   private element: HTMLButtonElement;
   private options: ISearchButtonOptions;
-  private isFound: boolean = false; // 단서 찾았는지 확인
 
   constructor(options: ISearchButtonOptions) {
     this.options = options;
@@ -73,10 +73,9 @@ export class CreateSearchBtn {
 
     //타입이 단서일 때
     else if (this.options.type === 'clue') {
+      const alreadyFound = this.options.itemInfo && itemManagerInstance?.checkItem(this.options.itemInfo.id);
       //단서를 안 찾았을때
-      if (!this.isFound) {
-        this.isFound = true;
-
+      if (!alreadyFound) {
         showCluePopup({
           clueImgSrc: this.options.clueImgSrc,
           message: this.options.clueMessage,
