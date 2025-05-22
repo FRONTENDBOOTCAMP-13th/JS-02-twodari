@@ -118,7 +118,7 @@ export class SouthRoom implements IRoom {
     const PuzzleButton = new CreateSearchBtn({
       iconSrc: '/src/assets/icon/search.svg',
       altText: '액자 조사하기',
-      position: { top: '45%', left: '80%' },
+      position: { top: '45%', left: '75%' },
       id: 'search-Puzzle',
       type: 'game',
       gameCallback: () => {
@@ -149,7 +149,7 @@ export class SouthRoom implements IRoom {
     const copierButton = new CreateSearchBtn({
       iconSrc: '/src/assets/icon/search.svg',
       altText: '금고 조사하기',
-      position: { top: '50%', left: '45%' },
+      position: { top: '47%', left: '20%' },
       id: 'search-keypad',
       type: 'game',
       gameCallback: () => {
