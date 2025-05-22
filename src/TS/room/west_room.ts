@@ -41,20 +41,20 @@ export class WestRoom implements IRoom {
     if (!btnBox) return;
     btnBox.innerHTML = '';
 
-    // 첫번째 찾기 버튼 (단서1)
+    // 첫번째 찾기 버튼 (단서1: 찢어진 종이)
     const searchButton1 = new CreateSearchBtn({
       iconSrc: '/src/assets/icon/search.svg',
-      altText: '쓰레기통 단서 찾기',
-      position: { top: '30%', left: '10%' },
-      id: 'search-btn-1',
+      altText: '구겨진 종이 조사하기',
+      position: { top: '70%', left: '7%' },
+      id: 'search-paper',
       type: 'clue',
-      clueImgSrc: '/src/assets/img/clue_1.png',
-      clueMessage: '단서1 을(를) 획득했다.',
+      clueImgSrc: '/src/assets/img/clue_paper.webp',
+      clueMessage: '찢어진 종이를 획득했다. 무슨 내용이지?',
       itemInfo: {
-        id: 'clue-1',
-        name: '단서 1',
-        description: '(장소) 에서 발견한 (단서). 어딘가에 쓰일 것 같다.',
-        image: '/src/assets/img/clue_1.png',
+        id: 'paper',
+        name: '찢어진 종이',
+        description: '책상에서 발견한 찢어진 종이.',
+        image: '/src/assets/img/clue_paper.webp',
         isSelected: false,
       },
       onFound: (item: IInventoryItem) => {
@@ -62,42 +62,22 @@ export class WestRoom implements IRoom {
       },
     });
 
-    // 두번째 찾기 버튼 (2번째 단서)
+    // 두번째 찾기 버튼 (페이크, 커피잔)
     const searchButton2 = new CreateSearchBtn({
       iconSrc: '/src/assets/icon/search.svg',
-      altText: '쓰레기통 단서 찾기',
-      position: { top: '20%', left: '20%' },
-      id: 'search-btn-2',
-      type: 'clue',
-      clueImgSrc: '/src/assets/img/clue_3.png',
-      clueMessage: '단서2 을(를) 획득했다.',
-      itemInfo: {
-        id: 'clue-2',
-        name: '단서 2',
-        description: '(장소) 에서 발견한 (단서). 어딘가에 쓰일 것 같다.',
-        image: '/src/assets/img/clue_3.png',
-        isSelected: false,
-      },
-      onFound: (item: IInventoryItem) => {
-        itemManagerInstance.addItem(item); // 공통 인스턴스 사용 <<< 중요!
-      },
-    });
-
-    // 나머지 버튼들...
-    const searchButton3 = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg',
-      altText: '쓰레기통 단서 찾기',
-      position: { top: '70%', left: '70%' },
-      id: 'search-btn-3',
+      altText: '커피잔 조사하기',
+      position: { top: '65%', left: '20%' },
+      id: 'search-coffee',
       type: 'clue',
       clueImgSrc: '',
       emptyMessage: '아무것도 없는 듯 하다.',
     });
 
-    const searchButton4 = new CreateSearchBtn({
+    // 세번째 찾기 버튼 (미니게임1 : 코드 게임)
+    const searchButton3 = new CreateSearchBtn({
       iconSrc: '/src/assets/icon/search.svg',
-      altText: '코드 게임 실행',
-      position: { top: '90%', left: '90%' },
+      altText: '노트북 조사하기',
+      position: { top: '40%', left: '47%' },
       id: 'west-game-btn',
       type: 'game',
       gameCallback: () => {
@@ -105,10 +85,11 @@ export class WestRoom implements IRoom {
       },
     });
 
-    const searchButton5 = new CreateSearchBtn({
+    // 네번째 찾기 버튼 (미니게임2 : 서랍 열기)
+    const searchButton4 = new CreateSearchBtn({
       iconSrc: '/src/assets/icon/search.svg',
-      altText: '서랍 비밀번호 입력',
-      position: { top: '50%', left: '70%' },
+      altText: '서랍 조사하기',
+      position: { top: '55%', left: '80%' },
       id: 'drawer-password-btn',
       type: 'game',
       gameCallback: () => {
@@ -121,7 +102,6 @@ export class WestRoom implements IRoom {
     searchButton2.appendTo(btnBox);
     searchButton3.appendTo(btnBox);
     searchButton4.appendTo(btnBox);
-    searchButton5.appendTo(btnBox);
   }
 
   // 방 정리

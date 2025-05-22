@@ -274,7 +274,7 @@
   /* 미니게임 - 유진 */
 
   .console-style {
-    @apply bg-black text-(--light-primary) font-mono p-4 rounded-lg w-[800px] h-[500px] relative overflow-y-auto border-5 border-(--light-primary) shadow-lg;
+    @apply bg-black text-(--light-primary) font-dunggeunmo p-4 rounded-lg w-[800px] h-[500px] relative overflow-y-auto border-5 border-(--light-primary) shadow-lg;
   }
 
   .tapbar-style {
