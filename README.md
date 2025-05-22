@@ -91,6 +91,12 @@
 
 ```
 📦 JS-02-TWODARI
+├── 📁 public              
+│   ├── 📁 assets           
+│   ├── 📁 effectSound         
+│   ├── 📁 font                  
+│   └── 📄 favocon.png                
+|   
 ├── 📁 src
 │   ├── 📁 components
 │   │   └── 📁 common
@@ -98,12 +104,14 @@
 │   │       ├── 📄 move.html
 │   │       ├── 📄 password_keypad.html
 │   │       └── 📄 timer.html
+|   |
 │   ├── 📁 pages
 │   │   ├── 📄 bad_end.html
 │   │   ├── 📄 normal_end.html
 │   │   ├── 📄 play_ground.html
 │   │   ├── 📄 start_page.html
 │   │   └── 📄 true_end.html
+|   |
 │   ├── 📁 TS
 │   │   ├── 📁 components
 │   │   │   ├── 📘 createIconBtn.ts
@@ -124,15 +132,23 @@
 │   │   │   ├── 📘 west_minigame.ts
 │   │   │   └── 📘 west_password.ts
 │   │   ├── 📁 pages
-│   │   │   └── 📘 ControlTower.ts
-│   │   ├── 📁 types
-│   │   │   └── 📘 type.ts
-│   │   └── 📁 utils
-│   │       ├── 📘 itemManagerInstance.ts
-│   │       ├── 📘 keyboardListener.ts
-│   │       ├── 📘 moveController.ts
-│   │       ├── 📘 room_manager.ts
-│   │       └── 📘 showCluePopup.ts
+│   │   |       ├── 📄 east_room.html
+│   │   |       ├── 📄 north_room.html
+│   │   |       ├── 📄 south_room.html
+│   │   |       └── 📄 west_room.html
+│   │   └── 📘 ControlTower.ts
+|   |
+│   ├── 📁 types
+│   │   └── 📘 type.ts
+|   |
+│   └── 📁 utils
+│   │   ├── 📘 itemManagerInstance.ts
+│   │   ├── 📘 keyboardListener.ts
+│   │   ├── 📘 moveController.ts
+│   │   ├── 📘 room_manager.ts
+│   │   ├── 📘 showCluePopup.ts
+│   │   └── 📘 transition_effect.ts
+|   |
 │   ├── 📝 style.css
 │   ├── 📝 .gitignore
 │   ├── 📄 index.html

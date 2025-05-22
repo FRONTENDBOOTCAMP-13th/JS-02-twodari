@@ -1,8 +1,10 @@
+// src/utils/room_manager.ts
 import { TRoomDirection, IRoom } from '../types/type.ts';
 import { NorthRoom } from '../TS/pages/room/north_room.ts';
 import { SouthRoom } from '../TS/pages/room/south_room.ts';
 import { EastRoom } from '../TS/pages/room/east_room.ts';
 import { WestRoom } from '../TS/pages/room/west_room.ts';
+import { TransitionEffect } from './transition_effect.ts';
 
 export class RoomManager {
   private static rooms: Record<TRoomDirection, IRoom> = {
@@ -13,15 +15,32 @@ export class RoomManager {
   };
 
   private static currentRoom: IRoom | null = null;
+  private static isInitialized: boolean = false;
 
-  public static goTo(direction: TRoomDirection) {
-    if (this.currentRoom) this.currentRoom.cleanup();
+  public static async goTo(direction: TRoomDirection): Promise<void> {
+    // 이미 전환 중이면 무시
+    if (TransitionEffect.isInTransition()) return;
 
-    const room = this.rooms[direction];
-    if (room) {
-      this.currentRoom = room;
-      room.initialize();
-      room.render();
+    // 첫 실행 시 TransitionEffect 초기화
+    if (!this.isInitialized) {
+      TransitionEffect.initialize();
+      this.isInitialized = true;
     }
+
+    // 전환 효과를 통해 방 변경
+    await TransitionEffect.transition(() => {
+      // 현재 방 정리
+      if (this.currentRoom) {
+        this.currentRoom.cleanup();
+      }
+
+      // 새 방 설정
+      const room = this.rooms[direction];
+      if (room) {
+        this.currentRoom = room;
+        room.initialize();
+        room.render();
+      }
+    });
   }
 }
