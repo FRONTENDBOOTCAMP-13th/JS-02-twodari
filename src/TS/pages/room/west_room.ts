@@ -172,7 +172,7 @@ export class WestRoom implements IRoom {
         // 이미 완료된 미니게임인지 확인
         if (this.codeGameCompleted) {
           showCluePopup({
-            message: '금고번호는: <strong>55 52 51 54 56 57</strong>',
+            message: '금고 번호 : 55 52 51 54 56 57',
           });
           return;
         }
