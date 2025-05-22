@@ -1,6 +1,7 @@
 interface IClueOptions {
   clueImgSrc?: string; // 단서 이미지
   message?: string; // 메시지 텍스트
+  callback?: () => void;
 }
 
 //단서 팝업 생성자 함수
@@ -9,18 +10,28 @@ export function showCluePopup({ clueImgSrc, message }: IClueOptions): void {
   const clueLayer = document.createElement('div');
   clueLayer.className = 'clue-layer';
 
-  // 단서 팝업 만들기
-  const cluePopup = document.createElement('div');
-  cluePopup.className = 'clue-popup';
+  // 팝업 본체 컨테이너
+  const scaleWrapper = document.createElement('div');
+  scaleWrapper.className = 'clue-scale-wrapper';
 
   //단서 이미지
   if (clueImgSrc) {
     const clueImg = document.createElement('img');
     clueImg.src = clueImgSrc;
     clueImg.alt = message ?? '단서 이미지';
-    clueImg.className = 'clue-img';
+
+    // 찢어진 종이일 경우
+    if (clueImgSrc.includes('clue_paper.webp')) {
+      clueImg.className = 'w-[500px] max-w-[90vw] max-h-[90vh] object-contain rounded-xl shadow-lg';
+    } else {
+      clueImg.className = 'clue-img';
+    }
+
     clueLayer.appendChild(clueImg);
   }
+  // 단서 팝업 만들기
+  const cluePopup = document.createElement('div');
+  cluePopup.className = 'clue-popup';
 
   //단서 메시지
   const clueMsg = document.createElement('p');
@@ -32,10 +43,13 @@ export function showCluePopup({ clueImgSrc, message }: IClueOptions): void {
   closeBtn.textContent = '닫 기';
   closeBtn.className = 'close-btn';
   closeBtn.onclick = () => {
-    document.body.removeChild(clueLayer);
+    clueLayer.remove();
   };
 
   cluePopup.append(clueMsg, closeBtn);
-  document.body.appendChild(clueLayer);
-  clueLayer.appendChild(cluePopup);
+  scaleWrapper.appendChild(cluePopup);
+  clueLayer.appendChild(scaleWrapper);
+
+  const layout = document.getElementById('game-layout');
+  if (layout) layout.appendChild(clueLayer);
 }

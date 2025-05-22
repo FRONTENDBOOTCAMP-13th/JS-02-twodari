@@ -191,15 +191,18 @@
   }
   /* 인벤토리  */
   .inventory-style {
-    @apply w-[600px] h-[500px] border rounded-2xl bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+    @apply w-[600px] h-[500px] border rounded-2xl bg-black/80 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
   }
   .slot-box-style {
     @apply w-full h-8/10 grid grid-cols-3  justify-items-center items-center;
   }
   .item-slot-style {
-    @apply w-[150px] h-[150px] border;
+    @apply w-[150px] h-[150px] bg-[#464646] rounded-2xl;
   }
-
+  .white-board-style {
+    @apply w-[700px] h-[500px]  rounded-2xl bg-black/80 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  }
+  /* 단서 조사 버튼 */
   .search-btn-style {
     @apply absolute flex items-center justify-center w-[100px] h-[100px] p-1.5 rounded-full;
     @apply bg-white/20 shadow-md backdrop-blur-sm;
@@ -209,25 +212,29 @@
     @apply w-1/2 h-1/2 object-contain;
   }
   .clue-layer {
-    @apply fixed inset-0 bg-black/60 backdrop-blur-sm z-40 flex justify-center items-center;
+    @apply fixed inset-0 bg-black/60 backdrop-blur-sm z-99 flex justify-center items-center;
+  }
+
+  .game-layer {
+    @apply fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center;
   }
 
   .clue-popup {
     @apply bg-black/40  w-[800px] h-[120px] p-4 rounded-2xl z-50 border-[#464646] border-4;
-    @apply absolute bottom-20 left-20  flex items-center justify-between;
+    @apply absolute bottom-10 left-10  flex items-center justify-between;
   }
   .clue-img {
-    @apply w-full max-h-[500px] object-contain;
+    @apply w-full max-h-[300px] object-contain;
   }
   .clue-message {
     @apply text-xl text-white font-bold ml-4;
   }
   .close-btn {
-    @apply px-4 py-1  bg-black border-[#464646] border-4 w-[100px] h-[50px] rounded-xl text-xl text-white font-bold;
+    @apply px-4 py-1  bg-black border-[#464646] border-4 w-[100px] h-[50px] rounded-xl text-xl text-white font-bold hover:bg-gray-700;
   }
-
+  /* 방향키 버튼 */
   .move-btn-style {
-    @apply absolute w-[100px] h-[100px] flex items-center justify-center focus:outline-none;
+    @apply absolute w-[90px] h-[90px] flex items-center justify-center focus:outline-none;
     @apply fixed transition shadow-md;
   }
   .move-btn-style.active svg,
@@ -236,7 +243,7 @@
   }
 
   .move-icon-img {
-    @apply w-1/2 h-1/2 object-contain transition-transform;
+    @apply w-[40%] h-[40%] object-contain transition-transform;
   }
 
   .rotate-up {
@@ -252,19 +259,79 @@
     @apply rotate-0;
   }
   .move-text-style {
-    @apply absolute text-white text-[25px] transition-colors leading-none group-hover:text-(--light-primary);
+    @apply absolute text-white text-[20px] transition-colors leading-none group-hover:text-(--light-primary);
   }
 
   .circle-style {
-    @apply absolute w-[50px] h-[50px] rounded-full bg-white/30 backdrop-blur-sm;
-    top: 125px;
-    left: 125px;
+    @apply absolute w-[35px] h-[35px] rounded-full bg-white/30 backdrop-blur-sm;
+    top: 130px;
+    left: 127px;
   }
 
   .room-background-style {
     @apply fixed top-0 left-0 w-screen h-screen -z-10 bg-no-repeat bg-cover bg-center;
   }
 
+  /* 미니게임 - 유진 */
+
+  .console-style {
+    @apply bg-black flex-col  text-(--light-primary) font-dunggeunmo p-4 rounded-lg w-[800px] h-[500px] relative  border-5 border-(--light-primary) shadow-lg;
+  }
+
+  .console-content-wrapper {
+    @apply flex-1 overflow-y-auto mb-2 pr-2;
+    padding-bottom: 60px;
+    max-height: calc(500px - 120px);
+  }
+
+  .console-style > .whitespace-pre {
+    @apply mb-2;
+  }
+
+  .tapbar-style {
+    @apply flex border-b border-(--light-primary) mb-2;
+  }
+
+  .close-btn-style {
+    @apply w-[100px] h-[50px] bg-black border-[#464646] border-4 rounded-xl text-xl text-white px-4 py-2 hover:bg-gray-700;
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
+    z-index: 10;
+  }
+
+  .active-tab {
+    @apply px-4 py-2 bg-(--light-primary) text-black;
+  }
+
+  .unactive-tab {
+    @apply px-4 py-2 bg-gray-700 text-black;
+  }
+
+  .animate-blink {
+    animation: blink 1s step-start infinite;
+  }
+
+  /* 서랍 패스워드 */
+  .back-btn-style {
+    @apply mt-4 px-6 py-3 
+  bg-black border-[#464646] border-4 rounded-xl 
+text-xl text-white hover:bg-gray-700;
+  }
+
+  .input-box-style {
+    @apply w-20 h-20 bg-white text-[#464646] text-4xl font-bold border-[#464646] border-4 rounded-lg flex items-center justify-center shadow-md;
+  }
+
+  .fail-text-style {
+    @apply text-white text-lg font-semibold mb-4;
+  }
+
+  .content-box-style {
+    @apply relative z-[101] flex flex-col items-center justify-center w-full h-full;
+  }
+
+  /* 타이머 */
   .timeBox-style {
     @apply w-[200px] h-[50px] p-5 border-4 rounded-2xl border-[#464646] flex justify-around items-center;
   }
@@ -291,17 +358,23 @@
 
   .terminal-container {
     @apply min-h-[30vh] overflow-y-auto;
-    @apply shadow-[0_0_10px_rgba(0,255,0,0.3)];
+    text-shadow: none !important;
+    -webkit-text-stroke-width: 0;
+    outline: none;
   }
 
   .shadow-text-green-500 {
     @apply text-[#0f0];
-    @apply shadow-[0_0_5px_rgba(0,255,0,0.5)];
+    text-shadow: none !important;
+    -webkit-text-stroke-width: 0;
+    outline: none;
   }
 
   .shadow-text-white {
     @apply text-white;
-    @apply shadow-[0_0_5px_rgba(255,255,255,0.5)];
+    text-shadow: none !important;
+    -webkit-text-stroke-width: 0;
+    outline: none;
   }
 
   .ending-cursor {
@@ -355,7 +428,9 @@
   .text-static {
     animation: textFlicker 8s infinite;
     animation-timing-function: ease-in-out;
-    @apply shadow-[0_0_8px_rgba(0,255,0,0.4)];
+    text-shadow: none !important;
+    -webkit-text-stroke-width: 0;
+    outline: none;
   }
 
   .severe-flicker {
@@ -511,4 +586,59 @@
   display: flex !important;
   align-items: center;
   justify-content: center;
+}
+
+/* 퍼즐 전체 컨테이너 */
+#minigame-container {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s;
+}
+
+/* 숨김 처리 */
+#minigame-container.hidden {
+  display: none;
+}
+
+/* 퍼즐 그리드 */
+#minigame-container .grid {
+  display: grid;
+  gap: 4px;
+  background: #fff;
+  border: 4px solid #b45309;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  padding: 8px;
+}
+
+/* 퍼즐 조각 */
+#minigame-container .grid > div {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #d1d5db;
+  background-size: 300px 300px;
+  background-repeat: no-repeat;
+  background-color: #f9fafb;
+  border-radius: 6px;
+  cursor: grab;
+  transition:
+    box-shadow 0.2s,
+    border 0.2s;
+}
+
+/* 드래그 중 효과 */
+#minigame-container .grid > div.ring {
+  box-shadow: 0 0 0 4px #60a5fa;
+  border-color: #2563eb;
+}
+
+/* 퍼즐 완성 효과 */
+#minigame-container .grid.border-green-500 {
+  border-color: #22c55e !important;
+  box-shadow: 0 0 16px #22c55e55;
 }

@@ -1,24 +1,78 @@
 <!doctype html>
-<html lang="ko-KR">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/src/style.css" rel="stylesheet" />
-    <title>hello world</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <title>코드의 그림자</title>
+    <link rel="stylesheet" href="./src/style.css" />
+    <script type="module" src="./src/TS/pages/start_page.ts"></script>
   </head>
-  <body>
-    <div class="text-4xl">hell world</div>
-    <li><a href="./src/pages/start_page.html">시작 페이지</a></li>
-    <hr />
-    <li><a href="./public/sample/pages/play_game.html">sample</a></li>
-    <li><a href="./src/pages/play_ground.html">게임 페이지</a></li>
-    <li><a href="./src/components/common/icon_btn.html">버튼 컴포넌트</a></li>
-    <li><a href="./src/components/common/timer.html">타이머 컴포넌트</a></li>
-    <li><a href="./src/pages/true_end.html">true</a></li>
-    <li><a href="./src/pages/normal_end.html">normal</a></li>
-    <li><a href="./src/pages/bad_end.html">bad</a></li>
-    <li><a href="./src/components/common/search.html">찾기버튼 컴포넌트</a></li>
-    <li><a href="./src/components/common/move.html">방향키 컴포넌트</a></li>
-    <li><a href="./src/components/common/password_keypad.html">비밀번호 키패드</a></li>
+  <body class="start-height min-h-screen bg-black">
+    <!-- 페이지 전환용 오버레이 -->
+    <div id="transition-overlay" class="fixed inset-0 bg-black opacity-0 z-50 pointer-events-none transition-opacity duration-1000"></div>
+
+    <!-- 로딩 페이지 -->
+    <section id="loading-page" class="page-section min-h-screen flex items-center justify-center font-dunggeunmo">
+      <div class="text-green-500 text-xl sm:text-2xl md:text-3xl lg:text-4xl">
+        <span class="pop" style="animation-delay: 0s">L</span>
+        <span class="pop" style="animation-delay: 0.1s">O</span>
+        <span class="pop" style="animation-delay: 0.2s">A</span>
+        <span class="pop" style="animation-delay: 0.3s">D</span>
+        <span class="pop" style="animation-delay: 0.4s">I</span>
+        <span class="pop" style="animation-delay: 0.5s">N</span>
+        <span class="pop" style="animation-delay: 0.6s">G</span>
+        <span class="pop" style="animation-delay: 0.7s">.</span>
+        <span class="pop" style="animation-delay: 0.8s">.</span>
+        <span class="pop" style="animation-delay: 0.9s">.</span>
+      </div>
+    </section>
+
+    <!-- 타이틀 페이지 -->
+    <section id="title-page" class="page-section hidden min-h-screen">
+      <!-- 배경 이미지와 오버레이를 담는 컨테이너 -->
+      <div
+        class="relative min-h-screen bg-cover bg-center flex items-center justify-center bg-flicker"
+        style="background-image: url('/assets/img/title_background.webp')"
+      >
+        <!-- 🔲 어둡게 만드는 블랙 오버레이 -->
+        <div class="absolute inset-0 bg-black opacity-60 z-0"></div>
+
+        <div class="text-center px-8 z-10 font-dunggeunmo">
+          <h1 class="text-6xl lg:text-8xl text-white font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,0.5)] mb-4 text-static">코드의 그림자</h1>
+          <p class="text-lg lg:text-3xl text-green-600 mb-24 text-static severe-flicker">판교 스타트업 개발자 살인사건</p>
+          <button
+            id="startBtn"
+            class="text-green-600 font-semibold py-2 px-6 border-4 rounded-xl text-lg hover:text-white transition-all duration-200"
+          >
+            게 임 시 작
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 게임 배경 설명 페이지 -->
+    <section id="start-page" class="page-section hidden">
+      <!-- 스킵 버튼 추가 (오른쪽 하단에 희미하게 배치) -->
+      <a
+        href="./src/pages/play_ground.html"
+        id="skip-button"
+        class="fixed bottom-8 right-8 text-white opacity-70 hover:opacity-90 transition-opacity duration-300 font-dunggeunmo text-sm z-40 bg-gray-700 bg-opacity-30 px-6 py-2 rounded"
+      >
+        스킵 &raquo;
+      </a>
+
+      <div class="flex-container">
+        <div class="ending-container w-full max-w-2xl p-6 mx-auto">
+          <!-- 상단 흰색 텍스트 영역 -->
+          <div id="intro-text" class="shadow-text-white mb-8 whitespace-pre-line font-dunggeunmo"></div>
+
+          <!-- 중앙 초록색 테두리 터미널 -->
+          <div class="terminal-container border-2 border-[#0f0] rounded-lg p-6 bg-black">
+            <div id="terminal" class="text-left shadow-text-green-500 whitespace-pre-line font-dunggeunmo"></div>
+          </div>
+        </div>
+      </div>
+    </section>
   </body>
 </html>
