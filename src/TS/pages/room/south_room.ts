@@ -58,7 +58,7 @@ export class SouthRoom implements IRoom {
 
       showCluePopup({
         clueImgSrc: '/assets/img/idcard.webp',
-        message: "핏자국이 선명한 사원증. 이름은 지워졌고, 초성 'ㅁㅅ'만 희미하게 보인다. 뒷면에는 '0525'라는 숫자가 적혀 있다.",
+        message: "핏자국이 선명한 사원증. 이름은 지워졌고, 초성 'ㅁㅅ'만 희미하게 보인다. 뒷면에는 '0523'라는 숫자가 적혀 있다.",
       });
     });
   }
@@ -143,7 +143,7 @@ export class SouthRoom implements IRoom {
         if (SouthRoom.PasswordKeypadCompleted) {
           showCluePopup({
             clueImgSrc: '/assets/img/idcard.webp',
-            message: "핏자국이 선명한 사원증. 이름은 지워졌고, 초성 'ㅁㅅ'만 희미하게 보인다. 뒷면에는 '0525'라는 숫자가 적혀 있다.",
+            message: "핏자국이 선명한 사원증. 이름은 지워졌고, 초성 'ㅁㅅ'만 희미하게 보인다. 뒷면에는 '0523'라는 숫자가 적혀 있다.",
           });
         } else {
           this.PasswordKeypad.start();
