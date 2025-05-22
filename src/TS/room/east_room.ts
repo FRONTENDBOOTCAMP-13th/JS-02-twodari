@@ -22,13 +22,17 @@ export class EastRoom implements IRoom {
     // this.visited = true;
     const bg = document.getElementById('room-background');
     if (bg) {
-      bg.style.backgroundImage = `url('/assets/img/east_background.jpg')`;
+      bg.style.backgroundImage = `url('/src/assets/img/east_background.webp')`;
       bg.style.backgroundSize = 'cover';
       bg.style.backgroundPosition = 'center';
     }
     const btnBox = document.getElementById('search-btn-box');
     if (!btnBox) return;
     btnBox.innerHTML = '';
+
+    if (!document.body.contains(this.miniGame.getBoardElement())) {
+      document.body.appendChild(this.miniGame.getBoardElement());
+    }
 
     //화분에서 아이템 얻기
     const searchButton1 = new CreateSearchBtn({
@@ -37,14 +41,14 @@ export class EastRoom implements IRoom {
       position: { top: '75%', left: '12%' }, //단서 찾기 버튼 위치
       id: 'search-puzzle', //단서 찾기 버튼 ID
       type: 'clue', //단서 타입('clue' or 'game')
-      clueImgSrc: 'src/assets/img/cat_puzzle.webp', //단서 이미지 경로
+      clueImgSrc: '/src/assets/img/cat_puzzle.webp', //단서 이미지 경로
       clueMessage: '고양이 퍼즐을(를) 획득했다.', //단서 있을 때 메시지
       itemInfo: {
         //IInventoryItem
         id: 'puzzle',
         name: '퍼즐',
         description: '(장소) 에서 발견한 (단서). 어딘가에 쓰일 것 같다.',
-        image: 'src/assets/img/cat_puzzle.webp',
+        image: '/src/assets/img/cat_puzzle.webp',
         isSelected: false,
       },
       onFound: (item: IInventoryItem) => {

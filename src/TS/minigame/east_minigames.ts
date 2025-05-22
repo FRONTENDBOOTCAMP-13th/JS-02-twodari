@@ -13,6 +13,7 @@ export class WhiteBoardGame implements IMiniGame {
 
   public start() {
     this.createBoard();
+    this.openBoard();
   }
 
   public close() {}
@@ -20,7 +21,6 @@ export class WhiteBoardGame implements IMiniGame {
   //화이트 보드 생성
   private createBoard(): HTMLDialogElement {
     const whiteboard = document.createElement('dialog');
-    whiteboard.setAttribute('open', '');
     whiteboard.className = 'white-board-style';
 
     const boardContainer = document.createElement('div');
@@ -66,10 +66,10 @@ export class WhiteBoardGame implements IMiniGame {
     textField.appendChild(sendBtn);
 
     const closeBtn = document.createElement('button');
-    closeBtn.textContent = '닫기';
-    closeBtn.className = 'w-50 h-15 ml-125 border-4 rounded-2xl border-[#464646] bg-[#ff3b3b] text-white';
+    closeBtn.textContent = 'X';
+    closeBtn.className = 'absolute w-10 h-10 ml-125 border-4 top-4 right-4 rounded-2xl border-[#464646] bg-[#ff3b3b] text-white';
     closeBtn.addEventListener('click', () => {
-      // this.closeBoard();
+      this.closeBoard();
     });
 
     whiteboard.appendChild(closeBtn);
@@ -94,11 +94,7 @@ export class WhiteBoardGame implements IMiniGame {
       console.log('넌 노말이야');
     }
   }
-}
-
-const testfield = document.getElementById('minigame-container');
-const test = new WhiteBoardGame();
-
-if (testfield) {
-  testfield.appendChild((test as any).boardElement);
+  public getBoardElement() {
+    return this.boardElement;
+  }
 }
