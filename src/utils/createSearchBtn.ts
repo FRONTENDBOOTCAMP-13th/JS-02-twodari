@@ -1,7 +1,7 @@
 import { showCluePopup } from './showCluePopup';
 import type { IInventoryItem } from '../types/type.ts';
 
-type TClueTtype = 'clue' | 'game';
+type TClueTtype = 'clue' | 'game' | 'view';
 
 interface ISearchButtonOptions {
   iconSrc: string; // 이미지 경로
@@ -61,6 +61,16 @@ export class CreateSearchBtn {
       this.options.gameCallback?.();
       return;
     }
+
+    //타입이 뷰일 때 -> 단서 이미지 보여주기
+    if (this.options.type === 'view') {
+      showCluePopup({
+        clueImgSrc: this.options.clueImgSrc,
+        message: this.options.clueMessage,
+      });
+      return;
+    }
+
     //타입이 단서일 때
     else if (this.options.type === 'clue') {
       //단서를 안 찾았을때

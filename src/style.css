@@ -202,6 +202,7 @@
   .white-board-style {
     @apply w-[700px] h-[500px]  rounded-2xl bg-black/80 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
   }
+  /* 단서 조사 버튼 */
   .search-btn-style {
     @apply absolute flex items-center justify-center w-[100px] h-[100px] p-1.5 rounded-full;
     @apply bg-white/20 shadow-md backdrop-blur-sm;
@@ -231,7 +232,7 @@
   .close-btn {
     @apply px-4 py-1  bg-black border-[#464646] border-4 w-[100px] h-[50px] rounded-xl text-xl text-white font-bold hover:bg-gray-700;
   }
-
+  /* 방향키 버튼 */
   .move-btn-style {
     @apply absolute w-[90px] h-[90px] flex items-center justify-center focus:outline-none;
     @apply fixed transition shadow-md;
@@ -274,7 +275,17 @@
   /* 미니게임 - 유진 */
 
   .console-style {
-    @apply bg-black text-(--light-primary) font-dunggeunmo p-4 rounded-lg w-[800px] h-[500px] relative overflow-y-auto border-5 border-(--light-primary) shadow-lg;
+    @apply bg-black flex-col  text-(--light-primary) font-dunggeunmo p-4 rounded-lg w-[800px] h-[500px] relative  border-5 border-(--light-primary) shadow-lg;
+  }
+
+  .console-content-wrapper {
+    @apply flex-1 overflow-y-auto mb-2 pr-2;
+    padding-bottom: 60px;
+    max-height: calc(500px - 120px);
+  }
+
+  .console-style > .whitespace-pre {
+    @apply mb-2;
   }
 
   .tapbar-style {
@@ -282,7 +293,11 @@
   }
 
   .close-btn-style {
-    @apply absolute bottom-4 right-4 px-4 py-2 bg-black border-[#464646] border-4 w-[100px] h-[50px] rounded-xl text-xl text-white hover:bg-gray-700;
+    @apply w-[100px] h-[50px] bg-black border-[#464646] border-4 rounded-xl text-xl text-white px-4 py-2 hover:bg-gray-700;
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
+    z-index: 10;
   }
 
   .active-tab {
@@ -573,13 +588,12 @@ text-xl text-white hover:bg-gray-700;
   justify-content: center;
 }
 
-
 /* 퍼즐 전체 컨테이너 */
 #minigame-container {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -598,7 +612,7 @@ text-xl text-white hover:bg-gray-700;
   background: #fff;
   border: 4px solid #b45309;
   border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
   padding: 8px;
 }
 
@@ -612,7 +626,9 @@ text-xl text-white hover:bg-gray-700;
   background-color: #f9fafb;
   border-radius: 6px;
   cursor: grab;
-  transition: box-shadow 0.2s, border 0.2s;
+  transition:
+    box-shadow 0.2s,
+    border 0.2s;
 }
 
 /* 드래그 중 효과 */
