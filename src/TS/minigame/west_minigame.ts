@@ -4,7 +4,7 @@ export class CodeGame implements IMiniGame {
   private container: HTMLElement | null = null;
   private consoleBox: HTMLDivElement | null = null;
   private inputLine: HTMLDivElement | null = null;
-  private inputField: HTMLSpanElement | null = null;
+  private inputField: HTMLInputElement | null = null;
   private consoleContent: HTMLDivElement | null = null;
   private currentTab: 'terminal' | 'hack' = 'terminal';
   private gameCompleted: boolean = false;
@@ -95,18 +95,12 @@ export class CodeGame implements IMiniGame {
     prompt.textContent = '[main-server ~/] >';
     prompt.className = 'mr-2';
 
-    //포커스 애니메이션
-    this.inputField = document.createElement('span');
-    this.inputField.className = 'outline-none whitespace-pre animate-blink';
-    this.inputField.tabIndex = 0;
-    this.inputField.contentEditable = 'true';
-    this.inputField.textContent = '|';
-
-    // 포커스 되면 애니메이션 제거
-    this.inputField.addEventListener('focus', () => {
-      this.inputField?.classList.remove('animate-blink');
-      this.inputField!.textContent = '';
-    });
+    this.inputField = document.createElement('input');
+    this.inputField.className = 'terminal-input outline-none';
+    this.inputField.type = 'text';
+    this.inputField.autocomplete = 'off';
+    this.inputField.spellcheck = false;
+    this.inputField.setAttribute('autocorrect', 'off');
 
     this.inputField.addEventListener('keydown', e => this.handleInput(e));
 
@@ -179,7 +173,7 @@ export class CodeGame implements IMiniGame {
   private handleInput(e: KeyboardEvent) {
     if (e.key === 'Enter') {
       e.preventDefault();
-      const command = this.inputField?.innerText.trim();
+      const command = this.inputField?.value.trim();
       if (!command) return;
 
       // 새로운 줄 생성
@@ -198,7 +192,7 @@ export class CodeGame implements IMiniGame {
         response.textContent = `command not found: ${command}`;
       }
       this.consoleBox?.insertBefore(response, this.inputLine!);
-      this.inputField!.innerText = '';
+      this.inputField!.value = '';
     }
   }
 
