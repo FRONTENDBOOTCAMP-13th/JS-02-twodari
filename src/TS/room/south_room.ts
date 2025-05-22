@@ -1,3 +1,6 @@
+// SouthRoom 클래스 - 남쪽 방 구성
+// 퍼즐 미니게임과 금고 키패드 미니게임 구현
+
 import { IRoom, IInventoryItem } from '../../types/type.ts';
 import { PuzzleGame } from '../minigame/south_minigame.ts';
 import { PasswordKeypad } from '../minigame/password_keypad.ts';
@@ -16,12 +19,12 @@ export class SouthRoom implements IRoom {
   constructor() {
     console.log('SouthRoom 생성자 실행');
 
-    // 인벤토리가 이미 DOM에 있는지 확인 후 추가
+    // 인벤토리 DOM이 없으면 추가
     if (!document.querySelector('.inventory-style')) {
       itemManagerInstance.appendTo(document.body);
     }
 
-    // 미니게임 컨테이너 생성 확인
+    // 미니게임 컨테이너가 없으면 생성
     const gameContainer = document.getElementById('minigame-container');
     if (!gameContainer) {
       console.warn('minigame-container가 없습니다. 생성합니다.');
@@ -43,7 +46,7 @@ export class SouthRoom implements IRoom {
       SouthRoom.puzzleCompleted = true;
 
       showCluePopup({
-        clueImgSrc: '/src/assets/img/mirror.webp',
+        clueImgSrc: '/assets/img/clue_copier.webp',
         message: '쪽지가 떨어졌다. "범인은 솔루션팀에 있어."',
       });
     });
@@ -53,46 +56,42 @@ export class SouthRoom implements IRoom {
       console.log('비밀번호 성공');
       SouthRoom.PasswordKeypadCompleted = true;
 
-      // 아이템 추가 로직
+      // 사원증 아이템 추가
       const newItem: IInventoryItem = {
         id: 'employee-card',
         name: '피 묻은 사원증',
         description: "금고에서 발견한 피 묻은 사원증. 이름의 초성이 'ㅁㅅ'인 것 같다.",
-        image: '/src/assets/img/clue_copier.webp',
+        image: '/src/assets/img/idcard.webp',
         isSelected: false,
       };
 
       itemManagerInstance.addItem(newItem);
 
       showCluePopup({
-        clueImgSrc: '/src/assets/img/clue_copier.webp',
-        message: "피가 튄 사원증이 있다. 성이 가려져 이름 초성만 흐릿하게 보인다. 'ㅁㅅ'.",
+        clueImgSrc: '/assets/img/idcard.webp',
+        message: "핏자국이 선명한 사원증. \r\n이름은 지워졌고, 초성 'ㅁㅅ'만 희미하게 보인다.",
       });
     });
   }
 
+  // 남쪽 방 초기화
   initialize(): void {
     console.log('남쪽 방 초기화');
 
-    // 먼저 컨테이너가 숨겨져 있는지 확인
-    const gameContainer = document.getElementById('minigame-container');
-    if (gameContainer) {
-      gameContainer.classList.add('hidden');
-    }
+    // 게임/키패드 컨테이너 숨기기
+    document.getElementById('minigame-container')?.classList.add('hidden');
+    document.getElementById('keypad-container')?.classList.add('hidden');
 
-    const keypadContainer = document.getElementById('keypad-container');
-    if (keypadContainer) {
-      keypadContainer.classList.add('hidden');
-    }
-
-    // 그 후에 미니게임 초기화
+    // 미니게임 초기화
     this.puzzleGame.initialize();
     this.PasswordKeypad.initialize();
   }
 
+  // 렌더링 함수
   render(): void {
     console.log('SouthRoom render 실행');
 
+    // 배경 이미지 설정
     const bg = document.getElementById('room-background');
     if (bg) {
       bg.style.backgroundImage = `url('/assets/img/south_background.webp')`;
@@ -100,6 +99,7 @@ export class SouthRoom implements IRoom {
       bg.style.backgroundPosition = 'center';
     }
 
+    // 검색 버튼 박스 초기화
     const btnBox = document.getElementById('search-btn-box');
     if (!btnBox) {
       console.error('search-btn-box를 찾을 수 없습니다');
@@ -107,18 +107,16 @@ export class SouthRoom implements IRoom {
     }
     btnBox.innerHTML = '';
 
+    // 인벤토리 아이템 보유 여부 확인 함수
     const hasItemInInventory = (itemId: string): boolean => {
-      if (typeof itemManagerInstance.checkItem === 'function') {
-        return itemManagerInstance.checkItem(itemId);
-      }
-      return false;
+      return typeof itemManagerInstance.checkItem === 'function' && itemManagerInstance.checkItem(itemId);
     };
 
-    // 1. 액자 검색 버튼 - 퍼즐 미니게임
+    // 액자 검색 버튼 (퍼즐 미니게임)
     const PuzzleButton = new CreateSearchBtn({
       iconSrc: '/src/assets/icon/search.svg',
       altText: '액자 조사하기',
-      position: { top: '45%', left: '80%' },
+      position: { top: '45%', left: '75%' },
       id: 'search-Puzzle',
       type: 'game',
       gameCallback: () => {
@@ -129,8 +127,8 @@ export class SouthRoom implements IRoom {
 
         if (SouthRoom.puzzleCompleted) {
           showCluePopup({
-            clueImgSrc: '/src/assets/img/mirror.webp',
-            message: '그림 조각이 딱 맞는다.',
+            clueImgSrc: '/assets/img/clue_copier.webp',
+            message: '쪽지가 떨어졌다. "범인은 솔루션팀에 있어."',
           });
         } else if (hasPiece) {
           console.log('퍼즐 게임 시작');
@@ -143,13 +141,11 @@ export class SouthRoom implements IRoom {
       },
     });
 
-    const self = this;
-
-    // 2. 금고 검색 버튼 - 금고 키패드 (팝업 없이 바로 키패드 표시)
+    // 2. 금고 검색 버튼 (비밀번호 키패드)
     const safeButton = new CreateSearchBtn({
       iconSrc: '/src/assets/icon/search.svg',
       altText: '금고 조사하기',
-      position: { top: '50%', left: '45%' },
+      position: { top: '47%', left: '20%' },
       id: 'search-keypad',
       type: 'game',
       gameCallback: () => {
@@ -157,39 +153,30 @@ export class SouthRoom implements IRoom {
 
         if (SouthRoom.PasswordKeypadCompleted) {
           showCluePopup({
-            clueImgSrc: '/src/assets/img/clue_copier.webp', // 사원증 이미지로 변경
-            message: "피가 튄 사원증이 있다. 성이 가려져 이름 초성만 흐릿하게 보인다. 'ㅁㅅ'.",
+            clueImgSrc: '/assets/img/idcard.webp',
+            message: "핏자국이 선명한 사원증. \r\n이름은 지워졌고, 초성 'ㅁㅅ'만 희미하게 보인다.",
           });
         } else {
-          // 팝업 없이 바로 키패드 표시
-          self.PasswordKeypad.start();
+          this.PasswordKeypad.start();
         }
       },
     });
 
-    // DOM에 버튼 추가
+    // 버튼 DOM에 추가
     PuzzleButton.appendTo(btnBox);
     safeButton.appendTo(btnBox);
 
     console.log('버튼 추가 완료');
   }
 
+  // 방 정리 메서드
   cleanup(): void {
     console.log('남쪽 방 정리됨');
     this.puzzleGame.close();
     this.PasswordKeypad.close();
 
     // 컨테이너 숨기기
-    if (this.keypadContainer) {
-      this.keypadContainer.classList.add('hidden');
-    }
-
-    const gameContainer = document.getElementById('minigame-container');
-    if (gameContainer) {
-      gameContainer.classList.add('hidden');
-    }
+    this.keypadContainer?.classList.add('hidden');
+    document.getElementById('minigame-container')?.classList.add('hidden');
   }
 }
-
-
-

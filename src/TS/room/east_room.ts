@@ -52,7 +52,7 @@ export class EastRoom implements IRoom {
       clueMessage: '고양이 퍼즐을(를) 획득했다.', //단서 있을 때 메시지
       itemInfo: {
         //IInventoryItem
-        id: 'puzzle',
+        id: 'Piece',
         name: '퍼즐',
         description: '(장소) 에서 발견한 (단서). 어딘가에 쓰일 것 같다.',
         image: '/src/assets/img/cat_puzzle.webp',
