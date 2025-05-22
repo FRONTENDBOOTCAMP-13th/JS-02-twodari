@@ -2,18 +2,22 @@ import { IRoom, IInventoryItem } from '../../types/type.ts';
 import itemManagerInstance from '../../utils/itemManagerInstance.ts';
 import { CreateSearchBtn } from '../../utils/createSearchBtn.ts';
 import { WhiteBoardGame } from '../minigame/east_minigames.ts';
+import { EscapeCodeGame } from '../minigame/east_escapeCode.ts';
 
 export class EastRoom implements IRoom {
-  private miniGame: WhiteBoardGame;
+  private whiteBoardGame: WhiteBoardGame;
+  private EscapeCodeGame: EscapeCodeGame;
 
   constructor() {
-    this.miniGame = new WhiteBoardGame();
+    this.whiteBoardGame = new WhiteBoardGame();
+    this.EscapeCodeGame = new EscapeCodeGame();
 
     //인벤토리에 DOM 있는지 체크
     if (!document.querySelector('.inventory-style')) {
       itemManagerInstance.appendTo(document.body);
     }
   }
+
   initialize(): void {
     console.log('동쪽 방 초기화');
   }
@@ -30,12 +34,15 @@ export class EastRoom implements IRoom {
     if (!btnBox) return;
     btnBox.innerHTML = '';
 
-    if (!document.body.contains(this.miniGame.getBoardElement())) {
-      document.body.appendChild(this.miniGame.getBoardElement());
+    if (!document.body.contains(this.whiteBoardGame.getBoardElement())) {
+      document.body.appendChild(this.whiteBoardGame.getBoardElement());
+    }
+    if (!document.body.contains(this.EscapeCodeGame.getBoardElement())) {
+      document.body.appendChild(this.EscapeCodeGame.getBoardElement());
     }
 
     //화분에서 아이템 얻기
-    const searchButton1 = new CreateSearchBtn({
+    const vessleClueBtn = new CreateSearchBtn({
       iconSrc: '/src/assets/icon/search.svg', //단서 찾기 아이콘
       altText: '고양이 퍼즐 획득', //게임 실행 대체 텍스트
       position: { top: '75%', left: '12%' }, //단서 찾기 버튼 위치
@@ -57,29 +64,31 @@ export class EastRoom implements IRoom {
     });
 
     //화이트보드 게임
-    const searchButton2 = new CreateSearchBtn({
+    const whiteBoardGameBtn = new CreateSearchBtn({
       iconSrc: '/src/assets/icon/search.svg', //단서 찾기 아이콘
       altText: '화이틑보드 게임 실행', //게임 실행 대체 텍스트
       position: { top: '35%', left: '35%' }, //단서 찾기 버튼 위치
       id: 'board-game-btn', //단서 찾기 버튼 ID
       type: 'game', //단서 타입('clue' or 'game')
       gameCallback: () => {
-        this.miniGame.start();
+        this.whiteBoardGame.start();
       },
     });
 
     //탈출 번호 입력
-    const searchButton3 = new CreateSearchBtn({
+    const escapeGameBtn = new CreateSearchBtn({
       iconSrc: '/src/assets/icon/search.svg', //단서 찾기 아이콘
       altText: '탈출 비밀번호 실행', //게임 실행 대체 텍스트
       position: { top: '50%', left: '60%' }, //단서 찾기 버튼 위치
       id: 'last-game-btn', //단서 찾기 버튼 ID
       type: 'game', //단서 타입('clue' or 'game')
-      gameCallback: () => {},
+      gameCallback: () => {
+        this.EscapeCodeGame.start();
+      },
     });
-    searchButton1.appendTo(btnBox);
-    searchButton2.appendTo(btnBox);
-    searchButton3.appendTo(btnBox);
+    vessleClueBtn.appendTo(btnBox);
+    whiteBoardGameBtn.appendTo(btnBox);
+    escapeGameBtn.appendTo(btnBox);
   }
 
   cleanup(): void {
