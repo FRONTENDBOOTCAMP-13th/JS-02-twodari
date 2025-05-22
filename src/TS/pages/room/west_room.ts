@@ -1,8 +1,8 @@
-import { IRoom } from '../../types/type.ts';
-import { CodeGame } from './../minigame/west_minigame.ts';
-import { CreateSearchBtn } from '../../utils/createSearchBtn.ts';
-import { WestPassword } from '../minigame/west_password.ts';
-import itemManagerInstance from '../../utils/itemManagerInstance.ts'; // 공통 인스턴스 사용 <<< 중요!
+import { IRoom } from '../../../types/type.ts';
+import { CodeGame } from '../../minigame/west_minigame.ts';
+import { CreateSearchBtn } from '../../components/createSearchBtn.ts';
+import { WestPassword } from '../../minigame/west_password.ts';
+import itemManagerInstance from '../../../utils/itemManagerInstance.ts'; // 공통 인스턴스 사용 <<< 중요!
 
 export class WestRoom implements IRoom {
   private minigame: CodeGame;

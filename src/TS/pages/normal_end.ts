@@ -1,57 +1,60 @@
 /**
- * bad_end.ts
- * 배드 엔딩 시퀀스를 관리하는 파일
+ * normal_end.ts
+ * 노멀 엔딩 시퀀스를 관리하는 파일
  * 두 개의 배경 이미지와 연속된 텍스트 표시, 장면 전환 효과를 구현
  */
 
-import type { IStoryText } from '../types/type';
+import type { IStoryText } from '../../types/type';
 
 /**
  * 첫 번째 장면에 표시될 텍스트 내용 배열
- * 경찰 체포 장면
+ * 범인을 찾았지만 증거가 부족한 상황
  */
-const badEndingPart1: IStoryText[] = [
-  { text: '단서를 찾는 것에 정신이 팔려서 시간을 보지 못했다. 사무실 문이 요란하게 열렸다.', delay: 800 },
+const normalEndingPart1: IStoryText[] = [
+  { text: '김진우의 회사 동료들에 대한 단서를 발견했지만, 결정적인 증거는 찾지 못했다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '"움직이지 마! 경찰이다!"', delay: 600 },
+  { text: '당신은 경찰이 들어오기 직전에 사무실을 빠져나왔다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '당신은 손을 들었고, 현장 침입자로 체포되었다.', delay: 600 },
+  { text: "'테크노바 CTO 박민석과 진우의 최근 다툼에 대한 내용, 그리고 몇몇 의심스러운 메일 내역...'", delay: 800 },
   { text: '', delay: 100 },
+  { text: '하지만 이 정도로는 경찰을 설득하기에 부족했다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '며칠 후, 경찰의 조사로 나온 증거는 모두 당신을 가리키고 있었다.', delay: 800 },
+  { text: '"증거가 충분하지 않습니다. 추측만으로는 수사를 진행할 수 없어요."', delay: 800 },
   { text: '', delay: 100 },
-  { text: "'김진우와 기술 공유 문제로 다툰 기록, 현장에 남겨진 당신의 지문...'", delay: 800 },
-  { text: '', delay: 100 },
-  { text: '누군가 정교하게 증거를 조작한 것이 분명했다.', delay: 1000 },
+  { text: '경찰은 당신의 이야기를 듣고도 결국 사건을 미제로 남겨두기로 했다.', delay: 1000 },
 ];
 
 /**
  * 두 번째 장면에 표시될 텍스트 내용 배열
- * 감옥에서의 상황과 기자회견 장면
+ * 6개월 후 진우의 추모식과 그 이후 상황
  */
-const badEndingPart2: IStoryText[] = [
-  { text: '------ 3일 후 ------', delay: 1200 },
+const normalEndingPart2: IStoryText[] = [
+  { text: '------ 6개월 후 ------', delay: 1500 },
   { text: '', delay: 100 },
-  { text: '옆 감방 사람이 재밌는 소식이 있다며, 내게 넌지시 말을 전해준다.', delay: 800 },
+  { text: '김진우의 추모식에서, 당신은 그의 사진을 바라보며 진실을 찾지 못한 것에 대한 미안함을 느꼈다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: "'넥스트 코드 개발자의 죽음, 동료 개발자 체포'라는 헤드라인이 뉴스를 장식했다는 얘기였다.", delay: 1000 },
+  { text: '"우리는 그의 혁신적 업적을 기리며, 그의 미완성 프로젝트를 계속해서 발전시켜 나갈 것입니다."', delay: 800 },
   { text: '', delay: 100 },
-  { text: "창밖으로 라이벌 회사인 '테크노바'의 CEO가 기자회견을 하는 모습이 보였다.", delay: 800 },
+  { text: '회사 대표의 말이 공허하게 들렸다.', delay: 600 },
   { text: '', delay: 100 },
+  { text: '며칠 후, 경쟁사 테크노바가 놀랍게도 김진우의 기술과 유사한 AI 알고리즘을 발표했다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '"우리는 혁신적인 AI 기술 인수에 성공했습니다! 이는 시장을 완전히 바꿀 것입니다."', delay: 800 },
+  { text: '증거는 없지만, 당신은 진실을 알고 있다.', delay: 800 },
+  { text: '', delay: 50 },
+  { text: '', delay: 50 },
+  { text: '김진우의 마지막 메시지가 다시 떠올랐다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '그의 미소 뒤에 숨겨진 비밀을 당신이 알아챌 수도 있었지만, 이제 너무 늦었다.', delay: 800 },
+  { text: '"코드에는 항상 그림자가 있어. 그리고 그 그림자 속에 진실이 숨어있지."', delay: 1000 },
   { text: '', delay: 100 },
-  { text: '쇠창살 너머로 보이는 하늘은, 오늘도 무심하게 푸르기만 하다.', delay: 1200 },
+  { text: '어느 날, 당신은 그가 남겨둔 또 다른 단서를 발견하게 될지도 모른다.', delay: 1200 },
 ];
 
 /**
- * BadEndingSequence 클래스
- * 배드 엔딩 시퀀스의 전체 흐름을 관리하는 클래스
+ * NormalEndingSequence 클래스
+ * 노멀 엔딩 시퀀스의 전체 흐름을 관리하는 클래스
  * 두 개의 장면 전환과 타이핑 효과, 크레딧 표시 등 구현
  */
-class BadEndingSequence {
+class NormalEndingSequence {
   // DOM 요소 참조 저장 변수들
   private endingText1: HTMLElement; // 첫 번째 장면의 텍스트 컨테이너
   private endingText2: HTMLElement; // 두 번째 장면의 텍스트 컨테이너
@@ -97,7 +100,7 @@ class BadEndingSequence {
    */
   private playBackgroundMusic = (): void => {
     try {
-      this.bgmAudio = new Audio('/effectSound/bad_end.mp3');
+      this.bgmAudio = new Audio('/effectSound/normal_end.mp3');
       if (this.bgmAudio) {
         this.bgmAudio.loop = true;
         this.bgmAudio.volume = 0.3;
@@ -127,7 +130,6 @@ class BadEndingSequence {
 
   /**
    * 타이핑 효과를 위한 커서 요소 생성 메서드
-   * 각 텍스트 영역에 커서를 추가함
    */
   private createCursors = (): void => {
     // 첫 번째 장면용 커서 생성 및 추가
@@ -147,7 +149,7 @@ class BadEndingSequence {
    */
   private startSequence = async (): Promise<void> => {
     // 첫 번째 파트 텍스트 순차 출력
-    for (const item of badEndingPart1) {
+    for (const item of normalEndingPart1) {
       if (!this.cursor1) continue; // 커서 검증
 
       // 텍스트 타이핑 효과 실행
@@ -169,7 +171,7 @@ class BadEndingSequence {
     this.transitionToScene2();
 
     // 두 번째 파트 텍스트 순차 출력
-    for (const item of badEndingPart2) {
+    for (const item of normalEndingPart2) {
       if (!this.cursor2) continue; // 커서 검증
 
       // 텍스트 타이핑 효과 실행
@@ -369,5 +371,5 @@ class BadEndingSequence {
 
 // DOM이 완전히 로드된 후 엔딩 시퀀스 시작
 document.addEventListener('DOMContentLoaded', () => {
-  new BadEndingSequence();
+  new NormalEndingSequence();
 });

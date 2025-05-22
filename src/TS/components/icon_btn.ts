@@ -1,5 +1,5 @@
-import CreateIconBtn from '../utils/createIconBtn';
-import itemManagerInstance from '../utils/itemManagerInstance';
+import CreateIconBtn from './createIconBtn';
+import itemManagerInstance from '../../utils/itemManagerInstance';
 
 const btnBox = document.getElementById('btn-box');
 const inventoryBox = document.getElementById('inventory-box');

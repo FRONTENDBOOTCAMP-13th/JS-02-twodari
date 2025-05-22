@@ -1,4 +1,4 @@
-import type { IInventoryItem } from '../types/type';
+import type { IInventoryItem } from '../../types/type';
 
 // 커스텀 이벤트 연결
 export const ITEM_SELECTED_EVENT = 'item-selected';

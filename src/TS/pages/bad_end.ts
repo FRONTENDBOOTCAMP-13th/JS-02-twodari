@@ -1,68 +1,65 @@
 /**
- * true_end.ts
- * 트루 엔딩 시퀀스를 관리하는 파일
+ * bad_end.ts
+ * 배드 엔딩 시퀀스를 관리하는 파일
  * 두 개의 배경 이미지와 연속된 텍스트 표시, 장면 전환 효과를 구현
  */
 
-import type { IStoryText } from '../types/type';
+import type { IStoryText } from '../../types/type';
 
 /**
  * 첫 번째 장면에 표시될 텍스트 내용 배열
- * 범인 검거와 사건 해결에 대한 내용을 담고 있음
+ * 경찰 체포 장면
  */
-const happyEndingPart1: IStoryText[] = [
-  { text: '사무실에 숨겨진 모든 단서를 발견하고, 화이트 보드에서 단서들을 통해 범인을 찾았다.', delay: 800 },
+const badEndingPart1: IStoryText[] = [
+  { text: '단서를 찾는 것에 정신이 팔려서 시간을 보지 못했다. 사무실 문이 요란하게 열렸다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: "'넥스트 레벨'의 CTO 김민수가 사실은 경쟁사 '테크노바'의 스파이였다.", delay: 800 },
+  { text: '"움직이지 마! 경찰이다!"', delay: 600 },
   { text: '', delay: 100 },
-  { text: '김진우가 자신의 기술을 훔쳐 가려던 그의 계획을 발견했기에, 김민수는 그를 영원히 침묵시키기로 했던 것이다.', delay: 800 },
+  { text: '당신은 손을 들었고, 현장 침입자로 체포되었다.', delay: 600 },
   { text: '', delay: 100 },
-  { text: '경찰에 모든 증거를 넘기자, 그들은 신속하게 김민수를 체포했다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '"자네가 없었다면 이 사건은 미제로 남았을 거야. 정말 고맙네."', delay: 800 },
+  { text: '며칠 후, 경찰의 조사로 나온 증거는 모두 당신을 가리키고 있었다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '경찰서장이 감사의 인사를 전했고, 김민수는 고개를 떨군 채 연행되어 갔다.', delay: 1000 },
+  { text: "'김진우와 기술 공유 문제로 다툰 기록, 현장에 남겨진 당신의 지문...'", delay: 800 },
+  { text: '', delay: 100 },
+  { text: '누군가 정교하게 증거를 조작한 것이 분명했다.', delay: 1000 },
 ];
 
 /**
  * 두 번째 장면에 표시될 텍스트 내용 배열
- * 6개월 후 주인공의 삶과 김진우의 기술이 세상에 공개되는 장면
+ * 감옥에서의 상황과 기자회견 장면
  */
-const happyEndingPart2: IStoryText[] = [
-  { text: '------ 6개월 후 ------', delay: 1500 },
+const badEndingPart2: IStoryText[] = [
+  { text: '------ 3일 후 ------', delay: 1200 },
   { text: '', delay: 100 },
-  { text: '"김진우가 기획한 AI 기술이 마침내 세상에 공개됩니다."', delay: 800 },
+  { text: '옆 감방 사람이 재밌는 소식이 있다며, 내게 넌지시 말을 전해준다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '넥스트 코드의 신기술 발표회에서, 대형 스크린에 AI 관련 정보가 나열된다.', delay: 800 },
+  { text: "'넥스트 코드 개발자의 죽음, 동료 개발자 체포'라는 헤드라인이 뉴스를 장식했다는 얘기였다.", delay: 1000 },
   { text: '', delay: 100 },
-  { text: '당신은 김진우가 남긴 마지막 알고리즘을 완성했고, 이제 그의 꿈이 현실이 되었다.', delay: 800 },
+  { text: "창밖으로 라이벌 회사인 '테크노바'의 CEO가 기자회견을 하는 모습이 보였다.", delay: 800 },
   { text: '', delay: 100 },
-  { text: '"이 기술은 인류의 삶을 획기적으로 개선할 것입니다. 제 소중한 친구, 김진우에게 이 영광을 돌립니다."', delay: 1000 },
   { text: '', delay: 100 },
-  { text: '당신의 발표가 끝나자 객석에서는 뜨거운 박수가 쏟아졌다.', delay: 800 },
-  { text: '', delay: 50 },
-  { text: '', delay: 50 },
-  { text: '어렴풋이, 김진우가 가끔 언급하던 말버릇이 생각난다.', delay: 1000 },
+  { text: '"우리는 혁신적인 AI 기술 인수에 성공했습니다! 이는 시장을 완전히 바꿀 것입니다."', delay: 800 },
   { text: '', delay: 100 },
-  { text: '"코드에는 항상 그림자가 있지만, 진실은 결국 빛을 찾는 법이야."', delay: 1000 },
+  { text: '그의 미소 뒤에 숨겨진 비밀을 당신이 알아챌 수도 있었지만, 이제 너무 늦었다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '당신은 미소를 지으며 하늘을 올려다보았다. 정의는 실현되었고, 친구의 유산은 영원히 살아갈 것이다.', delay: 1200 },
+  { text: '쇠창살 너머로 보이는 하늘은, 오늘도 무심하게 푸르기만 하다.', delay: 1200 },
 ];
 
 /**
- * TrueEndingSequence 클래스
- * 해피 엔딩 시퀀스의 전체 흐름을 관리하는 클래스
+ * BadEndingSequence 클래스
+ * 배드 엔딩 시퀀스의 전체 흐름을 관리하는 클래스
  * 두 개의 장면 전환과 타이핑 효과, 크레딧 표시 등 구현
  */
-class TrueEndingSequence {
+class BadEndingSequence {
   // DOM 요소 참조 저장 변수들
   private endingText1: HTMLElement; // 첫 번째 장면의 텍스트 컨테이너
   private endingText2: HTMLElement; // 두 번째 장면의 텍스트 컨테이너
   private endingScene1: HTMLElement; // 첫 번째 배경 이미지 요소
   private endingScene2: HTMLElement; // 두 번째 배경 이미지 요소
   private credits: HTMLElement; // 크레딧 표시 요소
-  private endingScene3: HTMLElement; // 추가: 세 번째 배경 요소
-  private finalCredits: HTMLElement; // 추가: 최종 크레딧 요소
+  private endingScene3: HTMLElement; // 세 번째 배경 요소
+  private finalCredits: HTMLElement; // 최종 크레딧 요소
 
   // 커서 요소 참조
   private cursor1: HTMLElement | null = null; // 첫 번째 장면의 타이핑 커서
@@ -100,10 +97,10 @@ class TrueEndingSequence {
    */
   private playBackgroundMusic = (): void => {
     try {
-      this.bgmAudio = new Audio('/effectSound/true_end.mp3');
+      this.bgmAudio = new Audio('/effectSound/bad_end.mp3');
       if (this.bgmAudio) {
         this.bgmAudio.loop = true;
-        this.bgmAudio.volume = 0.2;
+        this.bgmAudio.volume = 0.3;
 
         // 사용자 상호작용 없이도 재생 가능하도록 설정
         const playPromise = this.bgmAudio.play();
@@ -130,6 +127,7 @@ class TrueEndingSequence {
 
   /**
    * 타이핑 효과를 위한 커서 요소 생성 메서드
+   * 각 텍스트 영역에 커서를 추가함
    */
   private createCursors = (): void => {
     // 첫 번째 장면용 커서 생성 및 추가
@@ -137,7 +135,7 @@ class TrueEndingSequence {
     this.cursor1.className = 'ending-cursor cursor-white';
     this.endingText1.appendChild(this.cursor1);
 
-    // 두 번째 장면용 커서 생성 및 추가 (초기에는 숨김 상태)
+    // 두 번째 장면용 커서 생성 및 추가
     this.cursor2 = document.createElement('span');
     this.cursor2.className = 'ending-cursor cursor-white hidden-element';
     this.endingText2.appendChild(this.cursor2);
@@ -149,7 +147,7 @@ class TrueEndingSequence {
    */
   private startSequence = async (): Promise<void> => {
     // 첫 번째 파트 텍스트 순차 출력
-    for (const item of happyEndingPart1) {
+    for (const item of badEndingPart1) {
       if (!this.cursor1) continue; // 커서 검증
 
       // 텍스트 타이핑 효과 실행
@@ -171,7 +169,7 @@ class TrueEndingSequence {
     this.transitionToScene2();
 
     // 두 번째 파트 텍스트 순차 출력
-    for (const item of happyEndingPart2) {
+    for (const item of badEndingPart2) {
       if (!this.cursor2) continue; // 커서 검증
 
       // 텍스트 타이핑 효과 실행
@@ -324,8 +322,8 @@ class TrueEndingSequence {
         setTimeout(() => {
           this.finalCredits.classList.add('fade-in-active');
 
+          // 배경음악 페이드아웃
           setTimeout(() => {
-            // 배경음악 페이드아웃
             this.fadeOutMusic();
 
             document.body.classList.add('ending-fade-out');
@@ -371,5 +369,5 @@ class TrueEndingSequence {
 
 // DOM이 완전히 로드된 후 엔딩 시퀀스 시작
 document.addEventListener('DOMContentLoaded', () => {
-  new TrueEndingSequence();
+  new BadEndingSequence();
 });

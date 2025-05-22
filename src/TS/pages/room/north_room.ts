@@ -1,8 +1,8 @@
-import { IRoom, IInventoryItem } from '../../types/type.ts';
-import { MirrorGame, CopierGame } from './../minigame/north_minigames.ts';
-import { CreateSearchBtn } from '../../utils/createSearchBtn.ts';
-import { showCluePopup } from '../../utils/showCluePopup.ts';
-import itemManagerInstance from '../../utils/itemManagerInstance.ts';
+import { IRoom, IInventoryItem } from '../../../types/type.ts';
+import { MirrorGame, CopierGame } from '../../minigame/north_minigames.ts';
+import { CreateSearchBtn } from '../../components/createSearchBtn.ts';
+import { showCluePopup } from '../../../utils/showCluePopup.ts';
+import itemManagerInstance from '../../../utils/itemManagerInstance.ts';
 
 export class NorthRoom implements IRoom {
   private mirrorGame: MirrorGame;

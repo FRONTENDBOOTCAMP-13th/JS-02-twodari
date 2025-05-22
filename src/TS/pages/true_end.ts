@@ -1,68 +1,68 @@
 /**
- * normal_end.ts
- * 노멀 엔딩 시퀀스를 관리하는 파일
+ * true_end.ts
+ * 트루 엔딩 시퀀스를 관리하는 파일
  * 두 개의 배경 이미지와 연속된 텍스트 표시, 장면 전환 효과를 구현
  */
 
-import type { IStoryText } from '../types/type';
+import type { IStoryText } from '../../types/type';
 
 /**
  * 첫 번째 장면에 표시될 텍스트 내용 배열
- * 범인을 찾았지만 증거가 부족한 상황
+ * 범인 검거와 사건 해결에 대한 내용을 담고 있음
  */
-const normalEndingPart1: IStoryText[] = [
-  { text: '김진우의 회사 동료들에 대한 단서를 발견했지만, 결정적인 증거는 찾지 못했다.', delay: 800 },
+const happyEndingPart1: IStoryText[] = [
+  { text: '사무실에 숨겨진 모든 단서를 발견하고, 화이트 보드에서 단서들을 통해 범인을 찾았다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '당신은 경찰이 들어오기 직전에 사무실을 빠져나왔다.', delay: 800 },
+  { text: "'넥스트 레벨'의 CTO 김민수가 사실은 경쟁사 '테크노바'의 스파이였다.", delay: 800 },
   { text: '', delay: 100 },
-  { text: "'테크노바 CTO 박민석과 진우의 최근 다툼에 대한 내용, 그리고 몇몇 의심스러운 메일 내역...'", delay: 800 },
+  { text: '김진우가 자신의 기술을 훔쳐 가려던 그의 계획을 발견했기에, 김민수는 그를 영원히 침묵시키기로 했던 것이다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '하지만 이 정도로는 경찰을 설득하기에 부족했다.', delay: 800 },
+  { text: '경찰에 모든 증거를 넘기자, 그들은 신속하게 김민수를 체포했다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '"증거가 충분하지 않습니다. 추측만으로는 수사를 진행할 수 없어요."', delay: 800 },
+  { text: '"자네가 없었다면 이 사건은 미제로 남았을 거야. 정말 고맙네."', delay: 800 },
   { text: '', delay: 100 },
-  { text: '경찰은 당신의 이야기를 듣고도 결국 사건을 미제로 남겨두기로 했다.', delay: 1000 },
+  { text: '경찰서장이 감사의 인사를 전했고, 김민수는 고개를 떨군 채 연행되어 갔다.', delay: 1000 },
 ];
 
 /**
  * 두 번째 장면에 표시될 텍스트 내용 배열
- * 6개월 후 진우의 추모식과 그 이후 상황
+ * 6개월 후 주인공의 삶과 김진우의 기술이 세상에 공개되는 장면
  */
-const normalEndingPart2: IStoryText[] = [
+const happyEndingPart2: IStoryText[] = [
   { text: '------ 6개월 후 ------', delay: 1500 },
   { text: '', delay: 100 },
-  { text: '김진우의 추모식에서, 당신은 그의 사진을 바라보며 진실을 찾지 못한 것에 대한 미안함을 느꼈다.', delay: 800 },
+  { text: '"김진우가 기획한 AI 기술이 마침내 세상에 공개됩니다."', delay: 800 },
   { text: '', delay: 100 },
-  { text: '"우리는 그의 혁신적 업적을 기리며, 그의 미완성 프로젝트를 계속해서 발전시켜 나갈 것입니다."', delay: 800 },
+  { text: '넥스트 코드의 신기술 발표회에서, 대형 스크린에 AI 관련 정보가 나열된다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '회사 대표의 말이 공허하게 들렸다.', delay: 600 },
+  { text: '당신은 김진우가 남긴 마지막 알고리즘을 완성했고, 이제 그의 꿈이 현실이 되었다.', delay: 800 },
   { text: '', delay: 100 },
-  { text: '며칠 후, 경쟁사 테크노바가 놀랍게도 김진우의 기술과 유사한 AI 알고리즘을 발표했다.', delay: 800 },
+  { text: '"이 기술은 인류의 삶을 획기적으로 개선할 것입니다. 제 소중한 친구, 김진우에게 이 영광을 돌립니다."', delay: 1000 },
   { text: '', delay: 100 },
-  { text: '증거는 없지만, 당신은 진실을 알고 있다.', delay: 800 },
+  { text: '당신의 발표가 끝나자 객석에서는 뜨거운 박수가 쏟아졌다.', delay: 800 },
   { text: '', delay: 50 },
   { text: '', delay: 50 },
-  { text: '김진우의 마지막 메시지가 다시 떠올랐다.', delay: 800 },
+  { text: '어렴풋이, 김진우가 가끔 언급하던 말버릇이 생각난다.', delay: 1000 },
   { text: '', delay: 100 },
-  { text: '"코드에는 항상 그림자가 있어. 그리고 그 그림자 속에 진실이 숨어있지."', delay: 1000 },
+  { text: '"코드에는 항상 그림자가 있지만, 진실은 결국 빛을 찾는 법이야."', delay: 1000 },
   { text: '', delay: 100 },
-  { text: '어느 날, 당신은 그가 남겨둔 또 다른 단서를 발견하게 될지도 모른다.', delay: 1200 },
+  { text: '당신은 미소를 지으며 하늘을 올려다보았다. 정의는 실현되었고, 친구의 유산은 영원히 살아갈 것이다.', delay: 1200 },
 ];
 
 /**
- * NormalEndingSequence 클래스
- * 노멀 엔딩 시퀀스의 전체 흐름을 관리하는 클래스
+ * TrueEndingSequence 클래스
+ * 해피 엔딩 시퀀스의 전체 흐름을 관리하는 클래스
  * 두 개의 장면 전환과 타이핑 효과, 크레딧 표시 등 구현
  */
-class NormalEndingSequence {
+class TrueEndingSequence {
   // DOM 요소 참조 저장 변수들
   private endingText1: HTMLElement; // 첫 번째 장면의 텍스트 컨테이너
   private endingText2: HTMLElement; // 두 번째 장면의 텍스트 컨테이너
   private endingScene1: HTMLElement; // 첫 번째 배경 이미지 요소
   private endingScene2: HTMLElement; // 두 번째 배경 이미지 요소
   private credits: HTMLElement; // 크레딧 표시 요소
-  private endingScene3: HTMLElement; // 세 번째 배경 요소
-  private finalCredits: HTMLElement; // 최종 크레딧 요소
+  private endingScene3: HTMLElement; // 추가: 세 번째 배경 요소
+  private finalCredits: HTMLElement; // 추가: 최종 크레딧 요소
 
   // 커서 요소 참조
   private cursor1: HTMLElement | null = null; // 첫 번째 장면의 타이핑 커서
@@ -100,10 +100,10 @@ class NormalEndingSequence {
    */
   private playBackgroundMusic = (): void => {
     try {
-      this.bgmAudio = new Audio('/effectSound/normal_end.mp3');
+      this.bgmAudio = new Audio('/effectSound/true_end.mp3');
       if (this.bgmAudio) {
         this.bgmAudio.loop = true;
-        this.bgmAudio.volume = 0.3;
+        this.bgmAudio.volume = 0.2;
 
         // 사용자 상호작용 없이도 재생 가능하도록 설정
         const playPromise = this.bgmAudio.play();
@@ -137,7 +137,7 @@ class NormalEndingSequence {
     this.cursor1.className = 'ending-cursor cursor-white';
     this.endingText1.appendChild(this.cursor1);
 
-    // 두 번째 장면용 커서 생성 및 추가
+    // 두 번째 장면용 커서 생성 및 추가 (초기에는 숨김 상태)
     this.cursor2 = document.createElement('span');
     this.cursor2.className = 'ending-cursor cursor-white hidden-element';
     this.endingText2.appendChild(this.cursor2);
@@ -149,7 +149,7 @@ class NormalEndingSequence {
    */
   private startSequence = async (): Promise<void> => {
     // 첫 번째 파트 텍스트 순차 출력
-    for (const item of normalEndingPart1) {
+    for (const item of happyEndingPart1) {
       if (!this.cursor1) continue; // 커서 검증
 
       // 텍스트 타이핑 효과 실행
@@ -171,7 +171,7 @@ class NormalEndingSequence {
     this.transitionToScene2();
 
     // 두 번째 파트 텍스트 순차 출력
-    for (const item of normalEndingPart2) {
+    for (const item of happyEndingPart2) {
       if (!this.cursor2) continue; // 커서 검증
 
       // 텍스트 타이핑 효과 실행
@@ -324,8 +324,8 @@ class NormalEndingSequence {
         setTimeout(() => {
           this.finalCredits.classList.add('fade-in-active');
 
-          // 배경음악 페이드아웃
           setTimeout(() => {
+            // 배경음악 페이드아웃
             this.fadeOutMusic();
 
             document.body.classList.add('ending-fade-out');
@@ -371,5 +371,5 @@ class NormalEndingSequence {
 
 // DOM이 완전히 로드된 후 엔딩 시퀀스 시작
 document.addEventListener('DOMContentLoaded', () => {
-  new NormalEndingSequence();
+  new TrueEndingSequence();
 });

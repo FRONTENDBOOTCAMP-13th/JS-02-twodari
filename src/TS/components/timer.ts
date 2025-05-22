@@ -1,4 +1,4 @@
-import Timer from '../utils/createTimer';
+import Timer from './createTimer';
 
 const timerBox = document.getElementById('timer-box');
 

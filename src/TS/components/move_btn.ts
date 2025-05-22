@@ -1,5 +1,5 @@
-import { CreateMoveBtn } from '../utils/createMoveBtn.';
-import { RoomManager } from './room_manager.ts';
+import { CreateMoveBtn } from './createMoveBtn.';
+import { RoomManager } from '../../utils/room_manager';
 
 const directionMap = {
   up: 'north',

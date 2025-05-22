@@ -1,4 +1,4 @@
-import itemManagerInstance from '../utils/itemManagerInstance';
+import itemManagerInstance from '../../utils/itemManagerInstance';
 import { ITEM_SELECTED_EVENT } from './itemManager';
 
 interface IButtonOptions {

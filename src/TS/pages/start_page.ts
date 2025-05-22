@@ -1,5 +1,5 @@
 // 인터페이스 정의
-import type { IStoryText } from '../types/type';
+import type { IStoryText } from '../../types/type';
 
 // 페이지 타입 정의
 type PageId = 'loading-page' | 'title-page' | 'start-page';
@@ -365,7 +365,7 @@ class Terminal {
       // 여기서는 다음 게임 페이지로 이동하는 대신 콘솔에 메시지 출력
       console.log('게임이 시작됩니다!');
       // 실제 구현에서는 여기에 게임 시작 페이지로 이동하는 로직을 추가
-      window.location.href = 'play_ground.html';
+      window.location.href = '/src/pages/play_ground.html';
     }
   };
 }

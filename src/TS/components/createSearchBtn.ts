@@ -1,5 +1,5 @@
-import { showCluePopup } from './showCluePopup';
-import type { IInventoryItem } from '../types/type.ts';
+import { showCluePopup } from '../../utils/showCluePopup.ts';
+import type { IInventoryItem } from '../../types/type.ts';
 
 type TClueTtype = 'clue' | 'game' | 'view';
 

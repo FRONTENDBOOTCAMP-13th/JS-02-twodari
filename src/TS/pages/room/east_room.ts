@@ -1,8 +1,8 @@
-import { IRoom, IInventoryItem } from '../../types/type.ts';
-import itemManagerInstance from '../../utils/itemManagerInstance.ts';
-import { CreateSearchBtn } from '../../utils/createSearchBtn.ts';
-import { WhiteBoardGame } from '../minigame/east_minigames.ts';
-import { EscapeCodeGame } from '../minigame/east_escapeCode.ts';
+import { IRoom, IInventoryItem } from '../../../types/type.ts';
+import itemManagerInstance from '../../../utils/itemManagerInstance.ts';
+import { CreateSearchBtn } from '../../components/createSearchBtn.ts';
+import { WhiteBoardGame } from '../../minigame/east_minigames.ts';
+import { EscapeCodeGame } from '../../minigame/east_escapeCode.ts';
 
 export class EastRoom implements IRoom {
   private whiteBoardGame: WhiteBoardGame;

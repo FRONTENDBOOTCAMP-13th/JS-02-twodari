@@ -1,6 +1,6 @@
-import { setKeyListener } from './keyboardListener.ts';
-import { MoveController } from './moveController.ts';
-import type { TRoomDirection } from '../types/type.ts';
+import { setKeyListener } from '../../utils/keyboardListener.ts';
+import { MoveController } from '../../utils/moveController.ts';
+import type { TRoomDirection } from '../../types/type.ts';
 
 type TMoveType = 'up' | 'down' | 'left' | 'right';
 
