@@ -56,17 +56,6 @@ export class SouthRoom implements IRoom {
       console.log('비밀번호 성공');
       SouthRoom.PasswordKeypadCompleted = true;
 
-      // 사원증 아이템 추가
-      const newItem: IInventoryItem = {
-        id: 'employee-card',
-        name: '피 묻은 사원증',
-        description: "금고에서 발견한 피 묻은 사원증.",
-        image: '/assets/img/idcard.webp',
-        isSelected: false,
-      };
-
-      itemManagerInstance.addItem(newItem);
-
       showCluePopup({
         clueImgSrc: '/assets/img/idcard.webp',
         message: "핏자국이 선명한 사원증. 이름은 지워졌고, 초성 'ㅁㅅ'만 희미하게 보인다. 뒷면에는 '0525'라는 숫자가 적혀 있다.",
