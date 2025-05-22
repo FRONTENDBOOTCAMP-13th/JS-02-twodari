@@ -146,7 +146,8 @@
 │   │   ├── 📘 keyboardListener.ts
 │   │   ├── 📘 moveController.ts
 │   │   ├── 📘 room_manager.ts
-│   │   └── 📘 showCluePopup.ts
+│   │   ├── 📘 showCluePopup.ts
+│   │   └── 📘 transition_effect.ts
 |   |
 │   ├── 📝 style.css
 │   ├── 📝 .gitignore
