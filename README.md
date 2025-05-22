@@ -132,10 +132,10 @@
 │   │   │   ├── 📘 west_minigame.ts
 │   │   │   └── 📘 west_password.ts
 │   │   ├── 📁 pages
-│   │   |       ├── 📄 east_room.html
-│   │   |       ├── 📄 north_room.html
-│   │   |       ├── 📄 south_room.html
-│   │   |       └── 📄 west_room.html
+│   │   |       ├── 📘 east_room.html
+│   │   |       ├── 📘 north_room.html
+│   │   |       ├── 📘 south_room.html
+│   │   |       └── 📘 west_room.html
 │   │   └── 📘 ControlTower.ts
 |   |
 │   ├── 📁 types
