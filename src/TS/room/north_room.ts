@@ -86,7 +86,7 @@ export class NorthRoom implements IRoom {
     // 배경 이미지 설정
     const bg = document.getElementById('room-background');
     if (bg) {
-      bg.style.backgroundImage = `url('/src/assets/img/background_north.webp')`;
+      bg.style.backgroundImage = `url('/assets/img/background_north.webp')`;
       bg.style.backgroundSize = 'cover';
       bg.style.backgroundPosition = 'center';
     }
@@ -101,7 +101,7 @@ export class NorthRoom implements IRoom {
 
     // 거울 검색 버튼
     const mirrorButton = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg',
+      iconSrc: '/assets/icon/search.svg',
       altText: '거울 조사하기',
       position: { top: '45%', left: '80%' },
       id: 'search-mirror',
@@ -131,7 +131,7 @@ export class NorthRoom implements IRoom {
 
     // 2. 복합기 검색 버튼
     const copierButton = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg',
+      iconSrc: '/assets/icon/search.svg',
       altText: '복합기 조사하기',
       position: { top: '50%', left: '47%' },
       id: 'search-copier',
@@ -162,7 +162,7 @@ export class NorthRoom implements IRoom {
     if (!this.towelCollected) {
       console.log('쓰레기통 버튼 렌더링 중...');
       const trashButton = new CreateSearchBtn({
-        iconSrc: '/src/assets/icon/search.svg',
+        iconSrc: '/assets/icon/search.svg',
         altText: '쓰레기통 조사하기',
         position: { top: '72%', left: '11%' },
         id: 'search-trash',
