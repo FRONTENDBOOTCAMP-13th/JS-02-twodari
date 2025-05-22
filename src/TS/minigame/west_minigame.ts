@@ -6,7 +6,8 @@ export class CodeGame implements IMiniGame {
   private inputLine: HTMLDivElement | null = null;
   private inputField: HTMLInputElement | null = null;
   private consoleContent: HTMLDivElement | null = null;
-  private currentTab: 'terminal' | 'hack' = 'terminal';
+  private terminalContent: HTMLDivElement | null = null; // 터미널 전용 콘텐츠
+  private hackContent: HTMLDivElement | null = null; // hack.js 전용 콘텐츠
   private gameCompleted: boolean = false;
 
   constructor(private onComplete?: () => void) {}
@@ -80,11 +81,37 @@ export class CodeGame implements IMiniGame {
     tabBar.appendChild(hackTab);
     this.consoleBox.appendChild(tabBar);
 
-    // 콘솔 내용 영역
-    this.consoleContent = document.createElement('div');
-    this.consoleContent.className = 'whitespace-pre';
-    this.consoleBox.appendChild(this.consoleContent);
-    this.updateContent('terminal');
+    const consoleBoxWrapper = document.createElement('div');
+    consoleBoxWrapper.className = 'console-content-wrapper';
+
+    // 터미널 콘텐츠 영역
+    this.terminalContent = document.createElement('div');
+    this.terminalContent.className = 'whitespace-pre terminal-content';
+    this.terminalContent.innerText =
+      '[main-server ~/] > connect main-server\n' +
+      '[main-server ~/] > run NUKE.exe\n' +
+      '[main-server ~/] > backdoor\n' +
+      '-------------------------------\n' +
+      '[main-server ~/] > 터미널에 올바른 명령어를 입력하세요.';
+
+    // hack.js 콘텐츠 영역
+    this.hackContent = document.createElement('div');
+    this.hackContent.className = 'whitespace-pre hack-content hidden';
+    this.hackContent.innerText =
+      '// hack.js\n' +
+      '// 해킹용 코드 입니다. 터미널에 run 실행 명령을 사용하세요.\n\n' +
+      'export function hack() {\n' +
+      "  console.log('해킹 시퀀스 시작');\n" +
+      '  const code = secret code;\n' +
+      '  return code;\n' +
+      '}';
+
+    // 현재 활성 콘텐츠 참조 (기본값: 터미널)
+    this.consoleContent = this.terminalContent;
+
+    consoleBoxWrapper.appendChild(this.terminalContent);
+    consoleBoxWrapper.appendChild(this.hackContent);
+    this.consoleBox.appendChild(consoleBoxWrapper);
 
     // 입력 라인
     this.inputLine = document.createElement('div');
@@ -106,41 +133,31 @@ export class CodeGame implements IMiniGame {
 
     this.inputLine.appendChild(prompt);
     this.inputLine.appendChild(this.inputField);
-    this.consoleBox.appendChild(this.inputLine);
+    consoleBoxWrapper.appendChild(this.inputLine);
 
     // 닫기 버튼
     const closeButton = document.createElement('button');
     closeButton.textContent = '닫기';
     closeButton.className = 'close-btn-style';
     closeButton.addEventListener('click', () => this.close());
-    this.consoleBox.appendChild(closeButton);
 
-    this.container.appendChild(this.consoleBox);
+    this.consoleBox.appendChild(closeButton);
   }
 
   //탭 전환 처리
   private updateContent(type: 'terminal' | 'hack') {
-    if (!this.consoleContent) return;
-    this.currentTab = type;
+    if (!this.terminalContent || !this.hackContent) return;
 
-    //터미널이면
     if (type === 'terminal') {
-      this.consoleContent.innerText =
-        '[main-server ~/] > connect main-server\n' +
-        '[main-server ~/] > run NUKE.exe\n' +
-        '[main-server ~/] > backdoor\n' +
-        '-------------------------------\n' +
-        '[main-server ~/] > 터미널에 올바른 명령어를 입력하세요.';
-      //터미널이 아니면 = 파일이면
+      // 터미널 탭: 터미널 콘텐츠 보이기, hack.js 숨기기
+      this.terminalContent.classList.remove('hidden');
+      this.hackContent.classList.add('hidden');
+      this.consoleContent = this.terminalContent;
     } else {
-      this.consoleContent.innerText =
-        '// hack.js\n' +
-        '// 해킹용 코드 입니다. 터미널에 run 실행 명령을 사용하세요.\n\n' +
-        'export function hack() {\n' +
-        "  console.log('해킹 시퀀스 시작');\n" +
-        '  const code = secret code;\n' +
-        '  return code;\n' +
-        '}';
+      // hack.js 탭: hack.js 콘텐츠 보이기, 터미널 숨기기
+      this.terminalContent.classList.add('hidden');
+      this.hackContent.classList.remove('hidden');
+      this.consoleContent = this.hackContent;
     }
   }
 
@@ -169,6 +186,7 @@ export class CodeGame implements IMiniGame {
     }
     this.updateContent(tab);
   }
+
   //입력 이벤트 처리
   private handleInput(e: KeyboardEvent) {
     if (e.key === 'Enter') {
@@ -176,10 +194,9 @@ export class CodeGame implements IMiniGame {
       const command = this.inputField?.value.trim();
       if (!command) return;
 
-      // 새로운 줄 생성
       const resultLine = document.createElement('div');
       resultLine.textContent = `[main-server ~/] > ${command}`;
-      this.consoleBox?.insertBefore(resultLine, this.inputLine!);
+      this.terminalContent?.appendChild(resultLine);
 
       // 응답 시뮬레이션
       const response = document.createElement('div');
@@ -191,8 +208,16 @@ export class CodeGame implements IMiniGame {
       } else {
         response.textContent = `command not found: ${command}`;
       }
-      this.consoleBox?.insertBefore(response, this.inputLine!);
+      this.terminalContent?.appendChild(response);
       this.inputField!.value = '';
+
+      // 스크롤 자동으로 내리기
+      if (this.consoleContent === this.terminalContent) {
+        const consoleBoxWrapper = this.consoleBox?.querySelector('.console-content-wrapper') as HTMLDivElement;
+        if (consoleBoxWrapper) {
+          consoleBoxWrapper.scrollTop = consoleBoxWrapper.scrollHeight;
+        }
+      }
     }
   }
 
