@@ -88,9 +88,17 @@ export class PasswordKeypad {
       keypadGrid.appendChild(btn);
     });
 
+    // 닫기 버튼 추가
+    const closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.textContent = '닫기';
+    closeBtn.className = 'w-full mt-4 bg-red-600 text-white font-bold py-2 rounded hover:bg-red-700 transition';
+    closeBtn.addEventListener('click', () => this.close());
+
     // 폼에 요소들 추가
     formElement.appendChild(this.display);
     formElement.appendChild(keypadGrid);
+    formElement.appendChild(closeBtn); // 닫기 버튼 추가
 
     // 기존 콘텐츠 초기화
     this.container.innerHTML = '';

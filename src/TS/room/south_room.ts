@@ -146,7 +146,7 @@ export class SouthRoom implements IRoom {
     const self = this;
 
     // 2. 금고 검색 버튼 - 금고 키패드 (팝업 없이 바로 키패드 표시)
-    const copierButton = new CreateSearchBtn({
+    const safeButton = new CreateSearchBtn({
       iconSrc: '/src/assets/icon/search.svg',
       altText: '금고 조사하기',
       position: { top: '50%', left: '45%' },
@@ -169,7 +169,7 @@ export class SouthRoom implements IRoom {
 
     // DOM에 버튼 추가
     PuzzleButton.appendTo(btnBox);
-    copierButton.appendTo(btnBox);
+    safeButton.appendTo(btnBox);
 
     console.log('버튼 추가 완료');
   }
