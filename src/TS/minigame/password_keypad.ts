@@ -2,7 +2,7 @@ export class PasswordKeypad {
   private container: HTMLElement;
   private display!: HTMLInputElement;
   private inputValue: string = '';
-  private readonly correctPassword: string = '1234';
+  private readonly correctPassword: string = '743689';
   private readonly maxLength: number = 8;
   private onSuccess: () => void;
   private unlockSound: HTMLAudioElement;

@@ -157,7 +157,7 @@ export class SouthRoom implements IRoom {
 
         if (SouthRoom.PasswordKeypadCompleted) {
           showCluePopup({
-            clueImgSrc: '/src/assets/img/clue_copier.webp',
+            clueImgSrc: '/src/assets/img/clue_copier.webp', // 사원증 이미지로 변경
             message: "피가 튄 사원증이 있다. 성이 가려져 이름 초성만 흐릿하게 보인다. 'ㅁㅅ'.",
           });
         } else {
@@ -190,3 +190,6 @@ export class SouthRoom implements IRoom {
     }
   }
 }
+
+
+
