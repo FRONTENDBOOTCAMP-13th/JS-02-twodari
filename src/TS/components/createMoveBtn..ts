@@ -1,5 +1,7 @@
+// src/utils/createMoveBtn.ts
 import { setKeyListener } from '../../utils/keyboardListener.ts';
 import { MoveController } from '../../utils/moveController.ts';
+import { TransitionEffect } from '../../utils/transition_effect.ts';
 import type { TRoomDirection } from '../../types/type.ts';
 
 type TMoveType = 'up' | 'down' | 'left' | 'right';
@@ -48,6 +50,9 @@ export class CreateMoveBtn {
 
     CreateMoveBtn.instances[this.options.type] = this;
     MoveController.register(this.options.type, () => {
+      // 암전 중이면 이동 무시
+      if (TransitionEffect.isInTransition()) return;
+
       CreateMoveBtn.setActiveDirection(this.options.type);
       this.options.onClick();
     });
@@ -150,9 +155,13 @@ export class CreateMoveBtn {
 
   // 이동 버튼 클릭 핸들러
   private onClick() {
+    // 암전 중이면 클릭 무시
+    if (TransitionEffect.isInTransition()) return;
+
     CreateMoveBtn.setActiveDirection(this.options.type);
     this.options.onClick();
   }
+
   // 버튼 활성화 상태 업데이트
   private updateButtonState() {
     if (this.isActive) {
@@ -161,7 +170,11 @@ export class CreateMoveBtn {
       this.element.classList.remove('active');
     }
   }
+
   public static setActiveDirection(activeType: TMoveType) {
+    // 암전 중이면 방향 변경 무시
+    if (TransitionEffect.isInTransition()) return;
+
     for (const [type, instance] of Object.entries(CreateMoveBtn.instances)) {
       if (!instance) continue;
       instance.isActive = type === activeType;
@@ -172,6 +185,10 @@ export class CreateMoveBtn {
   // 키보드 이벤트 리스너 설정
   public static setupKeyListener() {
     if (CreateMoveBtn.listenerInitialized) return;
+
+    // TransitionEffect 초기화
+    TransitionEffect.initialize();
+
     setKeyListener();
     CreateMoveBtn.listenerInitialized = true;
   }
@@ -189,4 +206,5 @@ export class CreateMoveBtn {
     }
   }
 }
+
 export { directionMap };
