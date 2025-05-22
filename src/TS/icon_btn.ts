@@ -6,7 +6,7 @@ const inventoryBox = document.getElementById('inventory-box');
 
 const hintButton = new CreateIconBtn({
   type: 'hint',
-  iconSrc: '/src/assets/icon/hint.svg',
+  iconSrc: '/assets/icon/hint.svg',
   altText: '힌트 획득 버튼',
   text: 'HINT',
   isActive: false,
@@ -18,7 +18,7 @@ const hintButton = new CreateIconBtn({
 
 const musicButton = new CreateIconBtn({
   type: 'music',
-  iconSrc: '/src/assets/icon/on_music.svg',
+  iconSrc: '/assets/icon/on_music.svg',
   altText: 'BGM 재생 버튼',
   text: 'MUSIC',
   isActive: false,
@@ -42,7 +42,7 @@ const musicButton = new CreateIconBtn({
 
 const itemButton = new CreateIconBtn({
   type: 'item',
-  iconSrc: '/src/assets/icon/item.svg',
+  iconSrc: '/assets/icon/item.svg',
   altText: '인벤토리 버튼',
   text: 'ITEM',
   isActive: false,

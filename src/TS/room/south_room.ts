@@ -61,7 +61,7 @@ export class SouthRoom implements IRoom {
         id: 'employee-card',
         name: '피 묻은 사원증',
         description: "금고에서 발견한 피 묻은 사원증. 이름의 초성이 'ㅁㅅ'인 것 같다.",
-        image: '/src/assets/img/idcard.webp',
+        image: '/assets/img/idcard.webp',
         isSelected: false,
       };
 
@@ -114,7 +114,7 @@ export class SouthRoom implements IRoom {
 
     // 액자 검색 버튼 (퍼즐 미니게임)
     const PuzzleButton = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg',
+      iconSrc: '/assets/icon/search.svg',
       altText: '액자 조사하기',
       position: { top: '45%', left: '75%' },
       id: 'search-Puzzle',
@@ -143,7 +143,7 @@ export class SouthRoom implements IRoom {
 
     // 2. 금고 검색 버튼 (비밀번호 키패드)
     const safeButton = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg',
+      iconSrc: '/assets/icon/search.svg',
       altText: '금고 조사하기',
       position: { top: '47%', left: '20%' },
       id: 'search-keypad',

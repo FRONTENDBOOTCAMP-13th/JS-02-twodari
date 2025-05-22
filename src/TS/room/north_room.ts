@@ -115,7 +115,7 @@ export class NorthRoom implements IRoom {
 
         if (this.mirrorCompleted) {
           showCluePopup({
-            clueImgSrc: '/src/assets/img/mirror.webp',
+            clueImgSrc: '/assets/img/mirror.webp',
             message: '거울에 숫자 "314"가 쓰여있다.',
           });
         } else if (this.towelCollected) {
@@ -145,7 +145,7 @@ export class NorthRoom implements IRoom {
 
         if (this.copierCompleted) {
           showCluePopup({
-            clueImgSrc: '/src/assets/img/clue_copier.webp',
+            clueImgSrc: '/assets/img/clue_copier.webp',
             message: '[경영지원팀 : 사내 10월 이달의 생일자] 안내문이 출력되었다.',
           });
         } else if (hasWrench) {
@@ -167,13 +167,13 @@ export class NorthRoom implements IRoom {
         position: { top: '72%', left: '11%' },
         id: 'search-trash',
         type: 'clue',
-        clueImgSrc: '/src/assets/img/towel.webp',
+        clueImgSrc: '/assets/img/towel.webp',
         clueMessage: '쓰다 버린 수건같다. 무언가를 닦는데 사용할 수 있을까?',
         itemInfo: {
           id: 'towel',
           name: '수건',
           description: '쓰레기통에서 발견한 수건이다.',
-          image: '/src/assets/img/towel.webp',
+          image: '/assets/img/towel.webp',
           isSelected: false,
         },
         onFound: (item: IInventoryItem) => {

@@ -1,4 +1,4 @@
-import { IMiniGame } from '../../types/type.ts';
+// import { IMiniGame } from '../../types/type.ts';
 
 export class PuzzleGame {
   private container: HTMLElement | null = null;
@@ -140,7 +140,7 @@ export class PuzzleGame {
 
   private addCloseButton() {
     if (this.container?.querySelector('#puzzle-close-btn')) return;
-    
+
     const closeBtn = document.createElement('button');
     closeBtn.id = 'puzzle-close-btn'; // id 추가
     closeBtn.textContent = '닫기';

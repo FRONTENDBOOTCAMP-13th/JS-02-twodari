@@ -43,18 +43,18 @@ export class WestRoom implements IRoom {
 
     // 첫번째 찾기 버튼 (단서1: 찢어진 종이)
     const searchButton1 = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg',
+      iconSrc: '/assets/icon/search.svg',
       altText: '구겨진 종이 조사하기',
       position: { top: '70%', left: '7%' },
       id: 'search-paper',
       type: 'view',
-      clueImgSrc: '/src/assets/img/clue_paper.webp',
+      clueImgSrc: '/assets/img/clue_paper.webp',
       clueMessage: '찢어진 종이를 획득했다. 무슨 내용이지?',
     });
 
     // 두번째 찾기 버튼 (페이크, 커피잔)
     const searchButton2 = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg',
+      iconSrc: '/assets/icon/search.svg',
       altText: '커피잔 조사하기',
       position: { top: '65%', left: '20%' },
       id: 'search-coffee',
@@ -65,7 +65,7 @@ export class WestRoom implements IRoom {
 
     // 세번째 찾기 버튼 (미니게임1 : 코드 게임)
     const searchButton3 = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg',
+      iconSrc: '/assets/icon/search.svg',
       altText: '노트북 조사하기',
       position: { top: '40%', left: '47%' },
       id: 'west-game-btn',
@@ -77,7 +77,7 @@ export class WestRoom implements IRoom {
 
     // 네번째 찾기 버튼 (미니게임2 : 서랍 열기)
     const searchButton4 = new CreateSearchBtn({
-      iconSrc: '/src/assets/icon/search.svg',
+      iconSrc: '/assets/icon/search.svg',
       altText: '서랍 조사하기',
       position: { top: '55%', left: '80%' },
       id: 'drawer-password-btn',
