@@ -2,6 +2,7 @@ import { IMiniGame } from '../../types/type.ts';
 
 export class WhiteBoardGame implements IMiniGame {
   private boardElement: HTMLDialogElement;
+  public onSubmit?: (value: '2239' | false) => void;
 
   constructor() {
     this.boardElement = this.createBoard();
@@ -47,7 +48,7 @@ export class WhiteBoardGame implements IMiniGame {
 
     boardInput.addEventListener('keydown', event => {
       if (event.key === 'Enter') {
-        this.handleInput(boardInput.value);
+        this.setTrueEndding(boardInput.value);
         boardInput.value = '';
       }
     });
@@ -57,7 +58,8 @@ export class WhiteBoardGame implements IMiniGame {
     sendBtn.textContent = '입력';
 
     sendBtn.addEventListener('click', () => {
-      this.handleInput(boardInput.value);
+      this.setTrueEndding(boardInput.value);
+
       boardInput.value = '';
     });
 
@@ -85,15 +87,23 @@ export class WhiteBoardGame implements IMiniGame {
     this.boardElement.close();
   }
 
-  private handleInput(value: any) {
-    if (value == 2239) {
+  public setTrueEndding(value: any) {
+    let result: '2239' | false;
+    if (value == '2239') {
       //트루 엔딩으로 가는 로직
       console.log('가자 트루엔딩');
+      result = value;
     } else {
       //노말 엔딩으로 가는 로직
       console.log('넌 노말이야');
+      result = false;
     }
+    if (this.onSubmit) {
+      this.onSubmit(result);
+    }
+    return result;
   }
+
   public getBoardElement() {
     return this.boardElement;
   }

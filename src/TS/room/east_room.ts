@@ -72,6 +72,9 @@ export class EastRoom implements IRoom {
       type: 'game', //단서 타입('clue' or 'game')
       gameCallback: () => {
         this.whiteBoardGame.start();
+        this.whiteBoardGame.onSubmit = result => {
+          this.EscapeCodeGame.setTrueEnddingCode(result);
+        };
       },
     });
 
@@ -84,8 +87,10 @@ export class EastRoom implements IRoom {
       type: 'game', //단서 타입('clue' or 'game')
       gameCallback: () => {
         this.EscapeCodeGame.start();
+        this.whiteBoardGame;
       },
     });
+
     vessleClueBtn.appendTo(btnBox);
     whiteBoardGameBtn.appendTo(btnBox);
     escapeGameBtn.appendTo(btnBox);
