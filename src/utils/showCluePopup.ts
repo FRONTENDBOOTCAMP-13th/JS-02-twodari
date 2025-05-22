@@ -19,7 +19,14 @@ export function showCluePopup({ clueImgSrc, message }: IClueOptions): void {
     const clueImg = document.createElement('img');
     clueImg.src = clueImgSrc;
     clueImg.alt = message ?? '단서 이미지';
-    clueImg.className = 'clue-img';
+
+    // 찢어진 종이일 경우
+    if (clueImgSrc.includes('clue_paper.webp')) {
+      clueImg.className = 'w-[500px] max-w-[90vw] max-h-[90vh] object-contain rounded-xl shadow-lg';
+    } else {
+      clueImg.className = 'clue-img';
+    }
+
     clueLayer.appendChild(clueImg);
   }
   // 단서 팝업 만들기

@@ -47,19 +47,9 @@ export class WestRoom implements IRoom {
       altText: '구겨진 종이 조사하기',
       position: { top: '70%', left: '7%' },
       id: 'search-paper',
-      type: 'clue',
+      type: 'view',
       clueImgSrc: '/src/assets/img/clue_paper.webp',
       clueMessage: '찢어진 종이를 획득했다. 무슨 내용이지?',
-      itemInfo: {
-        id: 'paper',
-        name: '찢어진 종이',
-        description: '책상에서 발견한 찢어진 종이.',
-        image: '/src/assets/img/clue_paper.webp',
-        isSelected: false,
-      },
-      onFound: (item: IInventoryItem) => {
-        itemManagerInstance.addItem(item); // 공통 인스턴스 사용
-      },
     });
 
     // 두번째 찾기 버튼 (페이크, 커피잔)
