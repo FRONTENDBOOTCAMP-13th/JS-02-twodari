@@ -167,7 +167,7 @@
 @layer components {
   /* 최동환 담당 */
   .btn-style {
-    @apply w-[100px] h-[100px] p-5 border-4 rounded-2xl border-[#464646] flex flex-col justify-center items-center;
+    @apply w-[100px] h-[100px] p-5 border-4 rounded-2xl border-[#464646] bg-black/60 flex flex-col justify-center items-center;
   }
 
   .icon-img {
@@ -175,7 +175,7 @@
   }
 
   .timeBox-style {
-    @apply w-[200px] h-[50px] p-5 border-4 rounded-2xl border-[#464646] flex justify-around items-center;
+    @apply w-[200px] h-[50px] p-5 border-4 rounded-2xl border-[#464646] bg-black/80 flex justify-around items-center;
   }
 
   .timeDesc-style {
