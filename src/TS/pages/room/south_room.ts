@@ -1,7 +1,7 @@
 // SouthRoom 클래스 - 남쪽 방 구성
 // 퍼즐 미니게임과 금고 키패드 미니게임 구현
 
-import { IRoom, IInventoryItem } from '../../../types/type.ts';
+import { IRoom } from '../../../types/type.ts';
 import { PuzzleGame } from '../../minigame/south_minigame.ts';
 import { PasswordKeypad } from '../../minigame/password_keypad.ts';
 import { CreateSearchBtn } from '../../components/createSearchBtn.ts';
