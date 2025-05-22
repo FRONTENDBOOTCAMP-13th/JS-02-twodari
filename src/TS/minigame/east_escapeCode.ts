@@ -102,9 +102,14 @@ export class EscapeCodeGame implements IMiniGame {
   }
 
   private checkPassword(): void {
-    if (this.inputValue === this.correctPassword) {
+    if (this.inputValue === '') {
+      console.log('응 아니야');
+      this.closeEscapeGame();
+    } else if (this.inputValue === this.correctPassword) {
+      console.log('트루엔딩');
       window.location.href = 'true_end.html';
     } else {
+      console.log('노말엔딩');
       window.location.href = 'normal_end.html';
     }
   }
