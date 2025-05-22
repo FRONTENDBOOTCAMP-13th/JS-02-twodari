@@ -13,6 +13,8 @@ class PageManager {
   private bgmAudio: HTMLAudioElement | null = null;
   private audioContext: AudioContext | null = null;
   private typingSoundBuffer: AudioBuffer | null = null; // 타이핑 효과음 버퍼 저장
+  private proceedButton: HTMLElement | null = null;
+  private loadingText: HTMLElement | null = null;
 
   constructor() {
     const overlay = document.getElementById('transition-overlay');
@@ -21,17 +23,60 @@ class PageManager {
     }
 
     this.transitionOverlay = overlay;
-
-    // 오디오 컨텍스트 초기화 및 효과음 미리 로드
-    this.initAudio();
+    this.proceedButton = document.getElementById('proceed-button');
+    this.loadingText = document.getElementById('loading-text');
 
     // 처음에는 로딩 페이지만 표시
     this.showPage('loading-page');
 
-    // 로딩 페이지 표시 후 3초 뒤 타이틀 페이지로 전환
+    // 스킵 버튼 이벤트 리스너 설정 (추가된 부분)
+    const skipButton = document.getElementById('skip-button');
+    if (skipButton) {
+      skipButton.addEventListener('click', e => {
+        e.preventDefault(); // 기본 이동 동작 방지
+
+        // 암전 효과 적용
+        this.transitionOverlay.classList.add('opacity-100');
+
+        // 적절한 시간 후 이동
+        setTimeout(() => {
+          window.location.href = skipButton.getAttribute('href') || 'play_ground.html';
+        }, 1000);
+      });
+    }
+
+    // 2초 후에 로딩 텍스트 서서히 사라지고 진행하기 버튼 나타나기
     setTimeout(() => {
-      this.transitionToPage('title-page');
-    }, 3000);
+      // 로딩 텍스트 서서히 사라지기
+      if (this.loadingText) {
+        this.loadingText.classList.add('transition-opacity', 'duration-1000', 'opacity-0');
+      }
+
+      // 0.5초 후 버튼 나타나기
+      setTimeout(() => {
+        if (this.proceedButton) {
+          // 보이게 만들기
+          this.proceedButton.classList.remove('invisible', 'opacity-0');
+          this.proceedButton.classList.add('transition-opacity', 'duration-1000', 'opacity-100');
+          // 깜빡이는 효과 추가
+          const textElement = this.proceedButton.querySelector('span');
+          if (textElement) {
+            textElement.classList.add('text-static', 'severe-flicker');
+          }
+        }
+      }, 500);
+    }, 2000);
+
+    // 진행하기 버튼 이벤트 리스너 설정
+    if (this.proceedButton) {
+      this.proceedButton.addEventListener('click', () => {
+        // 오디오 초기화 및 로드
+        this.initAudio();
+
+        // 타이틀 페이지로 전환
+        this.transitionToPage('title-page');
+      });
+    }
 
     // 타이틀 페이지의 시작 버튼 이벤트 리스너 설정
     const startBtn = document.getElementById('startBtn');
@@ -48,6 +93,7 @@ class PageManager {
   private initAudio = async (): Promise<void> => {
     try {
       this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      console.log('오디오 컨텍스트 초기화 성공');
 
       // 타이핑 효과음 미리 로드
       this.preloadTypingSound();
@@ -119,10 +165,20 @@ class PageManager {
 
         // 4. 시작 페이지로 이동한 경우 Terminal 초기화 및 미리 로드된 타이핑 효과음 전달
         if (pageId === 'start-page') {
-          new Terminal(this.audioContext, this.typingSoundBuffer);
+          new Terminal(this.audioContext, this.typingSoundBuffer, this.transitionOverlay);
         }
       }, 200);
     }, 800);
+  };
+
+  /**
+   * 암전 효과 주는 메서드 - 다른 클래스에서 호출 가능하도록 public으로 설정
+   */
+  public fadeToBlack = (callback: () => void, duration: number = 1000): void => {
+    this.transitionOverlay.classList.add('opacity-100');
+    setTimeout(() => {
+      callback();
+    }, duration);
   };
 
   /**
@@ -160,6 +216,7 @@ class Terminal {
   private typingSoundBuffer: AudioBuffer | null = null;
   private typingSoundSource: AudioBufferSourceNode | null = null;
   private typingSoundPlayed: boolean = false; // 이미 효과음이 재생되었는지 확인
+  private transitionOverlay: HTMLElement; // 암전 효과용 오버레이
 
   // 게임 인트로 스토리 텍스트 배열 - 흰색으로 표시될 부분
   private introContent: IStoryText[] = [
@@ -186,8 +243,9 @@ class Terminal {
   /**
    * @param audioContext 오디오 컨텍스트
    * @param preloadedTypingBuffer 미리 로드된 타이핑 효과음 버퍼 (없으면 직접 로드)
+   * @param transitionOverlay 암전 효과용 오버레이 요소
    */
-  constructor(audioContext: AudioContext | null, preloadedTypingBuffer: AudioBuffer | null = null) {
+  constructor(audioContext: AudioContext | null, preloadedTypingBuffer: AudioBuffer | null = null, transitionOverlay: HTMLElement) {
     const introTextElement = document.getElementById('intro-text');
     if (!introTextElement) {
       throw new Error('intro-text 요소를 찾을 수 없습니다');
@@ -202,12 +260,12 @@ class Terminal {
 
     this.terminal = terminalElement;
     this.audioContext = audioContext;
+    this.transitionOverlay = transitionOverlay;
 
     // 미리 로드된 효과음 버퍼가 있으면 사용하고, 없으면 직접 로드
     if (preloadedTypingBuffer && audioContext) {
       this.typingSoundBuffer = preloadedTypingBuffer;
       console.log('미리 로드된 타이핑 효과음 사용');
-
       // 페이지 표시와 동시에 효과음 바로 재생
       this.playTypingSound();
     } else {
@@ -362,11 +420,23 @@ class Terminal {
 
   private onKeyDown = (e: KeyboardEvent): void => {
     if (!this.isTyping && e.key.toUpperCase() === 'Y') {
-      // 여기서는 다음 게임 페이지로 이동하는 대신 콘솔에 메시지 출력
-      console.log('게임이 시작됩니다!');
-      // 실제 구현에서는 여기에 게임 시작 페이지로 이동하는 로직을 추가
-      window.location.href = '/src/pages/play_ground.html';
+      // 암전 효과 적용 후 페이지 이동
+      this.transitionToGamePage();
     }
+  };
+
+  /**
+   * 게임 페이지로 전환 - 암전 효과 포함
+   */
+  private transitionToGamePage = (): void => {
+    // 암전 효과 적용
+    this.transitionOverlay.classList.add('opacity-100');
+
+    // 1초 후 페이지 이동
+    setTimeout(() => {
+      console.log('게임이 시작됩니다!');
+      window.location.href = '/src/pages/play_ground.html';
+    }, 1000);
   };
 }
 
