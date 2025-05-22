@@ -329,7 +329,7 @@ class BadEndingSequence {
             document.body.classList.add('ending-fade-out');
 
             setTimeout(() => {
-              window.location.href = 'start_page.html';
+              window.location.href = '../../index.html';
             }, 2000);
           }, 5000);
         }, 100);

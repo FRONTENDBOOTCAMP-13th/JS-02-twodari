@@ -7,7 +7,6 @@ import itemManagerInstance from '../../../utils/itemManagerInstance.ts';
 export class NorthRoom implements IRoom {
   private mirrorGame: MirrorGame;
   private copierGame: CopierGame;
-
   private towelCollected = false;
   private mirrorCompleted = false;
   private copierCompleted = false;
@@ -22,11 +21,12 @@ export class NorthRoom implements IRoom {
 
     this.checkTowelStatus();
 
-    // 거울 미니게임 초기화
+    // 거울 미니게임 초기화 - sessionStorage 사용 제거
     this.mirrorGame = new MirrorGame(() => {
       console.log('거울 미니게임 해결');
       this.mirrorCompleted = true;
-      sessionStorage.setItem('north_mirror_completed', 'true');
+
+      // sessionStorage.setItem 제거
 
       showCluePopup({
         clueImgSrc: '/assets/img/mirror.webp',
@@ -34,11 +34,12 @@ export class NorthRoom implements IRoom {
       });
     });
 
-    // 복합기 미니게임 초기화
+    // 복합기 미니게임 초기화 - sessionStorage 사용 제거
     this.copierGame = new CopierGame(() => {
       console.log('복합기 미니게임 해결');
       this.copierCompleted = true;
-      sessionStorage.setItem('north_copier_completed', 'true');
+
+      // sessionStorage.setItem 제거
 
       showCluePopup({
         clueImgSrc: '/assets/img/clue_copier.webp',
@@ -69,8 +70,9 @@ export class NorthRoom implements IRoom {
     // 상태 확인 - 인벤토리만 체크
     this.checkTowelStatus();
 
-    this.mirrorCompleted = sessionStorage.getItem('north_mirror_completed') === 'true';
-    this.copierCompleted = sessionStorage.getItem('north_copier_completed') === 'true';
+    // 미니게임 상태를 항상 초기화 (sessionStorage 사용 제거)
+    this.mirrorCompleted = false;
+    this.copierCompleted = false;
 
     this.mirrorGame.initialize();
     this.copierGame.initialize();
@@ -120,6 +122,7 @@ export class NorthRoom implements IRoom {
           });
         } else if (this.towelCollected) {
           console.log('타월로 거울 닦기 시작');
+          this.setupMirrorGameContainer();
           this.mirrorGame.start();
         } else {
           showCluePopup({
@@ -182,7 +185,7 @@ export class NorthRoom implements IRoom {
           // 인벤토리에 아이템 추가
           itemManagerInstance.addItem(item);
 
-          // 상태 업데이트 - 세션 스토리지는 사용하지 않음
+          // 상태 업데이트
           this.towelCollected = true;
 
           // 버튼 제거
@@ -204,6 +207,28 @@ export class NorthRoom implements IRoom {
     copierButton.appendTo(btnBox);
 
     console.log('버튼 추가 완료');
+  }
+
+  // 거울 미니게임 컨테이너 설정 함수 (클릭 좌표 및 위치 문제 해결)
+  private setupMirrorGameContainer(): void {
+    // 미니게임 컨테이너가 표시될 때 위치 조정을 위한 관찰자 설정
+    setTimeout(() => {
+      const container = document.getElementById('minigame-container');
+      if (container) {
+        // 미니게임이 전체 화면에 중앙 정렬되도록 스타일 조정
+        container.style.position = 'fixed';
+        container.style.top = '0';
+        container.style.left = '0';
+        container.style.width = '100%';
+        container.style.height = '100%';
+        container.style.display = 'flex';
+        container.style.alignItems = 'center';
+        container.style.justifyContent = 'center';
+        container.style.zIndex = '9999';
+        container.style.transformOrigin = 'center center';
+        container.style.transform = 'none'; // 스케일 제거
+      }
+    }, 50);
   }
 
   cleanup(): void {
