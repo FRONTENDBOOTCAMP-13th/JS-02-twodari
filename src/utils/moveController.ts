@@ -1,4 +1,5 @@
-//방향 이동 제어
+import { TransitionEffect } from './transition_effect.ts';
+
 export type Direction = 'up' | 'down' | 'left' | 'right';
 
 export class MoveController {
@@ -9,6 +10,9 @@ export class MoveController {
   }
 
   static move(direction: Direction) {
+    // 암전 중이면 이동 무시
+    if (TransitionEffect.isInTransition()) return;
+
     this.moveMap.get(direction)?.();
   }
 }

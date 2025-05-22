@@ -2,12 +2,16 @@ export class PasswordKeypad {
   private container: HTMLElement;
   private display!: HTMLInputElement;
   private inputValue: string = '';
+
   private readonly correctPassword: string = '743689';
   private readonly maxLength: number = 8;
+
   private onSuccess: () => void;
   private unlockSound: HTMLAudioElement;
   private volumeValue: number = 0.5;
   private keydownListener: ((e: KeyboardEvent) => void) | null = null;
+  private failureSound: HTMLAudioElement; 
+
 
   constructor(containerId: string, onSuccess: () => void) {
     const container = document.getElementById(containerId);
@@ -17,8 +21,10 @@ export class PasswordKeypad {
 
     this.container = container;
     this.onSuccess = onSuccess;
-    this.unlockSound = new Audio('/effectSound/unlock.mp3');
+    this.unlockSound = new Audio('/effectSound/unlock.mp3'); // 성공 사운드
     this.unlockSound.volume = this.volumeValue;
+    this.failureSound = new Audio('/effectSound/error.ogg'); // 실패 사운드
+    this.failureSound.volume = this.volumeValue;
   }
 
   public initialize(): void {
@@ -67,8 +73,7 @@ export class PasswordKeypad {
     this.display.type = 'password';
     this.display.disabled = true;
     this.display.autocomplete = 'new-password'; // autocomplete 속성 설정
-    this.display.className =
-      'w-full mb-4 px-3 py-3 text-center text-2xl border-none rounded bg-gray-800 text-green-400 font-mono tracking-widest shadow-inner ring-1 ring-green-500 focus:outline-none';
+    this.display.className = 'w-full mb-4 px-3 py-3 text-center text-2xl border-none rounded bg-gray-800 text-green-400 font-mono tracking-widest shadow-inner ring-1 ring-green-500 focus:outline-none';
 
     const keypadGrid = document.createElement('div');
     keypadGrid.className = 'grid grid-cols-3 gap-3';
@@ -88,9 +93,17 @@ export class PasswordKeypad {
       keypadGrid.appendChild(btn);
     });
 
+    // 닫기 버튼 추가
+    const closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.textContent = '닫기';
+    closeBtn.className = 'w-full mt-4 bg-red-600 text-white font-bold py-2 rounded hover:bg-red-700 transition';
+    closeBtn.addEventListener('click', () => this.close());
+
     // 폼에 요소들 추가
     formElement.appendChild(this.display);
     formElement.appendChild(keypadGrid);
+    formElement.appendChild(closeBtn); // 닫기 버튼 추가
 
     // 기존 콘텐츠 초기화
     this.container.innerHTML = '';
@@ -136,6 +149,8 @@ export class PasswordKeypad {
 
   private indicateFailure(): void {
     this.display.classList.add('bg-red-800');
+    this.failureSound.currentTime = 0; // 사운드가 겹칠 때를 대비해 처음부터 재생
+    this.failureSound.play().catch(() => {});
 
     setTimeout(() => {
       this.display.classList.remove('bg-red-800');

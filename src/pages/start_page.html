@@ -6,15 +6,16 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <title>코드의 그림자</title>
     <link rel="stylesheet" href="../style.css" />
-    <script type="module" src="../TS/start_page.ts"></script>
+    <script type="module" src="../TS/pages/start_page.ts"></script>
   </head>
   <body class="start-height min-h-screen bg-black">
     <!-- 페이지 전환용 오버레이 -->
     <div id="transition-overlay" class="fixed inset-0 bg-black opacity-0 z-50 pointer-events-none transition-opacity duration-1000"></div>
 
     <!-- 로딩 페이지 -->
-    <section id="loading-page" class="page-section min-h-screen flex items-center justify-center font-dunggeunmo">
-      <div class="text-green-500 text-xl sm:text-2xl md:text-3xl lg:text-4xl">
+    <section id="loading-page" class="page-section min-h-screen flex flex-col items-center justify-center font-dunggeunmo">
+      <!-- 로딩 텍스트 (서서히 사라짐) -->
+      <div id="loading-text" class="text-green-500 text-xl sm:text-2xl md:text-3xl lg:text-4xl transition-opacity duration-[1000ms]">
         <span class="pop" style="animation-delay: 0s">L</span>
         <span class="pop" style="animation-delay: 0.1s">O</span>
         <span class="pop" style="animation-delay: 0.2s">A</span>
@@ -26,6 +27,11 @@
         <span class="pop" style="animation-delay: 0.8s">.</span>
         <span class="pop" style="animation-delay: 0.9s">.</span>
       </div>
+
+      <!-- 진행하기 버튼 (초기에는 숨김) -->
+      <div id="proceed-button" class="text-green-500 text-xl sm:text-2xl md:text-3xl lg:text-4xl opacity-0 invisible">
+        <span class="animate-blink inline-block">[ 클릭하여 진행하기 ]</span>
+      </div>
     </section>
 
     <!-- 타이틀 페이지 -->
@@ -33,7 +39,7 @@
       <!-- 배경 이미지와 오버레이를 담는 컨테이너 -->
       <div
         class="relative min-h-screen bg-cover bg-center flex items-center justify-center bg-flicker"
-        style="background-image: url('../assets/img/title_background.webp')"
+        style="background-image: url('/assets/img/title_background.webp')"
       >
         <!-- 🔲 어둡게 만드는 블랙 오버레이 -->
         <div class="absolute inset-0 bg-black opacity-60 z-0"></div>
@@ -55,7 +61,7 @@
     <section id="start-page" class="page-section hidden">
       <!-- 스킵 버튼 추가 (오른쪽 하단에 희미하게 배치) -->
       <a
-        href="play_ground.html"
+        href="./src/pages/play_ground.html"
         id="skip-button"
         class="fixed bottom-8 right-8 text-white opacity-70 hover:opacity-90 transition-opacity duration-300 font-dunggeunmo text-sm z-40 bg-gray-700 bg-opacity-30 px-6 py-2 rounded"
       >

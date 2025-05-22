@@ -1,6 +1,6 @@
 import { IMiniGame } from '../../types/type.ts';
 
-export class PuzzleGame {
+export class PuzzleGame implements IMiniGame {
   private container: HTMLElement | null = null;
   private puzzleGrid: HTMLDivElement | null = null;
   private pieces: HTMLDivElement[] = [];
@@ -41,7 +41,16 @@ export class PuzzleGame {
 
     this.container = target;
     this.container.innerHTML = '';
-    this.container.className = 'flex items-center justify-center p-4 bg-black/30 fixed inset-0 z-50'; // 배경 어둡게
+    // 위치와 레이아웃을 명확히 지정 (기존 스타일 초기화)
+    this.container.style.position = 'fixed';
+    this.container.style.inset = '0';
+    this.container.style.top = '';
+    this.container.style.left = '';
+    this.container.style.transform = '';
+    this.container.style.display = '';
+    this.container.style.zIndex = '1050';
+    this.container.className = 'flex items-center justify-center p-4 bg-black/30 fixed inset-0 z-50';
+
     this.puzzleGrid = document.createElement('div');
     this.puzzleGrid.className = 'grid gap-1 bg-white border-4 border-yellow-800 rounded-md shadow-lg';
     this.puzzleGrid.style.gridTemplateColumns = `repeat(${this.size}, 100px)`;
@@ -140,7 +149,7 @@ export class PuzzleGame {
 
   private addCloseButton() {
     if (this.container?.querySelector('#puzzle-close-btn')) return;
-    
+
     const closeBtn = document.createElement('button');
     closeBtn.id = 'puzzle-close-btn'; // id 추가
     closeBtn.textContent = '닫기';
@@ -179,19 +188,3 @@ export class PuzzleGame {
     }, 1500);
   }
 }
-
-// // 퍼즐게임 테스트
-// // 퍼즐 완성 후 실행할 콜백 함수(선택)
-// function onPuzzleComplete() {
-//   // 예: 남쪽방 클리어 처리 등
-//   console.log('퍼즐 완성!');
-// }
-
-// // 퍼즐 인스턴스 생성
-// const puzzleGame = new PuzzleGame(onPuzzleComplete);
-
-// // 퍼즐 UI 초기화(최초 1회)
-// puzzleGame.initialize();
-
-// // 퍼즐 시작(보이게 함)
-// puzzleGame.start();
