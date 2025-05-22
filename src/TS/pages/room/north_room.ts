@@ -4,13 +4,31 @@ import { CreateSearchBtn } from '../../components/createSearchBtn.ts';
 import { showCluePopup } from '../../../utils/showCluePopup.ts';
 import itemManagerInstance from '../../../utils/itemManagerInstance.ts';
 
+// 전역 객체로 방 이동 간 상태 보존 (새로고침 시 초기화됨)
+const NorthRoomState = {
+  mirrorCompleted: false,
+  copierCompleted: false,
+};
+
 export class NorthRoom implements IRoom {
   private mirrorGame: MirrorGame;
   private copierGame: CopierGame;
 
   private towelCollected = false;
-  private mirrorCompleted = false;
-  private copierCompleted = false;
+  // 인스턴스 변수로 관리 (전역 객체 참조)
+  private get mirrorCompleted(): boolean {
+    return NorthRoomState.mirrorCompleted;
+  }
+  private set mirrorCompleted(value: boolean) {
+    NorthRoomState.mirrorCompleted = value;
+  }
+
+  private get copierCompleted(): boolean {
+    return NorthRoomState.copierCompleted;
+  }
+  private set copierCompleted(value: boolean) {
+    NorthRoomState.copierCompleted = value;
+  }
 
   constructor() {
     console.log('NorthRoom 생성자 실행');
@@ -25,8 +43,7 @@ export class NorthRoom implements IRoom {
     // 거울 미니게임 초기화
     this.mirrorGame = new MirrorGame(() => {
       console.log('거울 미니게임 해결');
-      this.mirrorCompleted = true;
-      sessionStorage.setItem('north_mirror_completed', 'true');
+      this.mirrorCompleted = true; // 전역 객체 업데이트
 
       showCluePopup({
         clueImgSrc: '/assets/img/mirror.webp',
@@ -37,8 +54,7 @@ export class NorthRoom implements IRoom {
     // 복합기 미니게임 초기화
     this.copierGame = new CopierGame(() => {
       console.log('복합기 미니게임 해결');
-      this.copierCompleted = true;
-      sessionStorage.setItem('north_copier_completed', 'true');
+      this.copierCompleted = true; // 전역 객체 업데이트
 
       showCluePopup({
         clueImgSrc: '/assets/img/clue_copier.webp',
@@ -69,14 +85,19 @@ export class NorthRoom implements IRoom {
     // 상태 확인 - 인벤토리만 체크
     this.checkTowelStatus();
 
-    this.mirrorCompleted = sessionStorage.getItem('north_mirror_completed') === 'true';
-    this.copierCompleted = sessionStorage.getItem('north_copier_completed') === 'true';
+    // 미니게임 상태는 전역 객체에서 이미 관리되고 있음
+    // 새로고침 시 자동으로 초기화되므로 별도 초기화 코드 불필요
 
     this.mirrorGame.initialize();
     this.copierGame.initialize();
+
+    // 디버깅용 로그
+    console.log('거울 미니게임 상태:', this.mirrorCompleted ? '완료' : '미완료');
+    console.log('복합기 미니게임 상태:', this.copierCompleted ? '완료' : '미완료');
   }
 
   render(): void {
+    // 기존 렌더링 코드 유지...
     console.log('NorthRoom render 실행');
 
     // 렌더링 시 타월 상태 확인
@@ -158,50 +179,36 @@ export class NorthRoom implements IRoom {
       },
     });
 
-    // 쓰레기통 검색 버튼 - 무조건 표시하되 획득 후에만 제거하도록
-    if (!this.towelCollected) {
-      console.log('쓰레기통 버튼 렌더링 중...');
-      const trashButton = new CreateSearchBtn({
-        iconSrc: '/assets/icon/search.svg',
-        altText: '쓰레기통 조사하기',
-        position: { top: '72%', left: '11%' },
-        id: 'search-trash',
-        type: 'clue',
-        clueImgSrc: '/assets/img/towel.webp',
-        clueMessage: '쓰다 버린 수건같다. 무언가를 닦는데 사용할 수 있을까?',
-        itemInfo: {
-          id: 'towel',
-          name: '수건',
-          description: '쓰레기통에서 발견한 수건이다.',
-          image: '/assets/img/towel.webp',
-          isSelected: false,
-        },
-        onFound: (item: IInventoryItem) => {
-          console.log('수건 발견됨, 인벤토리에 추가 중...');
-
-          // 인벤토리에 아이템 추가
+    // 3. 쓰레기통 검색 버튼
+    const trashButton = new CreateSearchBtn({
+      iconSrc: '/assets/icon/search.svg',
+      altText: '쓰레기통 조사하기',
+      position: { top: '72%', left: '11%' },
+      id: 'search-trash',
+      type: 'clue',
+      clueImgSrc: this.towelCollected ? '' : '/assets/img/towel.webp',
+      clueMessage: this.towelCollected ? '더 이상 볼 것이 없다.' : '쓰다 버린 수건같다. 무언가를 닦는데 사용할 수 있을까?',
+      itemInfo: this.towelCollected
+        ? undefined
+        : {
+            id: 'towel',
+            name: '수건',
+            description: '쓰레기통에서 발견한 수건이다.',
+            image: '/assets/img/towel.webp',
+            isSelected: false,
+          },
+      onFound: (item: IInventoryItem) => {
+        if (!this.towelCollected) {
           itemManagerInstance.addItem(item);
-
-          // 상태 업데이트 - 세션 스토리지는 사용하지 않음
           this.towelCollected = true;
-
-          // 버튼 제거
-          const trashBtn = document.getElementById('search-trash');
-          if (trashBtn && btnBox) {
-            btnBox.removeChild(trashBtn);
-          }
-
-          // 상태 재확인
-          this.checkTowelStatus();
-        },
-      });
-
-      trashButton.appendTo(btnBox);
-    }
+        }
+      },
+    });
 
     // DOM에 버튼 추가
     mirrorButton.appendTo(btnBox);
     copierButton.appendTo(btnBox);
+    trashButton.appendTo(btnBox);
 
     console.log('버튼 추가 완료');
   }

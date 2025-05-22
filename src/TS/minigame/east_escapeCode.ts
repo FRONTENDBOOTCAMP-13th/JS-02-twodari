@@ -7,6 +7,7 @@ export class EscapeCodeGame implements IMiniGame {
   private maxLength: number = 4;
   private display!: HTMLInputElement;
   private keydownListener?: (e: KeyboardEvent) => void;
+  private trueEnddingCode: '2239' | false = false;
 
   constructor() {
     this.escapeElement = this.createEscape();
@@ -101,11 +102,15 @@ export class EscapeCodeGame implements IMiniGame {
     this.display.value = this.inputValue;
   }
 
-  private checkPassword(): void {
+  public setTrueEnddingCode(code: '2239' | false) {
+    this.trueEnddingCode = code;
+  }
+
+  public checkPassword(): void {
     if (this.inputValue === '') {
       console.log('응 아니야');
       this.closeEscapeGame();
-    } else if (this.inputValue === this.correctPassword) {
+    } else if (this.trueEnddingCode === '2239' && this.inputValue === this.correctPassword) {
       console.log('트루엔딩');
       window.location.href = 'true_end.html';
     } else {
