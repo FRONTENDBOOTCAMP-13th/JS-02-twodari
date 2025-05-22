@@ -58,15 +58,15 @@ export class SouthRoom implements IRoom {
         id: 'employee-card',
         name: '피 묻은 사원증',
         description: "금고에서 발견한 피 묻은 사원증. 이름의 초성이 'ㅁㅅ'인 것 같다.",
-        image: '/src/assets/img/clue_copier.webp',
+        image: '/assets/img/idcard.webp',
         isSelected: false,
       };
 
       itemManagerInstance.addItem(newItem);
 
       showCluePopup({
-        clueImgSrc: '/src/assets/img/clue_copier.webp',
-        message: "피가 튄 사원증이 있다. 성이 가려져 이름 초성만 흐릿하게 보인다. 'ㅁㅅ'.",
+        clueImgSrc: '/assets/img/idcard.webp',
+        message: "핏자국이 선명한 사원증. 이름은 지워졌고, 초성 'ㅁㅅ'만 희미하게 보인다.",
       });
     });
   }
@@ -157,8 +157,8 @@ export class SouthRoom implements IRoom {
 
         if (SouthRoom.PasswordKeypadCompleted) {
           showCluePopup({
-            clueImgSrc: '/src/assets/img/clue_copier.webp', // 사원증 이미지로 변경
-            message: "피가 튄 사원증이 있다. 성이 가려져 이름 초성만 흐릿하게 보인다. 'ㅁㅅ'.",
+            clueImgSrc: '/assets/img/idcard.webp', 
+            message: "핏자국이 선명한 사원증. 이름은 지워졌고, 초성 'ㅁㅅ'만 희미하게 보인다.",
           });
         } else {
           // 팝업 없이 바로 키패드 표시
